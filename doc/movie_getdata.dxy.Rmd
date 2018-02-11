@@ -1,0 +1,50 @@
+---
+title: "move theatres in nyc"
+output: html_document
+---
+
+```{r}
+library(xlsx)
+```
+
+
+```{r}
+#comebine all movie theatres data together
+movie1 <- read.xlsx("../data/movie theatres(1).dxy.xlsx",1)
+movie2 <- read.xlsx("../data/movie theatres(2).dxy.xlsx",1)
+#make movie1 address organized
+movie1$Address <- gsub("[0-9]{5}.*", "", movie1$Address)
+#make movie2 address organized
+movie2$Address <- paste0(movie2$Address,", New York, NY")
+#combine movie1 and movie2 and delete duplicate information
+movie <- rbind(movie1,movie2)
+movie <- movie[!duplicated(movie$Name),]
+```
+
+```{r}
+#get latitude and longitude
+library(ggmap)
+for(i in 1:nrow(movie))
+{
+  result <- geocode(movie$Address[i], output = "latlona", source = c("google", "dsk"))
+  movie$Longitude[i] <- as.numeric(result[1])
+  movie$Latitude[i] <- as.numeric(result[2])
+}
+
+#repeat below codes several times until get all longitude and latitude data
+na <- unique(c(which(is.na(movie$lat)),which(is.na(movie$lon))))
+for(i in na){
+  result <- geocode(movie$Address[i], output = "latlona", source = c("google", "dsk"))
+  movie$Longitude[i] <- as.numeric(result[1])
+  movie$Latitude[i] <- as.numeric(result[2])
+}
+#only keep latitude and longitude information
+movie <- movie[,1:4]
+movie <- movie[,c("Name","Address","Latitude","Longitude")]
+```
+
+```{r}
+#output as csv
+write.csv(movie,"movie_theatres.dxy.csv")
+```
+
