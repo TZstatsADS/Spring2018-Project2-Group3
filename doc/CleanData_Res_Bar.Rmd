@@ -2,7 +2,7 @@
 title: "Clean Data (Resturants, Bars and Clubs)"
 output: html_notebook
 ---
-
+# Resturant
 ```{r}
 library(openxlsx)
 library(xlsx)
@@ -11,6 +11,7 @@ dat <- read.xlsx("../data/DOHMH_New_York_City_Restaurant_Inspection_Results.xlsx
 str(dat)
 ```
 
+## Manhattan Only
 ```{r}
 library(dplyr)
 
@@ -20,6 +21,7 @@ res.mah <- dat %>%
 write.csv(res.mah, file = "../output/Resturant/Resturant_Mah.csv")
 ```
 
+## Put in geo loc
 ```{r}
 library(ggmap)
 
@@ -29,5 +31,36 @@ loc1 <- res.mah1 %>%
   mutate(ADDRESS = paste(BUILDING, STREET, "New York, NY", sep = ", ")) %>%
   mutate_geocode(ADDRESS)
 write.csv(loc1, file = "../output/Resturant/resturant_location1.csv")
+```
+
+# Bars and Clubs
+```{r}
+dat2 <- read.csv("../data/Liquor_Authority_Quarterly_List_of_Active_Licenses.csv", 
+                 header = TRUE, na.strings = "NA", as.is = TRUE)
+str(dat2)
+lapply(dat2, class)
+```
+
+```{r}
+count.mah <- dat2 %>%
+  distinct(License.Serial.Number, .keep_all = TRUE) %>%
+  group_by(County.Name..Licensee.) %>%
+  summarise(value = n())
+
+liquor.ny <- dat2 %>%
+  distinct(License.Serial.Number, .keep_all = TRUE) %>%
+  filter(County.Name..Licensee. == "NEW YORK")
+
+count.type <- liquor.ny %>%
+  group_by(License.Type.Name) %>%
+  summarise(value = n())
+
+bars <- liquor.ny %>%
+  filter(License.Type.Name == "ON-PREMISES LIQUOR")
+write.csv(bars, file = "../output/Resturant/bars.csv")
+
+clubs <- liquor.ny %>%
+  filter(License.Type.Name == "CLUB LIQUOR" | License.Type.Name == "CLUB WINE")
+write.csv(clubs, file = "../output/Resturant/clubs.csv")
 ```
 
