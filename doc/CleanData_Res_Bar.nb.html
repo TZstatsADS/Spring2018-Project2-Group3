@@ -174,11 +174,36 @@ $(document).ready(function () {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShvcGVueGxzeClcblxuYGBgIn0= -->
+<pre class="r"><code>library(openxlsx)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoicGFja2FnZSDjpLzjuLFvcGVueGxzeOOkvOO4siB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDMuNC4zXG4ifQ== -->
+<pre><code>package &lt;U+393C&gt;&lt;U+3E31&gt;openxlsx&lt;U+393C&gt;&lt;U+3E32&gt; was built under R version 3.4.3</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShnZ21hcClcblxucmVzLm1haDEgPC0gcmVzLm1haFsxOjI0MDAsIF1cbmxvYzEgPC0gcmVzLm1haDEgJT4lXG4gIHNlbGVjdChcIkRCQVwiLCBcIkJVSUxESU5HXCIsIFwiU1RSRUVUXCIsIFwiWklQQ09ERVwiLCBcIlBIT05FXCIsIFwiQ1VJU0lORS5ERVNDUklQVElPTlwiLCBcIkdSQURFXCIpJT4lXG4gIG11dGF0ZShBRERSRVNTID0gcGFzdGUoQlVJTERJTkcsIFNUUkVFVCwgXCJOZXcgWW9yaywgTllcIiwgc2VwID0gXCIsIFwiKSkgJT4lXG4gIG11dGF0ZV9nZW9jb2RlKEFERFJFU1MpXG53cml0ZS5jc3YobG9jMSwgZmlsZSA9IFwiLi4vb3V0cHV0L1Jlc3R1cmFudC9yZXN0dXJhbnRfbG9jYXRpb24xLmNzdlwiKVxuYGBgIn0= -->
+<pre class="r"><code>library(ggmap)
+
+res.mah1 &lt;- res.mah[1:2400, ]
+loc1 &lt;- res.mah1 %&gt;%
+  select(&quot;DBA&quot;, &quot;BUILDING&quot;, &quot;STREET&quot;, &quot;ZIPCODE&quot;, &quot;PHONE&quot;, &quot;CUISINE.DESCRIPTION&quot;, &quot;GRADE&quot;)%&gt;%
+  mutate(ADDRESS = paste(BUILDING, STREET, &quot;New York, NY&quot;, sep = &quot;, &quot;)) %&gt;%
+  mutate_geocode(ADDRESS)
+write.csv(loc1, file = &quot;../output/Resturant/resturant_location1.csv&quot;)</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkNsZWFuIERhdGEgKFJlc3R1cmFudHMsIEJhcnMgYW5kIENsdWJzKSINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNCmBgYHtyfQ0KDQpgYGANCg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkNsZWFuIERhdGEgKFJlc3R1cmFudHMsIEJhcnMgYW5kIENsdWJzKSINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNCmBgYHtyfQ0KbGlicmFyeShvcGVueGxzeCkNCmxpYnJhcnkoeGxzeCkNCg0KZGF0IDwtIHJlYWQueGxzeCgiLi4vZGF0YS9ET0hNSF9OZXdfWW9ya19DaXR5X1Jlc3RhdXJhbnRfSW5zcGVjdGlvbl9SZXN1bHRzLnhsc3giLDEpDQpzdHIoZGF0KQ0KYGBgDQoNCmBgYHtyfQ0KbGlicmFyeShkcGx5cikNCg0KcmVzLm1haCA8LSBkYXQgJT4lDQogIGRpc3RpbmN0KEJVSUxESU5HLCBTVFJFRVQsIFpJUENPREUsLmtlZXBfYWxsID0gVFJVRSkgJT4lDQogIGZpbHRlcihCT1JPID09ICJNQU5IQVRUQU4iKQ0Kd3JpdGUuY3N2KHJlcy5tYWgsIGZpbGUgPSAiLi4vb3V0cHV0L1Jlc3R1cmFudC9SZXN0dXJhbnRfTWFoLmNzdiIpDQpgYGANCg0KYGBge3J9DQpsaWJyYXJ5KGdnbWFwKQ0KDQpyZXMubWFoMSA8LSByZXMubWFoWzE6MjQwMCwgXQ0KbG9jMSA8LSByZXMubWFoMSAlPiUNCiAgc2VsZWN0KCJEQkEiLCAiQlVJTERJTkciLCAiU1RSRUVUIiwgIlpJUENPREUiLCAiUEhPTkUiLCAiQ1VJU0lORS5ERVNDUklQVElPTiIsICJHUkFERSIpJT4lDQogIG11dGF0ZShBRERSRVNTID0gcGFzdGUoQlVJTERJTkcsIFNUUkVFVCwgIk5ldyBZb3JrLCBOWSIsIHNlcCA9ICIsICIpKSAlPiUNCiAgbXV0YXRlX2dlb2NvZGUoQUREUkVTUykNCndyaXRlLmNzdihsb2MxLCBmaWxlID0gIi4uL291dHB1dC9SZXN0dXJhbnQvcmVzdHVyYW50X2xvY2F0aW9uMS5jc3YiKQ0KYGBgDQoNCg==</div>
 
 
 

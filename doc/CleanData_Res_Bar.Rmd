@@ -4,6 +4,30 @@ output: html_notebook
 ---
 
 ```{r}
+library(openxlsx)
+library(xlsx)
 
+dat <- read.xlsx("../data/DOHMH_New_York_City_Restaurant_Inspection_Results.xlsx",1)
+str(dat)
+```
+
+```{r}
+library(dplyr)
+
+res.mah <- dat %>%
+  distinct(BUILDING, STREET, ZIPCODE,.keep_all = TRUE) %>%
+  filter(BORO == "MANHATTAN")
+write.csv(res.mah, file = "../output/Resturant/Resturant_Mah.csv")
+```
+
+```{r}
+library(ggmap)
+
+res.mah1 <- res.mah[1:2400, ]
+loc1 <- res.mah1 %>%
+  select("DBA", "BUILDING", "STREET", "ZIPCODE", "PHONE", "CUISINE.DESCRIPTION", "GRADE")%>%
+  mutate(ADDRESS = paste(BUILDING, STREET, "New York, NY", sep = ", ")) %>%
+  mutate_geocode(ADDRESS)
+write.csv(loc1, file = "../output/Resturant/resturant_location1.csv")
 ```
 
