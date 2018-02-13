@@ -23,15 +23,42 @@ write.csv(res.mah, file = "../output/Resturant/Resturant_Mah.csv")
 
 ## Put in geo loc
 ```{r}
+library(dplyr)
 library(ggmap)
 
-res.mah1 <- res.mah[1:2400, ]
-loc1 <- res.mah1 %>%
-  select("DBA", "BUILDING", "STREET", "ZIPCODE", "PHONE", "CUISINE.DESCRIPTION", "GRADE")%>%
-  mutate(ADDRESS = paste(BUILDING, STREET, "New York, NY", sep = ", ")) %>%
-  mutate_geocode(ADDRESS)
-write.csv(loc1, file = "../output/Resturant/resturant_location1.csv")
+res.mah <- read.csv("../output/Resturant/Resturant_Mah.csv")
+res.mah.short <- res.mah %>%
+  select(DBA, BUILDING, STREET, ZIPCODE, CUISINE.DESCRIPTION)
+
+
+# res.mah1 <- res.mah[1:2400, ]
+# loc1 <- res.mah1 %>%
+#   select("DBA", "BUILDING", "STREET", "ZIPCODE", "PHONE", "CUISINE.DESCRIPTION", "GRADE")%>%
+#   mutate(ADDRESS = paste(BUILDING, STREET, "New York, NY", sep = ", ")) %>%
+#   mutate_geocode(ADDRESS)
+# write.csv(loc1, file = "../output/Resturant/resturant_location00.csv")
 ```
+
+```{r}
+for (i in 0:3){
+  if((i+1)*2400 < nrow(res.mah.short)){
+  n = i*2400+1
+  data = res.mah.short[n:(n+2400-1), ]
+  }
+  else{
+    data = res.mah.short[(i*2400+1):nrow(res.mah.short), ]
+  }
+  path <- paste0("../output/Resturant/resturant_location", i, ".csv")
+  write.csv(data, file = path)
+}
+# 
+# write.csv(test, file = path)
+```
+
+```{r}
+
+```
+
 
 # Bars and Clubs
 ```{r}
@@ -63,4 +90,3 @@ clubs <- liquor.ny %>%
   filter(License.Type.Name == "CLUB LIQUOR" | License.Type.Name == "CLUB WINE")
 write.csv(clubs, file = "../output/Resturant/clubs.csv")
 ```
-
