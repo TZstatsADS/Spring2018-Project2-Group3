@@ -1,71 +1,45 @@
-library(shiny)
-library(choroplethr)
-library(choroplethrZip)
-library(dplyr)
-library(leaflet)
-library(maps)
-library(rgdal)
-library(zipcode)
-setwd("/Users/apple/Documents/2018SpringCourse/Applied Data Science/Spring2018-Project2-Group3")
-load("./output/avg_price.RData")
+library(ggmap)
 
 shinyServer(function(input, output) {
-        ## Panel 1: leaflet
+        ## Panel 3: leaflet
         output$map <- renderLeaflet({
-                avg_price.df.sel=avg_price.df
-        # From https://data.cityofnewyork.us/Business/Zip-Code-Boundaries/i8iw-xf4u/data
-                NYCzipcodes <- readOGR("./data/ZIP_CODE_040114.shp",
-                                       #layer = "ZIP_CODE", 
-                                       verbose = FALSE)
-        
-                selZip <- subset(NYCzipcodes, NYCzipcodes$ZIPCODE %in% avg_price.df.sel$region)
-        
-        # ----- Transform to EPSG 4326 - WGS84 (required)
-                subdat<-spTransform(selZip, CRS("+init=epsg:4326"))
-        
-        # ----- save the data slot
-                subdat_data=subdat@data[,c("ZIPCODE", "POPULATION")]
-                subdat.rownames=rownames(subdat_data)
-                subdat_data=
-                        subdat_data%>%left_join(avg_price.df, by=c("ZIPCODE"="region"))
-                rownames(subdat_data)=subdat.rownames
-        
-        # ----- to write to geojson we need a SpatialPolygonsDataFrame
-                subdat<-SpatialPolygonsDataFrame(subdat, data=subdat_data)
-        # -----
-                data(zipcode)
-                zip.sel.latlng=zipcode%>%
-                        inner_join(avg_price.df.sel,by=c("zip"="region"))
-                
-                
-                
-        # ----- set uo color pallette https://rstudio.github.io/leaflet/colors.html
-        # Create a continuous palette function
+                # ----- set uo color pallette https://rstudio.github.io/leaflet/colors.html
+                # Create a continuous palette function
                 pal <- colorNumeric(
                         palette = "Reds",
                         domain = subdat$value
                 )
-        
                 leaflet(subdat) %>%
-                        addTiles()%>%
-                        setView(-73.98928, 40.75042, zoom = 12)%>%
-                        addProviderTiles(providers$CartoDB.Positron)%>%
-                        addPolygons(
-                                stroke = T, weight=1,
-                                fillOpacity = 0.6,
-                                color = ~pal(value)
+                        setView(lng = -73.98928, lat = 40.75042, zoom = 13) %>%
+                        addProviderTiles("CartoDB.Positron", options = providerTileOptions(noWrap = TRUE))%>%
+                        #addTiles()%>%  #colorful map
+                        addPolygons(layerId = ~ZIPCODE,
+                                    stroke = T, weight=1,
+                                    fillOpacity = 0.6,
+                                    color = ~pal(value),
+                                    highlightOptions = highlightOptions(color='#ff0000', opacity = 0.5, weight = 4, fillOpacity = 0.5,
+                                                                        bringToFront = TRUE, sendToBack = TRUE)
                         )%>%
-                        addCircleMarkers(lat = zip.sel.latlng$latitude, lng =zip.sel.latlng$longitude, 
-                                         radius = 5, popup = paste("Zipcode:",subdat@data[order(subdat@data$ZIPCODE),]$ZIPCODE,"  ","Average Price:",as.character(subdat@data[order(subdat@data$ZIPCODE),]$value)), 
-                                         stroke = FALSE, fillOpacity = 0.8,
-                                         clusterOptions = markerClusterOptions()) #%>% 
-                        #addPopups(zip.sel.latlng$longitude, zip.sel.latlng$latitude,as.character(subdat@data[order(subdat@data$ZIPCODE),]$value)
-                        #)
                         
+                        addLegend(pal = pal, values = ~value, opacity = 1)
+       
         })
-
-
+        
+        observeEvent(input$map_shape_click, {
+                click <- input$map_shape_click
+                zip<-paste("ZIPCODE: ", revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)
+                price<-paste("Average Price: $",
+                             avg_price_zip.df[avg_price_zip.df$region==as.character(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code),"value"],sep="")
+                #studio_avg<-paste("Studio: $",price[price$RegionName==as.integer(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)&&price$type=="Studio","avg"],sep="")
+                text<-paste(zip,price,sep=" ")
+                proxy <- leafletProxy("map")
+                proxy %>% clearPopups() %>%
+                        addPopups(click$lng, click$lat, text)%>%
+                        setView(click$lng,click$lat,zoom=15,options=list(animate=TRUE))
+        })
         
         
-        })
+        
+        
 
+})

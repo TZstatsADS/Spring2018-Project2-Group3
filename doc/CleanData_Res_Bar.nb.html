@@ -189,6 +189,14 @@ $(document).ready(function () {
 <h2>Manhattan Only</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkcGx5cilcblxucmVzLm1haCA8LSBkYXQgJT4lXG4gIGRpc3RpbmN0KEJVSUxESU5HLCBTVFJFRVQsIFpJUENPREUsLmtlZXBfYWxsID0gVFJVRSkgJT4lXG4gIGZpbHRlcihCT1JPID09IFwiTUFOSEFUVEFOXCIpXG53cml0ZS5jc3YocmVzLm1haCwgZmlsZSA9IFwiLi4vb3V0cHV0L1Jlc3R1cmFudC9SZXN0dXJhbnRfTWFoLmNzdlwiKVxuYGBgIn0= -->
+<pre class="r"><code>library(dplyr)
+
+res.mah &lt;- dat %&gt;%
+  distinct(BUILDING, STREET, ZIPCODE,.keep_all = TRUE) %&gt;%
+  filter(BORO == &quot;MANHATTAN&quot;)
+write.csv(res.mah, file = &quot;../output/Resturant/Resturant_Mah.csv&quot;)</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -196,16 +204,46 @@ $(document).ready(function () {
 <h2>Put in geo loc</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShnZ21hcClcblxucmVzLm1haDEgPC0gcmVzLm1haFsxOjI0MDAsIF1cbmxvYzEgPC0gcmVzLm1haDEgJT4lXG4gIHNlbGVjdChcIkRCQVwiLCBcIkJVSUxESU5HXCIsIFwiU1RSRUVUXCIsIFwiWklQQ09ERVwiLCBcIlBIT05FXCIsIFwiQ1VJU0lORS5ERVNDUklQVElPTlwiLCBcIkdSQURFXCIpJT4lXG4gIG11dGF0ZShBRERSRVNTID0gcGFzdGUoQlVJTERJTkcsIFNUUkVFVCwgXCJOZXcgWW9yaywgTllcIiwgc2VwID0gXCIsIFwiKSkgJT4lXG4gIG11dGF0ZV9nZW9jb2RlKEFERFJFU1MpXG53cml0ZS5jc3YobG9jMSwgZmlsZSA9IFwiLi4vb3V0cHV0L1Jlc3R1cmFudC9yZXN0dXJhbnRfbG9jYXRpb24xLmNzdlwiKVxuYGBgIn0= -->
-<pre class="r"><code>library(ggmap)
-
-res.mah1 &lt;- res.mah[1:2400, ]
-loc1 &lt;- res.mah1 %&gt;%
-  select(&quot;DBA&quot;, &quot;BUILDING&quot;, &quot;STREET&quot;, &quot;ZIPCODE&quot;, &quot;PHONE&quot;, &quot;CUISINE.DESCRIPTION&quot;, &quot;GRADE&quot;)%&gt;%
-  mutate(ADDRESS = paste(BUILDING, STREET, &quot;New York, NY&quot;, sep = &quot;, &quot;)) %&gt;%
-  mutate_geocode(ADDRESS)
-write.csv(loc1, file = &quot;../output/Resturant/resturant_location1.csv&quot;)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkcGx5cilcbmxpYnJhcnkoZ2dtYXApXG5cbmBgYCJ9 -->
+<pre class="r"><code>library(dplyr)
+library(ggmap)
+</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoicGFja2FnZSCRZ2dtYXCSIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gMy40LjNHb29nbGUgTWFwcyBBUEkgVGVybXMgb2YgU2VydmljZTogaHR0cDovL2RldmVsb3BlcnMuZ29vZ2xlLmNvbS9tYXBzL3Rlcm1zLlxuUGxlYXNlIGNpdGUgZ2dtYXAgaWYgeW91IHVzZSBpdDogc2VlIGNpdGF0aW9uKCdnZ21hcCcpIGZvciBkZXRhaWxzLlxuIn0= -->
+<pre><code>package &lt;U+393C&gt;&lt;U+3E31&gt;ggmap&lt;U+393C&gt;&lt;U+3E32&gt; was built under R version 3.4.3Google Maps API Terms of Service: http://developers.google.com/maps/terms.
+Please cite ggmap if you use it: see citation('ggmap') for details.</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVzLm1haCA8LSByZWFkLmNzdihcIi4uL291dHB1dC9SZXN0dXJhbnQvUmVzdHVyYW50X01haC5jc3ZcIilcbnJlcy5tYWguc2hvcnQgPC0gcmVzLm1haCAlPiVcbiAgc2VsZWN0KERCQSwgQlVJTERJTkcsIFNUUkVFVCwgWklQQ09ERSwgQ1VJU0lORS5ERVNDUklQVElPTilcbmBgYCJ9 -->
+<pre class="r"><code>res.mah &lt;- read.csv(&quot;../output/Resturant/Resturant_Mah.csv&quot;)
+res.mah.short &lt;- res.mah %&gt;%
+  select(DBA, BUILDING, STREET, ZIPCODE, CUISINE.DESCRIPTION)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm9yIChpIGluIDA6Myl7XG4gIGlmKChpKzEpKjI0MDAgPCBucm93KHJlcy5tYWguc2hvcnQpKXtcbiAgbiA9IGkqMjQwMCsxXG4gIGRhdGEgPSByZXMubWFoLnNob3J0W246KG4rMjQwMC0xKSwgXVxuICB9XG4gIGVsc2V7XG4gICAgZGF0YSA9IHJlcy5tYWguc2hvcnRbKGkqMjQwMCsxKTpucm93KHJlcy5tYWguc2hvcnQpLCBdXG4gICAgd3JpdGUuY3N2KGRhdGEsIGZpbGUpXG4gIH1cbiAgcGF0aCA8LSBwYXN0ZTAoXCIuLi9vdXRwdXQvUmVzdHVyYW50L3Jlc3R1cmFudF9sb2NhdGlvblwiLCBpLCBcIi5jc3ZcIilcbiAgd3JpdGUuY3N2KGRhdGEsIGZpbGUgPSBwYXRoKVxufVxuYGBgIn0= -->
+<pre class="r"><code>for (i in 0:3){
+  if((i+1)*2400 &lt; nrow(res.mah.short)){
+  n = i*2400+1
+  data = res.mah.short[n:(n+2400-1), ]
+  }
+  else{
+    data = res.mah.short[(i*2400+1):nrow(res.mah.short), ]
+    write.csv(data, file)
+  }
+  path &lt;- paste0(&quot;../output/Resturant/resturant_location&quot;, i, &quot;.csv&quot;)
+  write.csv(data, file = path)
+}</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gZmlsZSA9PSBcIlwiIDogXG4gIGNvbXBhcmlzb24gKDEpIGlzIHBvc3NpYmxlIG9ubHkgZm9yIGF0b21pYyBhbmQgbGlzdCB0eXBlc1xuIn0= -->
+<pre><code>Error in file == &quot;&quot; : 
+  comparison (1) is possible only for atomic and list types</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -326,11 +364,9 @@ $Location
   Column `County_Names` is unknown</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkNsZWFuIERhdGEgKFJlc3R1cmFudHMsIEJhcnMgYW5kIENsdWJzKSINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQojIFJlc3R1cmFudA0KYGBge3J9DQpsaWJyYXJ5KG9wZW54bHN4KQ0KbGlicmFyeSh4bHN4KQ0KDQpkYXQgPC0gcmVhZC54bHN4KCIuLi9kYXRhL0RPSE1IX05ld19Zb3JrX0NpdHlfUmVzdGF1cmFudF9JbnNwZWN0aW9uX1Jlc3VsdHMueGxzeCIsMSkNCnN0cihkYXQpDQpgYGANCg0KIyMgTWFuaGF0dGFuIE9ubHkNCmBgYHtyfQ0KbGlicmFyeShkcGx5cikNCg0KcmVzLm1haCA8LSBkYXQgJT4lDQogIGRpc3RpbmN0KEJVSUxESU5HLCBTVFJFRVQsIFpJUENPREUsLmtlZXBfYWxsID0gVFJVRSkgJT4lDQogIGZpbHRlcihCT1JPID09ICJNQU5IQVRUQU4iKQ0Kd3JpdGUuY3N2KHJlcy5tYWgsIGZpbGUgPSAiLi4vb3V0cHV0L1Jlc3R1cmFudC9SZXN0dXJhbnRfTWFoLmNzdiIpDQpgYGANCg0KIyMgUHV0IGluIGdlbyBsb2MNCmBgYHtyfQ0KbGlicmFyeShnZ21hcCkNCg0KcmVzLm1haDEgPC0gcmVzLm1haFsxOjI0MDAsIF0NCmxvYzEgPC0gcmVzLm1haDEgJT4lDQogIHNlbGVjdCgiREJBIiwgIkJVSUxESU5HIiwgIlNUUkVFVCIsICJaSVBDT0RFIiwgIlBIT05FIiwgIkNVSVNJTkUuREVTQ1JJUFRJT04iLCAiR1JBREUiKSU+JQ0KICBtdXRhdGUoQUREUkVTUyA9IHBhc3RlKEJVSUxESU5HLCBTVFJFRVQsICJOZXcgWW9yaywgTlkiLCBzZXAgPSAiLCAiKSkgJT4lDQogIG11dGF0ZV9nZW9jb2RlKEFERFJFU1MpDQp3cml0ZS5jc3YobG9jMSwgZmlsZSA9ICIuLi9vdXRwdXQvUmVzdHVyYW50L3Jlc3R1cmFudF9sb2NhdGlvbjEuY3N2IikNCmBgYA0KDQojIEJhcnMgYW5kIENsdWJzDQpgYGB7cn0NCmRhdDIgPC0gcmVhZC5jc3YoIi4uL2RhdGEvTGlxdW9yX0F1dGhvcml0eV9RdWFydGVybHlfTGlzdF9vZl9BY3RpdmVfTGljZW5zZXMuY3N2IiwgDQogICAgICAgICAgICAgICAgIGhlYWRlciA9IFRSVUUsIG5hLnN0cmluZ3MgPSAiTkEiLCBhcy5pcyA9IFRSVUUpDQpzdHIoZGF0MikNCmxhcHBseShkYXQyLCBjbGFzcykNCmBgYA0KDQpgYGB7cn0NCmNvdW50Lm1haCA8LSBkYXQyICU+JQ0KICBkaXN0aW5jdChMaWNlbnNlLlNlcmlhbC5OdW1iZXIsIC5rZWVwX2FsbCA9IFRSVUUpICU+JQ0KICBncm91cF9ieShDb3VudHkuTmFtZS4uTGljZW5zZWUuKSAlPiUNCiAgc3VtbWFyaXNlKHZhbHVlID0gbigpKQ0KDQpsaXF1b3IubnkgPC0gZGF0MiAlPiUNCiAgZGlzdGluY3QoTGljZW5zZS5TZXJpYWwuTnVtYmVyLCAua2VlcF9hbGwgPSBUUlVFKSAlPiUNCiAgZmlsdGVyKENvdW50eS5OYW1lLi5MaWNlbnNlZS4gPT0gIk5FVyBZT1JLIikNCg0KY291bnQudHlwZSA8LSBsaXF1b3IubnkgJT4lDQogIGdyb3VwX2J5KExpY2Vuc2UuVHlwZS5OYW1lKSAlPiUNCiAgc3VtbWFyaXNlKHZhbHVlID0gbigpKQ0KDQpiYXJzIDwtIGxpcXVvci5ueSAlPiUNCiAgZmlsdGVyKExpY2Vuc2UuVHlwZS5OYW1lID09ICJPTi1QUkVNSVNFUyBMSVFVT1IiKQ0Kd3JpdGUuY3N2KGJhcnMsIGZpbGUgPSAiLi4vb3V0cHV0L1Jlc3R1cmFudC9iYXJzLmNzdiIpDQoNCmNsdWJzIDwtIGxpcXVvci5ueSAlPiUNCiAgZmlsdGVyKExpY2Vuc2UuVHlwZS5OYW1lID09ICJDTFVCIExJUVVPUiIgfCBMaWNlbnNlLlR5cGUuTmFtZSA9PSAiQ0xVQiBXSU5FIikNCndyaXRlLmNzdihjbHVicywgZmlsZSA9ICIuLi9vdXRwdXQvUmVzdHVyYW50L2NsdWJzLmNzdiIpDQpgYGANCg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkNsZWFuIERhdGEgKFJlc3R1cmFudHMsIEJhcnMgYW5kIENsdWJzKSINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQojIFJlc3R1cmFudA0KYGBge3J9DQpsaWJyYXJ5KG9wZW54bHN4KQ0KbGlicmFyeSh4bHN4KQ0KDQpkYXQgPC0gcmVhZC54bHN4KCIuLi9kYXRhL0RPSE1IX05ld19Zb3JrX0NpdHlfUmVzdGF1cmFudF9JbnNwZWN0aW9uX1Jlc3VsdHMueGxzeCIsMSkNCnN0cihkYXQpDQpgYGANCg0KIyMgTWFuaGF0dGFuIE9ubHkNCmBgYHtyfQ0KbGlicmFyeShkcGx5cikNCg0KcmVzLm1haCA8LSBkYXQgJT4lDQogIGRpc3RpbmN0KEJVSUxESU5HLCBTVFJFRVQsIFpJUENPREUsLmtlZXBfYWxsID0gVFJVRSkgJT4lDQogIGZpbHRlcihCT1JPID09ICJNQU5IQVRUQU4iKQ0Kd3JpdGUuY3N2KHJlcy5tYWgsIGZpbGUgPSAiLi4vb3V0cHV0L1Jlc3R1cmFudC9SZXN0dXJhbnRfTWFoLmNzdiIpDQpgYGANCg0KIyMgUHV0IGluIGdlbyBsb2MNCmBgYHtyfQ0KbGlicmFyeShkcGx5cikNCmxpYnJhcnkoZ2dtYXApDQoNCnJlcy5tYWggPC0gcmVhZC5jc3YoIi4uL291dHB1dC9SZXN0dXJhbnQvUmVzdHVyYW50X01haC5jc3YiKQ0KcmVzLm1haC5zaG9ydCA8LSByZXMubWFoICU+JQ0KICBzZWxlY3QoREJBLCBCVUlMRElORywgU1RSRUVULCBaSVBDT0RFLCBDVUlTSU5FLkRFU0NSSVBUSU9OKQ0KDQoNCiMgcmVzLm1haDEgPC0gcmVzLm1haFsxOjI0MDAsIF0NCiMgbG9jMSA8LSByZXMubWFoMSAlPiUNCiMgICBzZWxlY3QoIkRCQSIsICJCVUlMRElORyIsICJTVFJFRVQiLCAiWklQQ09ERSIsICJQSE9ORSIsICJDVUlTSU5FLkRFU0NSSVBUSU9OIiwgIkdSQURFIiklPiUNCiMgICBtdXRhdGUoQUREUkVTUyA9IHBhc3RlKEJVSUxESU5HLCBTVFJFRVQsICJOZXcgWW9yaywgTlkiLCBzZXAgPSAiLCAiKSkgJT4lDQojICAgbXV0YXRlX2dlb2NvZGUoQUREUkVTUykNCiMgd3JpdGUuY3N2KGxvYzEsIGZpbGUgPSAiLi4vb3V0cHV0L1Jlc3R1cmFudC9yZXN0dXJhbnRfbG9jYXRpb24wMC5jc3YiKQ0KYGBgDQoNCmBgYHtyfQ0KZm9yIChpIGluIDA6Myl7DQogIGlmKChpKzEpKjI0MDAgPCBucm93KHJlcy5tYWguc2hvcnQpKXsNCiAgbiA9IGkqMjQwMCsxDQogIGRhdGEgPSByZXMubWFoLnNob3J0W246KG4rMjQwMC0xKSwgXQ0KICB9DQogIGVsc2V7DQogICAgZGF0YSA9IHJlcy5tYWguc2hvcnRbKGkqMjQwMCsxKTpucm93KHJlcy5tYWguc2hvcnQpLCBdDQogIH0NCiAgcGF0aCA8LSBwYXN0ZTAoIi4uL291dHB1dC9SZXN0dXJhbnQvcmVzdHVyYW50X2xvY2F0aW9uIiwgaSwgIi5jc3YiKQ0KICB3cml0ZS5jc3YoZGF0YSwgZmlsZSA9IHBhdGgpDQp9DQojIA0KIyB3cml0ZS5jc3YodGVzdCwgZmlsZSA9IHBhdGgpDQpgYGANCg0KYGBge3J9DQoNCmBgYA0KDQoNCiMgQmFycyBhbmQgQ2x1YnMNCmBgYHtyfQ0KZGF0MiA8LSByZWFkLmNzdigiLi4vZGF0YS9MaXF1b3JfQXV0aG9yaXR5X1F1YXJ0ZXJseV9MaXN0X29mX0FjdGl2ZV9MaWNlbnNlcy5jc3YiLCANCiAgICAgICAgICAgICAgICAgaGVhZGVyID0gVFJVRSwgbmEuc3RyaW5ncyA9ICJOQSIsIGFzLmlzID0gVFJVRSkNCnN0cihkYXQyKQ0KbGFwcGx5KGRhdDIsIGNsYXNzKQ0KYGBgDQoNCmBgYHtyfQ0KY291bnQubWFoIDwtIGRhdDIgJT4lDQogIGRpc3RpbmN0KExpY2Vuc2UuU2VyaWFsLk51bWJlciwgLmtlZXBfYWxsID0gVFJVRSkgJT4lDQogIGdyb3VwX2J5KENvdW50eS5OYW1lLi5MaWNlbnNlZS4pICU+JQ0KICBzdW1tYXJpc2UodmFsdWUgPSBuKCkpDQoNCmxpcXVvci5ueSA8LSBkYXQyICU+JQ0KICBkaXN0aW5jdChMaWNlbnNlLlNlcmlhbC5OdW1iZXIsIC5rZWVwX2FsbCA9IFRSVUUpICU+JQ0KICBmaWx0ZXIoQ291bnR5Lk5hbWUuLkxpY2Vuc2VlLiA9PSAiTkVXIFlPUksiKQ0KDQpjb3VudC50eXBlIDwtIGxpcXVvci5ueSAlPiUNCiAgZ3JvdXBfYnkoTGljZW5zZS5UeXBlLk5hbWUpICU+JQ0KICBzdW1tYXJpc2UodmFsdWUgPSBuKCkpDQoNCmJhcnMgPC0gbGlxdW9yLm55ICU+JQ0KICBmaWx0ZXIoTGljZW5zZS5UeXBlLk5hbWUgPT0gIk9OLVBSRU1JU0VTIExJUVVPUiIpDQp3cml0ZS5jc3YoYmFycywgZmlsZSA9ICIuLi9vdXRwdXQvUmVzdHVyYW50L2JhcnMuY3N2IikNCg0KY2x1YnMgPC0gbGlxdW9yLm55ICU+JQ0KICBmaWx0ZXIoTGljZW5zZS5UeXBlLk5hbWUgPT0gIkNMVUIgTElRVU9SIiB8IExpY2Vuc2UuVHlwZS5OYW1lID09ICJDTFVCIFdJTkUiKQ0Kd3JpdGUuY3N2KGNsdWJzLCBmaWxlID0gIi4uL291dHB1dC9SZXN0dXJhbnQvY2x1YnMuY3N2IikNCmBgYA0K</div>
 
 
 
