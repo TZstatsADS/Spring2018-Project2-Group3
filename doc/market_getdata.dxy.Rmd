@@ -1,0 +1,28 @@
+---
+title: "market_getdata"
+output: html_document
+---
+
+```{r}
+market <- read.csv("../data/Liquor_Authority_Quarterly_List_of_Active_Licenses.csv")
+market <- market[market$County.Name..Licensee. == "NEW YORK",]
+market <- market[market$License.Type.Name == "DRUG BEER, WINE PROD" |
+                 market$License.Type.Name == "DRUG CHAIN, BEER ONLY" |
+                 market$License.Type.Name == "DRUG CHAIN, WINE PROD" |
+                 market$License.Type.Name == "DRUG STORE BEER" |
+                 market$License.Type.Name == "GROCERY BEER, WINE PROD" |
+                 market$License.Type.Name == "GROCERY CHAIN, BEER ONLY" |
+                 market$License.Type.Name == "GROCERY CHAIN, WINE PROD" |
+                 market$License.Type.Name == "GROCERY STORE BEER",]
+market <- market[,c("Premises.Name","Actual.Address.of.Premises..Address1.","Zip",
+                    "Latitude","Longitude")]
+rownames(market) <- NULL
+market$Zip <- substr(market$Zip,1,5)
+colnames(market)[1:2] <- c("Name","Address")
+market$Address <- paste0(market$Address,", New York, NY")
+```
+
+```{r}
+write.csv(market,"market.dxy.csv")
+```
+
