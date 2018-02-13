@@ -1,5 +1,5 @@
 shinyUI(
         fluidPage(
-                leafletOutput("map", width = "100%", height = "770px")  
+               leafletOutput("map", width = "100%", height = "770px")  
         )
 )
