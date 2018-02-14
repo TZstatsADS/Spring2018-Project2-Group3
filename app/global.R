@@ -54,5 +54,12 @@ subdat<-SpatialPolygonsDataFrame(subdat, data=subdat_data[,c(1,3)])
 
 
 
+name<-"jhy"
+path<-paste0("./output/Resturant/resturant_location_",name,".csv")
+data<-read.csv(path)
+library(ggmap)
+
+
+
 
 

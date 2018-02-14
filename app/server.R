@@ -28,10 +28,20 @@ shinyServer(function(input, output) {
         observeEvent(input$map_shape_click, {
                 click <- input$map_shape_click
                 zip<-paste("ZIPCODE: ", revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)
-                price<-paste("Average Price: $",
+                price_avg<-paste("Average Price: $",
                              avg_price_zip.df[avg_price_zip.df$region==as.character(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code),"value"],sep="")
-                #studio_avg<-paste("Studio: $",price[price$RegionName==as.integer(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)&&price$type=="Studio","avg"],sep="")
-                text<-paste(zip,price,sep=" ")
+                studio_avg<-paste("Studio: $",price[price$region==as.character(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)&price$type=="Studio","avg"],sep="")
+                OneB_avg<-paste("1B: $",price[price$region==as.character(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)&price$type=="OneBedroom","avg"],sep="")
+                TwoB_avg<-paste("2B: $",price[price$region==as.character(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)&price$type=="TwoBedroom","avg"],sep="")
+                ThreeB_avg<-paste("3B: $",price[price$region==as.character(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)&price$type=="ThreeBedroom","avg"],sep="")
+                FourB_avg<-paste("4B: $",price[price$region==as.character(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)&price$type=="fOURbEDROOM","avg"],sep="")
+                text<-paste(zip,"<br>",
+                            price_avg,"<br>",
+                            studio_avg,"<br>",
+                            OneB_avg,"<br>",
+                            TwoB_avg,"<br>",
+                            ThreeB_avg,"<br>",
+                            FourB_avg,"<br>")
                 proxy <- leafletProxy("map")
                 proxy %>% clearPopups() %>%
                         addPopups(click$lng, click$lat, text)%>%
