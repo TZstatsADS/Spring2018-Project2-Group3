@@ -1,7 +1,8 @@
 library(ggmap)
+library(ggplot2)
 
 shinyServer(function(input, output) {
-        ## Panel 3: leaflet
+        ## Panel 1: basic map + heatmap with general house rent price information
         output$map <- renderLeaflet({
                 # ----- set uo color pallette https://rstudio.github.io/leaflet/colors.html
                 # Create a continuous palette function
@@ -9,47 +10,60 @@ shinyServer(function(input, output) {
                         palette = "Reds",
                         domain = subdat$value
                 )
-                leaflet(subdat) %>%
-                        setView(lng = -73.98928, lat = 40.75042, zoom = 13) %>%
-                        addProviderTiles("CartoDB.Positron", options = providerTileOptions(noWrap = TRUE))%>%
-                        #addTiles()%>%  #colorful map
+                m<-leaflet() %>%
+                        setView(lng = -73.98928, lat = 40.75042, zoom = 13)
+                leafletProxy("map",data=subdat)%>%
                         addPolygons(layerId = ~ZIPCODE,
                                     stroke = T, weight=1,
-                                    fillOpacity = 0.6,
+                                    fillOpacity = 0.95,
                                     color = ~pal(value),
-                                    highlightOptions = highlightOptions(color='#ff0000', opacity = 0.5, weight = 4, fillOpacity = 0.5,
+                                    highlightOptions = highlightOptions(color='#ff0000', opacity = 0.5, weight = 4, fillOpacity = 0.9,
                                                                         bringToFront = TRUE, sendToBack = TRUE)
                         )%>%
-                        
                         addLegend(pal = pal, values = ~value, opacity = 1)
+                m
        
         })
-        
+        ## Panel 2: click on any area, popup text about this zipcode area's information
         observeEvent(input$map_shape_click, {
                 click <- input$map_shape_click
-                zip<-paste("ZIPCODE: ", revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)
-                price_avg<-paste("Average Price: $",
-                             avg_price_zip.df[avg_price_zip.df$region==as.character(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code),"value"],sep="")
-                studio_avg<-paste("Studio: $",price[price$region==as.character(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)&price$type=="Studio","avg"],sep="")
-                OneB_avg<-paste("1B: $",price[price$region==as.character(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)&price$type=="OneBedroom","avg"],sep="")
-                TwoB_avg<-paste("2B: $",price[price$region==as.character(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)&price$type=="TwoBedroom","avg"],sep="")
-                ThreeB_avg<-paste("3B: $",price[price$region==as.character(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)&price$type=="ThreeBedroom","avg"],sep="")
-                FourB_avg<-paste("4B: $",price[price$region==as.character(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)&price$type=="fOURbEDROOM","avg"],sep="")
+                zip_sel<-as.character(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)
+                zip<-paste("ZIPCODE: ",zip_sel)
+                price_avg<-paste("Average Price: $",avg_price_zip.df[avg_price_zip.df$region==zip_sel,"value"],sep="")
+                studio_avg<-paste("Studio: $",price[price$region==zip_sel&price$type=="Studio","avg"],sep="")
+                OneB_avg<-paste("1B: $",price[price$region==zip_sel&price$type=="OneBedroom","avg"],sep="")
+                TwoB_avg<-paste("2B: $",price[price$region==zip_sel&price$type=="TwoBedroom","avg"],sep="")
+                ThreeB_avg<-paste("3B: $",price[price$region==zip_sel&price$type=="ThreeBedroom","avg"],sep="")
+                FourB_avg<-paste("4B: $",price[price$region==zip_sel&price$type=="fOURbEDROOM","avg"],sep="")
+                subway_count<-paste("How many Subway: ",subway[subway$zipcode==zip_sel,"count"],sep="")
+                bus_count<-paste("How many Bus: ",bus[bus$zipcode==zip_sel,"count"],sep="")
                 text<-paste(zip,"<br>",
                             price_avg,"<br>",
                             studio_avg,"<br>",
                             OneB_avg,"<br>",
                             TwoB_avg,"<br>",
                             ThreeB_avg,"<br>",
-                            FourB_avg,"<br>")
-                proxy <- leafletProxy("map")
-                proxy %>% clearPopups() %>%
+                            FourB_avg,"<br>",
+                            subway_count,"<br>",
+                            bus_count)
+                leafletProxy("map")%>% 
+                        clearPopups() %>%
                         addPopups(click$lng, click$lat, text)%>%
                         setView(click$lng,click$lat,zoom=15,options=list(animate=TRUE))
         })
-        
-        
-        
-        
+        ## Panel 3: 
+        observeEvent(input$click_colorful_map_or_not,{
+                if(input$click_colorful_map_or_not){
+                        leafletProxy("map")%>%
+                                addTiles()
+                }
+                else{
+                        leafletProxy("map")%>%
+                                addProviderTiles(providers$Stamen.Toner, options = providerTileOptions(noWrap = TRUE))
+                }
+        })
 
+        
+        
+        
 })

@@ -52,14 +52,9 @@ rownames(subdat_data)=subdat.rownames
 subdat<-SpatialPolygonsDataFrame(subdat, data=subdat_data[,c(1,3)])
 
 
-
-
-name<-"jhy"
-path<-paste0("./output/Resturant/resturant_location_",name,".csv")
-data<-read.csv(path)
-library(ggmap)
-
-
+# ----- subway count
+subway<-read.csv("./data/subway_count.csv")
+bus<-read.csv("./data/bus_count.csv")
 
 
 
