@@ -2,29 +2,44 @@ library(ggmap)
 library(ggplot2)
 
 shinyServer(function(input, output) {
-        ## Panel 1: basic map + heatmap with general house rent price information
+        ## Panel 1: basic map 
         output$map <- renderLeaflet({
-                # ----- set uo color pallette https://rstudio.github.io/leaflet/colors.html
-                # Create a continuous palette function
-                pal <- colorNumeric(
-                        palette = "Reds",
-                        domain = subdat$value
-                )
-                m<-leaflet() %>%
+                leaflet()%>%
                         setView(lng = -73.98928, lat = 40.75042, zoom = 13)
-                leafletProxy("map",data=subdat)%>%
-                        addPolygons(layerId = ~ZIPCODE,
-                                    stroke = T, weight=1,
-                                    fillOpacity = 0.95,
-                                    color = ~pal(value),
-                                    highlightOptions = highlightOptions(color='#ff0000', opacity = 0.5, weight = 4, fillOpacity = 0.9,
-                                                                        bringToFront = TRUE, sendToBack = TRUE)
-                        )%>%
-                        addLegend(pal = pal, values = ~value, opacity = 1)
-                m
-       
         })
-        ## Panel 2: click on any area, popup text about this zipcode area's information
+        
+        ## Panel 2: different map functions
+        observeEvent(input$app_function,{
+                if(input$app_function=="smry"){
+                        # ----- set uo color pallette https://rstudio.github.io/leaflet/colors.html
+                        # Create a continuous palette function
+                        pal <- colorNumeric(
+                                palette = "Reds",
+                                domain = subdat$value
+                        )
+                        leafletProxy("map",data=subdat)%>%
+                                addPolygons(layerId = ~ZIPCODE,
+                                            stroke = T, weight=1,
+                                            fillOpacity = 0.95,
+                                            color = ~pal(value),
+                                            highlightOptions = highlightOptions(color='#ff0000', opacity = 0.5, weight = 4, fillOpacity = 0.9,
+                                                                                bringToFront = TRUE, sendToBack = TRUE)
+                                )%>%
+                                addLegend(pal = pal, values = ~value, opacity = 1)
+                }
+                if(input$app_function=="dd"){
+                        insertUI(
+                                # -----重新规划构图，显示侧边栏……
+                        )
+                }
+                if(input$app_function=="rcm"){
+                        insertUI(
+                                # -----推荐界面
+                        ) 
+                }
+        })    
+  
+        ## Panel 3: click on any area, popup text about this zipcode area's information
         observeEvent(input$map_shape_click, {
                 click <- input$map_shape_click
                 zip_sel<-as.character(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)
@@ -62,8 +77,7 @@ shinyServer(function(input, output) {
                                 addProviderTiles(providers$Stamen.Toner, options = providerTileOptions(noWrap = TRUE))
                 }
         })
+        
 
-        
-        
-        
+
 })
