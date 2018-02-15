@@ -1,0 +1,9 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+data1 <- read.csv("../output/Resturant/resturant_location00.csv")
+```
+
