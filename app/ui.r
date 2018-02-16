@@ -42,14 +42,11 @@ shinyUI(
                                         sidebarLayout(
                                                 sidebarPanel(
                                                         div(id="facilities",
-                                                            checkboxGroupInput("surrounding_facilities", 
-                                                                           h3("Surrounding Facilities"), 
-                                                                           choices = list("Restaurants" = "r", 
-                                                                                          "Transportation" = "t", 
-                                                                                          "Clubs/Bars" = "cb",
-                                                                                          "Cinema/Therate"="ct",
-                                                                                          "Market"="m")
-                                                                           )
+                                                            checkboxInput("check_rest",label="Restaurant"),
+                                                            checkboxInput("check_tran",label="Transportation"),
+                                                            checkboxInput("check_cb",label="CLubs/Bars"),
+                                                            checkboxInput("check_ct",label="Cinema/Threate"),
+                                                            checkboxInput("check_m",label="Market")
                                                             )
                                                 ),
                                                 mainPanel(

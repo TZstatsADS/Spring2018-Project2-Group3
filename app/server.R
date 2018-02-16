@@ -75,38 +75,31 @@ shinyServer(function(input, output,session) {
                                 clearPopups()
                 }
         })
-
-        observeEvent(input$surrounding_facilities,{
-                if("r"%in%input$surrounding_facilities){
+        observeEvent(input$check_rest,{
+                if(input$check_rest){
                         insertUI(
-                                selector = "#surrounding_facilities",
+                                selector = "#check_rest",
                                 where = "afterEnd",
-                                ui=checkboxGroupInput( "restaurant_type",
-                                                       label = h5("Restaurant Type"),
-                                                       choices = list("Chinese" = "chn",
-                                                                      "Italy" = "ita", 
-                                                                      "American" = "ame",
-                                                                      "Mexico"="mex",
-                                                                      "other"="o")
-                                                       )
-                                )
-                }
-                else{
-                        removeUI(selector = "#restaurant_type",immediate = TRUE)
-                }
-                if("t"%in%input$surrounding_facilities){
+                                ui=checkboxInput("check_rest_chn",label="Chinese")
+                        )
                         insertUI(
-                                selector = "#surrounding_facilities",
+                                selector = "#check_rest",
                                 where="afterEnd",
-                                ui=checkboxGroupInput( "transportation_type",
-                                                       label = h5("Transportation Type"),
-                                                       choices = list("Subway" = "sub",
-                                                                      "Bus" = "bus")
-                                )
+                                ui=checkboxInput("check_rest_ita",label="Italy")
                         )
                 }
-
+                else{
+                        removeUI(
+                                selector = "#check_rest_chn"
+                        )
+                        removeUI(
+                                selector = "#check_rest_ita"
+                        )
+                }
         })
+
+ 
+
 })
 
 
