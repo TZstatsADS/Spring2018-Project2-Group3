@@ -78,22 +78,45 @@ shinyServer(function(input, output,session) {
         observeEvent(input$check_rest,{
                 if(input$check_rest){
                         insertUI(
-                                selector = "#check_rest",
+                                selector = "#facilities",
                                 where = "afterEnd",
-                                ui=checkboxInput("check_rest_chn",label="Chinese")
+                                ui=absolutePanel(id = "rest_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
+                                        #top = 80, left = 10, height = "auto",width = 250,
+                                        checkboxGroupInput("rest_details",label="Details",
+                                                           choices=c("Chinese"="c",
+                                                                     "Italian"="i",
+                                                                     "Dessert"="d",
+                                                                     "American"="a",
+                                                                     "Korean"="k")
+                                                           )
+                                )
                         )
-                        insertUI(
-                                selector = "#check_rest",
-                                where="afterEnd",
-                                ui=checkboxInput("check_rest_ita",label="Italy")
-                        )
+
                 }
                 else{
                         removeUI(
-                                selector = "#check_rest_chn"
+                                selector = "#rest_ui"
                         )
+                }
+        })
+        observeEvent(input$check_tran,{
+                if(input$check_tran){
+                        insertUI(
+                                selector = "#facilities",
+                                where = "afterEnd",
+                                ui=absolutePanel(id = "tran_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
+                                                 #top = 80, left = 10, height = "auto",width = 250,
+                                                 checkboxGroupInput("tran_details",label="Details",
+                                                                    choices=c("Subway"="sub",
+                                                                              "Bus"="bs")
+                                                 )
+                                )
+                        )
+                        
+                }
+                else{
                         removeUI(
-                                selector = "#check_rest_ita"
+                                selector = "#tran_ui"
                         )
                 }
         })
