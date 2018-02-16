@@ -1,7 +1,5 @@
 library(shiny)
 library(sp)
-library(choroplethr)
-library(choroplethrZip)
 library(dplyr)
 library(leaflet)
 library(maps)
@@ -22,11 +20,11 @@ for(i in 1:5){
 price<-price%>%
         filter(RegionName>0)%>%
         mutate(region=as.character(RegionName))
-price$avg<-round(apply(price[,2:13],1,mean))
+price$avg<-as.integer(apply(price[,2:13],1,mean))
 avg_price_zip.df<-price[,c("region","avg")]%>%
         group_by(region)%>%
         summarise(
-                value=mean(avg)
+                value=as.integer(mean(avg))
         )
 save(avg_price_zip.df, file="./output/avg_price_zip.RData")
 
