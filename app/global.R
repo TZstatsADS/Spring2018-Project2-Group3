@@ -26,6 +26,7 @@ avg_price_zip.df<-price[,c("region","avg")]%>%
         summarise(
                 value=as.integer(mean(avg))
         )
+save(price,file="./output/price.RData")
 save(avg_price_zip.df, file="./output/avg_price_zip.RData")
 
 avg_price_zip.df.sel=avg_price_zip.df
@@ -48,7 +49,7 @@ rownames(subdat_data)=subdat.rownames
 
 # ----- to write to geojson we need a SpatialPolygonsDataFrame
 subdat<-SpatialPolygonsDataFrame(subdat, data=subdat_data[,c(1,3)])
-
+save(subdat,file="./output/subdat.RData")
 
 # ----- subway count
 subway<-read.csv("./data/subway_count.csv")

@@ -1,6 +1,12 @@
 library(ggmap)
 library(ggplot2)
 
+load("./output/price.RData")
+load("./output/avg_price_zip.RData")
+load("./output/subdat.RData")
+
+
+
 shinyServer(function(input, output,session) {
         ## Panel 1: basic map 
         output$map <- renderLeaflet({
