@@ -174,18 +174,21 @@ $(document).ready(function () {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YTEgPC0gcmVhZC5jc3YoXCIuLi9vdXRwdXQvUmVzdHVyYW50L3Jlc3R1cmFudF9sb2NhdGlvbjAwLmNzdlwiKVxuXG5gYGAifQ== -->
-<pre class="r"><code>data1 &lt;- read.csv(&quot;../output/Resturant/resturant_location00.csv&quot;)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0IDwtIGRhdCAlPiVcbiAgZ3JvdXBfYnkoWklQQ09ERSkgJT4lXG4gIG11dGF0ZShudW0gPSBzdW1tYXJpc2UobnVtID0gbigpKSlcblxuYGBgIn0= -->
+<pre class="r"><code>dat &lt;- dat %&gt;%
+  group_by(ZIPCODE) %&gt;%
+  mutate(num = summarise(num = n()))
 </code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiY2Fubm90IG9wZW4gZmlsZSAnLi4vb3V0cHV0L1Jlc3R1cmFudC9yZXN0dXJhbnRfbG9jYXRpb24wMC5jc3YnOiBObyBzdWNoIGZpbGUgb3IgZGlyZWN0b3J5RXJyb3IgaW4gZmlsZShmaWxlLCBcInJ0XCIpIDogY2Fubm90IG9wZW4gdGhlIGNvbm5lY3Rpb25cbiJ9 -->
-<pre><code>cannot open file '../output/Resturant/resturant_location00.csv': No such file or directoryError in file(file, &quot;rt&quot;) : cannot open the connection</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gbXV0YXRlX2ltcGwoLmRhdGEsIGRvdHMpIDogXG4gIEV2YWx1YXRpb24gZXJyb3I6IGFyZ3VtZW50IFwiLmRhdGFcIiBpcyBtaXNzaW5nLCB3aXRoIG5vIGRlZmF1bHQuXG4ifQ== -->
+<pre><code>Error in mutate_impl(.data, dots) : 
+  Evaluation error: argument &quot;.data&quot; is missing, with no default.</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpgYGB7cn0NCmRhdGExIDwtIHJlYWQuY3N2KCIuLi9vdXRwdXQvUmVzdHVyYW50L3Jlc3R1cmFudF9sb2NhdGlvbjAwLmNzdiIpDQpgYGANCg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpgYGB7cn0NCmRhdGExIDwtIHJlYWQuY3N2KCIuLi9vdXRwdXQvUmVzdHVyYW50L3Jlc3R1cmFudF9sb2NhdGlvbjAwLmNzdiIpDQpkYXRhMiA8LSByZWFkLmNzdigiLi4vb3V0cHV0L1Jlc3R1cmFudC9yZXN0dXJhbnRfbG9jX2N3dC5jc3YiKQ0KZGF0YTMgPC0gcmVhZC5jc3YoIi4uL291dHB1dC9SZXN0dXJhbnQvcmVzdHVyYW50X2xvY190eS5jc3YiKQ0KZGF0YTQgPC0gcmVhZC5jc3YoIi4uL291dHB1dC9SZXN0dXJhbnQvcmVzdHVyYW50X2xvY19qaHkuY3N2IikNCg0KZGF0YTEgPC0gZGF0YTFbLCAtNl0NCmRhdGExIDwtIGRhdGExWywgLTddDQpkYXRhMiA8LSBkYXRhMlssIC0xXQ0KZGF0YTMgPC0gZGF0YTNbLCAtMV0NCmRhdGE0IDwtIGRhdGE0WywgLTFdDQpkYXQgPC0gcmJpbmQoZGF0YTEsIGRhdGEyLCBkYXRhMywgZGF0YTQpDQoNCnppY29kZSA8LSBkYXQgJT4lDQogIGdyb3VwX2J5KFpJUENPREUpICU+JQ0KICBzdW1tYXJpc2UobnVtID0gbigpKQ0KICANCg0Kd3JpdGUuY3N2KGRhdCwgZmlsZSA9ICIuLi9kYXRhL1Jlc3R1cmFudC5jc3YiKQ0KYGBgDQoNCg==</div>
 
 
 

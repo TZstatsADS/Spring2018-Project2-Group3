@@ -5,5 +5,22 @@ output: html_notebook
 
 ```{r}
 data1 <- read.csv("../output/Resturant/resturant_location00.csv")
+data2 <- read.csv("../output/Resturant/resturant_loc_cwt.csv")
+data3 <- read.csv("../output/Resturant/resturant_loc_ty.csv")
+data4 <- read.csv("../output/Resturant/resturant_loc_jhy.csv")
+
+data1 <- data1[, -6]
+data1 <- data1[, -7]
+data2 <- data2[, -1]
+data3 <- data3[, -1]
+data4 <- data4[, -1]
+dat <- rbind(data1, data2, data3, data4)
+
+zicode <- dat %>%
+  group_by(ZIPCODE) %>%
+  summarise(num = n())
+  
+
+write.csv(dat, file = "../data/Resturant.csv")
 ```
 

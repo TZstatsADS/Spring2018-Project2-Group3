@@ -82,6 +82,10 @@ count.type <- liquor.ny %>%
   group_by(License.Type.Name) %>%
   summarise(value = n())
 
+wine <- liquor.ny %>%
+  filter(License.Type.Name == "TAVERN WINE")
+write.csv(wine, file = "../output/Resturant/wine.csv")
+
 bars <- liquor.ny %>%
   filter(License.Type.Name == "ON-PREMISES LIQUOR")
 write.csv(bars, file = "../output/Resturant/bars.csv")
@@ -90,3 +94,73 @@ clubs <- liquor.ny %>%
   filter(License.Type.Name == "CLUB LIQUOR" | License.Type.Name == "CLUB WINE")
 write.csv(clubs, file = "../output/Resturant/clubs.csv")
 ```
+
+# New Resturant Data
+```{r}
+library(dplyr)
+dat <- read.csv("../data/Resturant.csv")
+zipcode <- c(seq(10001, 10007), seq(10009, 10014), seq(10016, 10040), 
+             "10065", "10075", "10110", "10112", "10123", "10128", "10280", "10282")
+dat <- dat %>%
+  filter(is.na(lon) == FALSE, is.na(lat) == FALSE, ZIPCODE %in% zipcode)
+
+count.zip <- dat %>%
+  group_by(ZIPCODE) %>%
+  summarise(COUNT = n()) %>%
+  mutate(RANKING = rank(desc(COUNT)))
+
+write.csv(dat, file = "../data/Res_fil.csv")
+write.csv(count.zip, file = "../data/Res_count.csv")
+```
+
+# Bar/ Clubs
+```{r}
+bars <- read.csv("../output/Resturant/bars.csv")
+clubs <- read.csv("../output/Resturant/clubs.csv")
+wine <- read.csv("../output/Resturant/wine.csv")
+str(bars)
+
+bars <- bars %>%
+  select(Premises.Name, Doing.Business.As..DBA., Actual.Address.of.Premises..Address1.,
+         Additional.Address.Information..Address2., 
+         City, State, Zip, Latitude, Longitude, Location) %>%
+  filter(is.na(Location) == FALSE, Zip %in% zipcode)
+
+wine <- wine %>%
+  select(Premises.Name, Doing.Business.As..DBA., Actual.Address.of.Premises..Address1.,
+         Additional.Address.Information..Address2., 
+         City, State, Zip, Latitude, Longitude, Location) %>%
+  filter(is.na(Location) == FALSE, Zip %in% zipcode)
+
+clubs <- clubs %>%
+  select(Premises.Name, Doing.Business.As..DBA., Actual.Address.of.Premises..Address1.,
+         Additional.Address.Information..Address2., 
+         City, State, Zip, Latitude, Longitude, Location) %>%
+  filter(is.na(Location) == FALSE, Zip %in% zipcode)
+
+write.csv(bars, file = "../data/Bars.csv")
+write.csv(clubs, file = "../data/Clubs.csv")
+write.csv(wine, file = "../data/Wine.csv")
+```
+
+```{r}
+count.bars <- bars %>%
+  group_by(Zip) %>%
+  summarise(COUNT = n()) %>%
+  mutate(RANKING = rank(desc(COUNT)))
+
+count.wine <- wine %>%
+  group_by(Zip) %>%
+  summarise(COUNT = n()) %>%
+  mutate(RANKING = rank(desc(COUNT)))
+
+count.clubs <- clubs %>%
+  group_by(Zip) %>%
+  summarise(COUNT = n()) %>%
+  mutate(RANKING = rank(desc(COUNT)))
+
+write.csv(count.bars, file = "../data/bars_count.csv")
+write.csv(count.wine, file = "../data/wine_count.csv")
+write.csv(count.clubs, file = "../data/clubs_count.csv")
+```
+
