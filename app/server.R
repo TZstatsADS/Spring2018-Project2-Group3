@@ -1,9 +1,9 @@
 library(ggmap)
 library(ggplot2)
 
-load("./output/price.RData")
-load("./output/avg_price_zip.RData")
-load("./output/subdat.RData")
+load("../output/price.RData")
+load("../output/avg_price_zip.RData")
+load("../output/subdat.RData")
 
 
 
