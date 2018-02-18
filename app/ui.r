@@ -17,7 +17,7 @@ shinyUI(
                                                       div(style="text-align:left;
                                                           box-shadow: 10px 30px 30px  #888888;
                                                           width:200px;
-                                                          height:200px;
+                                                          height:500px;
                                                           position:relative;
                                                           font-style: italic",
                                                           h6(textOutput("zip_text"),align="left"),
