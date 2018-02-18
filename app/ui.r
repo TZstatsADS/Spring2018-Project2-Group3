@@ -28,7 +28,11 @@ shinyUI(
                                                           h6(textOutput("avg3b_text"),align="left"),
                                                           h6(textOutput("avg4b_text"),align="left"),
                                                           h6(textOutput("subway_text"),align="left"),
-                                                          h6(textOutput("bus_text"),align="left")
+                                                          h6(textOutput("bus_text"),align="left"),
+                                                          h6(textOutput("cinema_text"),align="left"),
+                                                          h6(textOutput("theatre_text"),align="left"),
+                                                          h6(textOutput("grocery_text"),align="left"),
+                                                          h6(textOutput("pharmacy_text"),align="left")
                                                       ),
                                                       hr(),
                                                       actionButton("click_reset_buttom",label="Reset to original view")
