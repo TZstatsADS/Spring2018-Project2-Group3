@@ -99,8 +99,8 @@ write.csv(clubs, file = "../output/Resturant/clubs.csv")
 ```{r}
 library(dplyr)
 dat <- read.csv("../data/Resturant.csv")
-zipcode <- c(seq(10001, 10007), seq(10009, 10014), seq(10016, 10040), 
-             "10065", "10075", "10110", "10112", "10123", "10128", "10280", "10282")
+zipcode <- c(seq(10001, 10007), seq(10009, 10014), seq(10016, 10019), seq(10021, 10040), 
+             "10065", "10069", "10075", "10128", "10280", "10282", "11106", "11109", "11231")
 dat <- dat %>%
   filter(is.na(lon) == FALSE, is.na(lat) == FALSE, ZIPCODE %in% zipcode)
 

@@ -1,10 +1,15 @@
 library(ggmap)
 library(ggplot2)
 
-load("./output/price.RData")
-load("./output/avg_price_zip.RData")
-load("./output/subdat.RData")
-
+load("../output/price.RData")
+load("../output/avg_price_zip.RData")
+load("../output/subdat.RData")
+subway <- read.csv("../data/subway_count.csv")
+bus <- read.csv("../data/bus_count.csv")
+cinema <- read.csv("../data/movie_count.csv")
+theatre <- read.csv("../data/art_count.csv")
+grocery <- read.csv("../data/grocery_count.csv")
+pharmacy <- read.csv("../data/pharmacy_count.csv")
 
 
 shinyServer(function(input, output,session) {
@@ -49,6 +54,10 @@ shinyServer(function(input, output,session) {
                 FourB_avg<-paste("4B: $",price[price$region==zip_sel&price$type=="fOURbEDROOM","avg"],sep="")
                 subway_count<-paste("How many Subway: ",subway[subway$zipcode==zip_sel,"count"],sep="")
                 bus_count<-paste("How many Bus: ",bus[bus$zipcode==zip_sel,"count"],sep="")
+                cinema_count<-paste("How many Cinema: ",cinema[cinema$zipcode==zip_sel,"count"],sep="")
+                theatre_count<-paste("How many Theatre: ",theatre[theatre$zipcode==zip_sel,"count"],sep="")
+                grocery_count<-paste("How many Grocery: ",grocery[grocery$zipcode==zip_sel,"count"],sep="")
+                pharmacy_count<-paste("How many Pharmacy: ",pharmacy[pharmacy$zipcode==zip_sel,"count"],sep="")
                 leafletProxy("map")%>%
                         setView(click$lng,click$lat,zoom=14,options=list(animate=TRUE))
                 output$zip_text<-renderText({zip})
@@ -60,6 +69,10 @@ shinyServer(function(input, output,session) {
                 output$avg4b_text<-renderText(({FourB_avg}))
                 output$subway_text<-renderText({subway_count})
                 output$bus_text<-renderText({bus_count})
+                output$cinema_text<-renderText({cinema_count})
+                output$theatre_text<-renderText({theatre_count})
+                output$grocery_text<-renderText({grocery_count})
+                output$pharmacy_text<-renderText({pharmacy_count})
         })
 
         ## Panel 4: Colorful map or not

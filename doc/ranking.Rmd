@@ -1,0 +1,37 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+art <- read.csv("../data/art_count.csv")
+movie <- read.csv("../data/movie_count.csv")
+
+grocery <- read.csv("grocery_count.csv")
+market <- read.csv("market_count.csv")
+pharmacy <- read.csv("pharmacy_count.csv")
+
+crime <- read.csv("../data/crime_count.csv")
+
+subway <- read.csv("../data/subway_count.csv")
+bus <- read.csv("../data/bus_count.csv")
+
+res.fil <- read.csv("../data/Res_fil.csv")
+res <- read.csv("../data/Res_count.csv")
+```
+
+```{r}
+count.type <- res.fil %>%
+  group_by(CUISINE.DESCRIPTION) %>%
+  summarise(count = n()) %>%
+  mutate(Ranking = rank(desc(count))) %>%
+  arrange(Ranking)
+```
+
+```{r}
+target <- c("CafÃfÂ©/Coffee/Tea", "Other", "Bakery", "Donuts", "Juice, Smoothies, Fruit Salads", "Ice Cream, Gelato, Yogurt, Ices", "Bottled beverages, including water, sodas, juices, etc.", "Nuts/Confectionary", "Fruits/Vegetables", "Not Listed/Not Applicable", "Pancakes/Waffles")
+res.fil <- res.fil %>%
+  filter( ! CUISINE.DESCRIPTION %in% target) %>%
+  mutate(CUISINE.DESCRIPTION)
+```
+
