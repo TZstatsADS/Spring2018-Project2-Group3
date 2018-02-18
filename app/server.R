@@ -23,6 +23,10 @@ shinyServer(function(input, output,session) {
                         setView(lng = -73.98928, lat = 40.75042, zoom = 13)%>%
                         addProviderTiles("Stamen.TonerHybrid")
         })
+        output$map3 <- renderLeaflet({
+                leaflet()%>%
+                        setView(lng = -73.98928, lat = 40.75042, zoom = 13)
+        })
         
         ## Panel 2: heat map
         # ----- set uo color pallette https://rstudio.github.io/leaflet/colors.html

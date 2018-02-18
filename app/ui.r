@@ -60,10 +60,25 @@ shinyUI(
                                         )
                                         ),
                            tabPanel("Recommendation",
-                                    div(
-                                            
+                                    div(class="outer",
+                                        tags$style(type = "text/css", ".outer {position: fixed; top: 41px; left: 0; right: 0; bottom: 0; overflow: hidden; padding: 0}"),
+                                        sidebarLayout(
+                                          sidebarPanel(
+                                            div(id="facilities",
+                                                checkboxInput("check_rest",label="Restaurant"),
+                                                checkboxInput("check_tran",label="Transportation"),
+                                                checkboxInput("check_cb",label="CLubs/Bars"),
+                                                checkboxInput("check_ct",label="Cinema/Threate"),
+                                                checkboxInput("check_m",label="Market")
+                                                
+                                            )
+                                          ),
+                                          mainPanel(
+                                            leafletOutput("map3", width = "100%", height = "700px")
+                                          )
+                                        )
                                     )
-                                    )
+                           )
                            )
                 )
         )
