@@ -4,20 +4,68 @@ output: html_notebook
 ---
 
 ```{r}
+# res.fil <- read.csv("../data/res_fil.csv")
+# target <- c("CafÃfÂ©/Coffee/Tea", "Other", "Bakery", "Donuts", "Juice, Smoothies, Fruit Salads", "Ice Cream, Gelato, Yogurt, Ices", "Bottled beverages, including water, sodas, juices, etc.", "Nuts/Confectionary", "Fruits/Vegetables", "Not Listed/Not Applicable", "Pancakes/Waffles")
+# cuisine <- c("American", "Italian", "Chinese", "Japanese", "Pizza")
+# res.fil <- res.fil %>%
+#   filter( ! CUISINE.DESCRIPTION %in% target) %>%
+#   mutate(CUISINE.DESCRIPTION = case_when(! CUISINE.DESCRIPTION %in% cuisine ~ "Others", TRUE ~ as.character(.$CUISINE.DESCRIPTION)))
+# 
+# write.csv(res.fil, file = "../data/res.fil1.csv")
+```
+
+```{r}
+bus1 <- read.csv("../data/bus_stop.csv")
+subway1 <-read.csv("../data/subwayinfo.csv")
+
+zipcode1 <- c(seq(10001, 10007), seq(10009, 10014), seq(10016, 10019), seq(10021, 10040), 
+             "10065", "10069", "10075", "10128", "10280", "10282", "11106", "11109", "11231")
+
+bus <- bus1 %>%
+  filter(zipcode %in% zipcode1) %>%
+  group_by(zipcode) %>%
+  summarise(count = n()) %>%
+  mutate(ranking = round(rank(desc(count))))
+sapply(bus, class)
+
+subway <- subway1 %>%
+  filter(zipcode %in% zipcode1) %>%
+  group_by(zipcode) %>%
+  summarise(count = n()) %>%
+  mutate(ranking = round(rank(desc(count))))
+sapply(subway, class)
+```
+
+```{r}
 art <- read.csv("../data/art_count.csv")
 movie <- read.csv("../data/movie_count.csv")
 
-grocery <- read.csv("grocery_count.csv")
-market <- read.csv("market_count.csv")
-pharmacy <- read.csv("pharmacy_count.csv")
+grocery <- read.csv("../data/grocery_count.csv")
+market <- read.csv("../data/market_count.csv")
+pharmacy <- read.csv("../data/pharmacy_count.csv")
 
 crime <- read.csv("../data/crime_count.csv")
 
-subway <- read.csv("../data/subway_count.csv")
-bus <- read.csv("../data/bus_count.csv")
+trans1 <- read.csv("../data/trans.csv")
+# bus <- read.csv("../data/bus_count.csv")
 
-res.fil <- read.csv("../data/Res_fil.csv")
-res <- read.csv("../data/Res_count.csv")
+res.fil <- read.csv("../data/res.fil1.csv")
+# res <- read.csv("../data/Res_count.csv")
+bar <- read.csv("../data/bars_count.csv")
+clubs <- read.csv("../data/clubs_count.csv")
+wine <- read.csv("../data/wine_count.csv")
+```
+
+```{r}
+bar <- bar %>%
+  select(zipcode = Zip, count = COUNT, ranking = RANKING) %>%
+  mutate(ranking = round(ranking))
+clubs <- clubs %>%
+  select(zipcode = Zip, count = COUNT, ranking = RANKING) %>%
+  mutate(ranking = round(ranking))
+wine <- wine %>%
+  select(zipcode = Zip, count = COUNT, ranking = RANKING) %>%
+  mutate(ranking = round(ranking))
 ```
 
 ```{r}
@@ -28,10 +76,87 @@ count.type <- res.fil %>%
   arrange(Ranking)
 ```
 
+
+
 ```{r}
-target <- c("CafÃfÂ©/Coffee/Tea", "Other", "Bakery", "Donuts", "Juice, Smoothies, Fruit Salads", "Ice Cream, Gelato, Yogurt, Ices", "Bottled beverages, including water, sodas, juices, etc.", "Nuts/Confectionary", "Fruits/Vegetables", "Not Listed/Not Applicable", "Pancakes/Waffles")
-res.fil <- res.fil %>%
-  filter( ! CUISINE.DESCRIPTION %in% target) %>%
-  mutate(CUISINE.DESCRIPTION)
+res.filter <- function(name){
+  df <- res.fil %>%
+    filter(CUISINE.DESCRIPTION == name) %>%
+    group_by(zipcode = ZIPCODE) %>%
+    summarise(count = n()) %>%
+    mutate(ranking = round(rank(desc(count))))
+  return(df)
+}
+
+res.Amrican <- res.filter("American")
+res.Italian <- res.filter("Italian")
+res.Chinese <- res.filter("Chinese")
+res.Japenses <- res.filter("Japenese")
+res.Pizza <- res.filter("Pizza")
+res.Others <- res.filter("Others")
+res.all <- res.fil %>% 
+  group_by(zipcode = ZIPCODE) %>%
+  summarise(count = n()) %>%
+  mutate(ranking = round(rank(desc(count))))
+```
+
+```{r}
+dfRank <- function(df){
+  df1 <- df %>%
+    select(zipcode, count) %>%
+    mutate(ranking = round(rank(desc(count))))
+  return(df1)
+}
+
+colnames(crime)[2] <- "count"
+# colnames(art)[2:3] <- c("zipcode", "count")
+# colnames(movie)[2:3] <- c("zipcode", "count")
+
+art <- dfRank(art)
+# bus <- dfRank(bus)
+crime <- dfRank(crime)
+grocery <- dfRank(grocery)
+market <- dfRank(market)
+movie <- dfRank(movie)
+pharmacy <- dfRank(pharmacy)
+
+# trans <- full_join(bus, subway, by = "zipcode")
+
+trans <- full_join(bus, subway, by = "zipcode") %>%
+  select(zipcode, count.x, count.y) %>%
+  mutate(count = 0.3*count.x + 0.7*count.y) %>%
+  mutate(ranking = round(rank(desc(count)))) %>%
+  select(zipcode, count, ranking)
+
+# subway <- trans1 %>%
+#   select(zipcode, count = subway, ranking = Ranking.sub) %>%
+#   mutate(ranking = round(ranking)) %>%
+#   arrange(zipcode)
+# 
+# trans <- trans1 %>%
+#   select(zipcode, count = sum, ranking = Ranking) %>%
+#   mutate(ranking = round(ranking)) %>%
+#   arrange(zipcode)
+# 
+# bus <- trans1 %>%
+#   select(zipcode, count = bus, ranking = Ranking.bus) %>%
+#   mutate(ranking = round(ranking)) %>%
+#   arrange(zipcode)
+```
+
+```{r}
+rank_all <- full_join(art, bus, by = "zipcode", suffix = c(".art", ".bus")) %>%
+  full_join(., subway, by = "zipcode") %>%
+  full_join(., trans, by = "zipcode", suffix = c(".subway", ".trans")) %>%
+  full_join(., crime, by = "zipcode") %>%
+  full_join(., grocery, by = "zipcode", suffix = c(".crime", ".grocery")) %>%
+  full_join(., market, by = "zipcode") %>%
+  full_join(., pharmacy, by = "zipcode", suffix = c(".market", ".pharmacy")) %>%
+  full_join(., movie, by = "zipcode") %>%
+  full_join(., bar, by = "zipcode", suffix = c(".movie", ".bar")) %>%
+  full_join(., clubs, by = "zipcode") %>%
+  full_join(., wine, by = "zipcode", suffix = c(".club", ".wine")) %>%
+  full_join(., res.all, by = "zipcode")
+  
 ```
 
