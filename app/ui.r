@@ -17,7 +17,7 @@ shinyUI(
                                                       div(style="text-align:left;
                                                           box-shadow: 10px 30px 30px  #888888;
                                                           width:200px;
-                                                          height:500px;
+                                                          height:230px;
                                                           position:relative;
                                                           font-style: italic",
                                                           h6(textOutput("zip_text"),align="left"),
@@ -27,12 +27,9 @@ shinyUI(
                                                           h6(textOutput("avg2b_text"),align="left"),
                                                           h6(textOutput("avg3b_text"),align="left"),
                                                           h6(textOutput("avg4b_text"),align="left"),
-                                                          h6(textOutput("subway_text"),align="left"),
-                                                          h6(textOutput("bus_text"),align="left"),
-                                                          h6(textOutput("cinema_text"),align="left"),
-                                                          h6(textOutput("theatre_text"),align="left"),
-                                                          h6(textOutput("grocery_text"),align="left"),
-                                                          h6(textOutput("pharmacy_text"),align="left")
+                                                          h6(textOutput("transportation_text"),align="left"),
+                                                          h6(textOutput("amenities_text"),align="left"),
+                                                          h6(textOutput("crime_text"),align="left")
                                                       ),
                                                       hr(),
                                                       actionButton("click_reset_buttom",label="Reset to original view")
