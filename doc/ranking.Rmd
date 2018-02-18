@@ -91,7 +91,7 @@ res.filter <- function(name){
 res.Amrican <- res.filter("American")
 res.Italian <- res.filter("Italian")
 res.Chinese <- res.filter("Chinese")
-res.Japenses <- res.filter("Japenese")
+res.Japanese <- res.filter("Japanese")
 res.Pizza <- res.filter("Pizza")
 res.Others <- res.filter("Others")
 res.all <- res.fil %>% 
@@ -156,7 +156,17 @@ rank_all <- full_join(art, bus, by = "zipcode", suffix = c(".art", ".bus")) %>%
   full_join(., bar, by = "zipcode", suffix = c(".movie", ".bar")) %>%
   full_join(., clubs, by = "zipcode") %>%
   full_join(., wine, by = "zipcode", suffix = c(".club", ".wine")) %>%
-  full_join(., res.all, by = "zipcode")
-  
+  full_join(., res.all, by = "zipcode") %>%
+  full_join(., res.Amrican, by = "zipcode", suffix = c(".all", ".American")) %>%
+  full_join(., res.Chinese, by = "zipcode") %>%
+  full_join(., res.Italian, by = "zipcode", suffix = c(".Chinese", ".Italian")) %>%
+  full_join(., res.Japanese, by = "zipcode") %>%
+  full_join(., res.Pizza, by = "zipcode", suffix = c(".Japenses", ".Pizza")) %>%
+  full_join(., res.Others, by = "zipcode") %>%
+  rowwise() %>%
+  mutate(rank.amenities = round(mean(c(ranking.market, ranking.art, ranking.movie, ranking.bar, ranking.all), na.rm = TRUE))) 
+colnames(rank_all)[38:39] <- c("count.Others", "ranking.Others")
+
+write.csv(rank_all, file = "../data/rank_all.csv")
 ```
 
