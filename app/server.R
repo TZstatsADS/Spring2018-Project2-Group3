@@ -18,9 +18,16 @@ shinyServer(function(input, output,session) {
                         setView(lng = -73.98928, lat = 40.75042, zoom = 13)%>%
                         addProviderTiles("Stamen.TonerHybrid")
         })
+        
+        
+        ##########################################################################
+        ## Panel 4: recommand map#################################################
+        ########################################################################## 
+        
         output$map3 <- renderLeaflet({
-                leaflet()%>%
-                        setView(lng = -73.98928, lat = 40.75042, zoom = 13)
+          leaflet()%>%
+            setView(lng = -73.98928, lat = 40.75042, zoom = 13)%>%
+            addProviderTiles("Stamen.TonerLite")
         })
         
         ## Panel 2: heat map

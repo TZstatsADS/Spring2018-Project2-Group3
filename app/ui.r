@@ -4,8 +4,10 @@ library(data.table)
 library(plotly)
 shinyUI(
         fluidPage(
-                navbarPage("Where to rent",
-                           tabPanel("Summary",
+                navbarPage("Where to rent", theme = "black.css",
+                           #tabPanel("Introduction"),
+                           navbarMenu(title="Begin",
+                                      tabPanel("Summary",
                                     div(class="outer",
                                         tags$style(type = "text/css", ".outer {position: fixed; top: 41px; left: 0; right: 0; bottom: 0; overflow: hidden; padding: 0}"),
                                         leafletOutput("map", width = "100%", height = "100%"),
@@ -32,11 +34,12 @@ shinyUI(
                                                           h6(textOutput("crime_text"),align="left")
                                                       ),
                                                       hr(),
-                                                      actionButton("click_reset_buttom",label="Reset to original view")
+                                                      actionButton("click_reset_buttom",label="Click here back to original view")
 
                                         )
                                     )
                                     ),
+                                    
                            tabPanel("Dot Details",
                                     div(class="outer",
                                         tags$style(type = "text/css", ".outer {position: fixed; top: 41px; left: 0; right: 0; bottom: 0; overflow: hidden; padding: 0}"),
@@ -56,26 +59,28 @@ shinyUI(
                                                 )
                                         )
                                         ),
+                           
                            tabPanel("Recommendation",
                                     div(class="outer",
                                         tags$style(type = "text/css", ".outer {position: fixed; top: 41px; left: 0; right: 0; bottom: 0; overflow: hidden; padding: 0}"),
-                                        sidebarLayout(
-                                          sidebarPanel(
-                                            div(id="facilities",
-                                                checkboxInput("check_rest",label="Restaurant"),
-                                                checkboxInput("check_tran",label="Transportation"),
-                                                checkboxInput("check_cb",label="CLubs/Bars"),
-                                                checkboxInput("check_ct",label="Cinema/Threate"),
-                                                checkboxInput("check_m",label="Market")
-                                                
-                                            )
-                                          ),
-                                          mainPanel(
-                                            leafletOutput("map3", width = "100%", height = "700px")
-                                          )
+                                        leafletOutput("map3", width = "100%", height = "100%"),
+                                        absolutePanel(id = "controls", class = "panel panel-default",
+                                                      fixed = TRUE, draggable = FALSE,
+                                                      top = 110, right = 10, height = "auto",width = 200,
+                                                      h4("Choose What"),
+                                                      h4(" You Want"),
+                                                      hr(),
+                                                      div(checkboxGroupInput("check_rest",label="Restaurant"),
+                                                          checkboxInput("check_tran",label="Transportation"),
+                                                          checkboxInput("check_cb",label="CLubs/Bars"),
+                                                          checkboxInput("check_ct",label="Cinema/Threate"),
+                                                          checkboxInput("check_m",label="Market")
+                                                      )
+                                                      
                                         )
                                     )
                            )
                            )
+                )
                 )
         )
