@@ -1,0 +1,5 @@
+.art: Theatre
+.trans: bus+subway
+.market: grocery + pharmacy
+.all: all resturants
+.amenties: market + art+ movie+ bar/clubs/wine+ all resturants
