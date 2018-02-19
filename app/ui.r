@@ -2,6 +2,7 @@ library(shiny)
 library(leaflet)
 library(data.table)
 library(plotly)
+library(DT)
 shinyUI(
         fluidPage(
                 navbarPage("Where to rent", theme = "black.css",
@@ -94,10 +95,8 @@ shinyUI(
                                    hr(),
                               
                               fluidRow(
-                                column(6,DT::dataTableOutput("selectzip")),
-                                column(6,
-                                        class="outer",tags$style(type = "text/css", ".outer {position: fixed; top: 41px; left: 0; right: 0; bottom: 0; overflow: hidden; padding: 0}"),
-                                        leafletOutput("map3", width = 280, height = 280))
+                                #column(6,dataTableOutput("recom", width = "auto", height = "400")),
+                                column(6,leafletOutput("map3", width = "auto", height = 400))
                                     
                                     ))),
                            

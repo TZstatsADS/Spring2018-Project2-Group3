@@ -1,6 +1,7 @@
 library(ggmap)
 library(ggplot2)
 library(dplyr)
+library(DT)
 
 load("../output/price.RData")
 load("../output/avg_price_zip.RData")
@@ -13,6 +14,15 @@ market <- read.csv("../data/market_dxy.csv",as.is = T)
 art <- read.csv("../data/theatre_dxy.csv",as.is = T)
 rank_all <- read.csv("../data/rank_all.csv",as.is = T)
 
+show <- rank_all %>% 
+  select("Zipcode" = "zipcode",
+         "Studio","1B" = "X1B","2B" = "X2B", "3B" = "X3B","4B" = "X4B",
+         "Resturant" = "count.all",
+         "Transportation" = "count.trans",
+         "Club/Bar" = "count.bar",
+         "Theatre" = "count.theatre",
+         "Market" = "count.market",
+         "Crime Rank" = "ranking.crime")
 
 shinyServer(function(input, output,session) {
 
@@ -385,15 +395,10 @@ shinyServer(function(input, output,session) {
         
         output$map3 <- renderLeaflet({
           leaflet()%>%
-            setView(lng = -74.015, lat = 40.75042, zoom = 13)%>%
+            setView(lng = -73.98097, lat = 40.7562, zoom = 12)%>%
             addProviderTiles("Stamen.TonerLite")
         })
-        
-       
-        ##########################################################################
-        # Panel 4: recommand2 ####################################################
-        ########################################################################## 
-        
+ 
         ##Clear
         observeEvent(input$no_rec2, {
           updateSliderInput(session, "check2_pr",value = 5400)
@@ -405,7 +410,12 @@ shinyServer(function(input, output,session) {
           updateSelectInput(session, "check2_ma",selected = "1")
         })
         
-        # 
+        ##Table
+
+        
+        output$recom <- renderDataTable(show)
+
+        #
         # observe(
         #   trans.fil <- if(input$check2_tr == "It's everything"){1:16}
         #   else if(input$check2_tr == "Emmm"){1:32}
@@ -426,8 +436,8 @@ shinyServer(function(input, output,session) {
         #   else if(input$check2_ma == "2"){1:32}
         #   else (input$check2_ma){c(1:46, NA)}
         # )
-        # 
-        
+        #
+
         # observe({
         #   price2 <- if (is.null(input$check2_pr)) character(0) else {
         #     filter(recommand2, apt_ty %in% input$check2_ty) %>%
@@ -439,10 +449,10 @@ shinyServer(function(input, output,session) {
         #   max2 <- max(price2)
         #   min2 <- min(price2)
         # })
-        # 
-        # 
-        # 
-        # 
+        #
+        #
+        #
+        #
         
         #   1-19 14-32 28-46
         #   
