@@ -89,54 +89,6 @@ shinyServer(function(input, output,session) {
               clearPopups()
           }
         })
-        observeEvent(input$check_rest,{
-          if(input$check_rest){
-            insertUI(
-              selector = "#facilities",
-              where = "afterEnd",
-              ui=absolutePanel(id = "rest_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
-                               #top = 80, left = 10, height = "auto",width = 250,
-                               checkboxGroupInput("rest_details",label="Details",
-                                                  choices=c("Chinese"="c",
-                                                            "Italian"="i",
-                                                            "Dessert"="d",
-                                                            "American"="a",
-                                                            "Korean"="k")
-                               )
-              )
-            )
-            
-          }
-          else{
-            removeUI(
-              selector = "#rest_ui"
-            )
-          }
-        })
-        observeEvent(input$check_tran,{
-          if(input$check_tran){
-            insertUI(
-              selector = "#facilities",
-              where = "afterEnd",
-              ui=absolutePanel(id = "tran_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
-                               #top = 80, left = 10, height = "auto",width = 250,
-                               checkboxGroupInput("tran_details",label="Details",
-                                                  choices=c("Subway"="sub",
-                                                            "Bus"="bs")
-                               )
-              )
-            )
-            
-          }
-          else{
-            removeUI(
-              selector = "#tran_ui"
-            )
-          }
-        })
-        
-        
-        
         
         
         #################################################################
@@ -419,7 +371,7 @@ shinyServer(function(input, output,session) {
         observeEvent(input$tran_details, {
           if("bs" %in% input$tran_details) leafletProxy("map2") %>% showGroup("bus")
           else{leafletProxy("map2") %>% hideGroup("bus")}
-          if("sub" %in% input$ct_details) leafletProxy("map2") %>% showGroup("subway")
+          if("sub" %in% input$tran_details) leafletProxy("map2") %>% showGroup("subway")
           else{leafletProxy("map2") %>% hideGroup("subway")}
         }, ignoreNULL = FALSE)
         
