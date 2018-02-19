@@ -11,7 +11,7 @@ restaurant <- read.csv("../data/res.fil1.csv",as.is = T)
 crime <- read.csv("../data/crime_data.csv",as.is = T)
 market <- read.csv("../data/market_dxy.csv",as.is = T)
 art <- read.csv("../data/theatre_dxy.csv",as.is = T)
-rank_all <- read.csv("../data/rank_all.csv",as.is = T)
+rank_data <- read.csv("../data/rank_data.csv",as.is = T)
 
 
 shinyServer(function(input, output,session) {
