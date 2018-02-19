@@ -96,11 +96,10 @@ shinyUI(
                            tabPanel("Recommendation2",
                                     fluidRow(
                                       column(3,
-                                             selectInput("apt_type", "Apartment Type:",list("Studio","1B","2B", "3B","4B"), multiple=TRUE))
-                                      #column(4,
-                                             #sliderInput("apt_price", "Price Per Room:",min = 0, max = 1000, value = 500))
+                                             selectInput("apt_type", "Apartment Type:",list("Studio","1B","2B", "3B","4B"), multiple=TRUE)),
+                                      column(4,
+                                             sliderInput("apt_price", "Price Per Room:",min = 0, max = 1000, value = 500))
                                             # conditionalPanel("input.type",
-                                           
                                     )
                                     ),
                            

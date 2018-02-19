@@ -4,7 +4,11 @@ library(ggplot2)
 load("../output/price.RData")
 load("../output/avg_price_zip.RData")
 load("../output/subdat.RData")
-rank_all <- read.csv("../data/rank_all.csv")
+restaurant <- read.csv("../data/res.fil1.csv",as.is = T)
+crime <- read.csv("../data/crime_data.csv",as.is = T)
+market <- read.csv("../data/market_dxy.csv",as.is = T)
+art <- read.csv("../data/theatre_dxy.csv",as.is = T)
+rank_all <- read.csv("../data/rank_all.csv",as.is = T)
 
 
 shinyServer(function(input, output,session) {
@@ -13,15 +17,63 @@ shinyServer(function(input, output,session) {
                 leaflet()%>%
                         setView(lng = -73.98928, lat = 40.75042, zoom = 13)
         })
-        output$map2 <- renderLeaflet({
-                leaflet()%>%
-                        setView(lng = -73.98928, lat = 40.75042, zoom = 13)%>%
-                        addProviderTiles("Stamen.TonerLite")
-        })
         
+        
+        
+        
+        #################################################################
+        ##### Panel 2 :dot.detail########################################
+        #################################################################
+        output$map2 <- renderLeaflet({
+          m <- leaflet()%>%
+            setView(lng = -73.98928, lat = 40.75042, zoom = 13)%>%
+            addProviderTiles("Stamen.TonerLite")
+          leafletProxy("map2", data = restaurant[which(restaurant$CUISINE.DESCRIPTION == 'Chinese'),]) %>%
+            addCircleMarkers(~lon,~lat,color = "#D24136", popup = ~DBA, stroke = FALSE, fillOpacity = 0.5,radius = 5, group  = "chin")
+          leafletProxy("map2", data = restaurant[which(restaurant$CUISINE.DESCRIPTION == 'American'),]) %>%
+            addCircleMarkers(~lon,~lat,color = "#EFB509", popup = ~DBA,stroke = FALSE, fillOpacity = 0.5,radius = 5, group = "amer")
+          leafletProxy("map2", data = restaurant[which(restaurant$CUISINE.DESCRIPTION == 'Italian'),]) %>%
+            addCircleMarkers(~lon,~lat,color = "#F0810F", popup = ~DBA,stroke = FALSE, fillOpacity = 0.5,radius = 5,  group = "ita")
+          leafletProxy("map2", data = restaurant[which(restaurant$CUISINE.DESCRIPTION == 'Japanese'),]) %>%
+            addCircleMarkers(~lon,~lat,color = "#E29930", popup = ~DBA,stroke = FALSE, fillOpacity = 0.5,radius = 5,  group = "jap")
+          leafletProxy("map2", data = restaurant[which(restaurant$CUISINE.DESCRIPTION == 'Pizza'),]) %>%
+            addCircleMarkers(~lon,~lat,color = "#EB8A3E", popup = ~DBA,stroke = FALSE, fillOpacity = 0.5,radius = 5,  group = "piz")
+          leafletProxy("map2", data = restaurant[which(restaurant$CUISINE.DESCRIPTION == 'Others'),]) %>%
+            addCircleMarkers(~lon,~lat,color = "#EAB364", stroke = FALSE, fillOpacity = 0.5,radius = 5,  group = "oth")
+          
+          ### market
+          leafletProxy("map2", data = market[which(market$type == 'Pharmacy'),]) %>%
+            addCircleMarkers(~lon,~lat,color = "#5C821A", stroke = FALSE, fillOpacity = 1,radius = 5,  group = "pha")
+          leafletProxy("map2", data = market[which(market$type == 'Geocery'),]) %>%
+            addCircleMarkers(~lon,~lat,color = "#C6D166", stroke = FALSE, fillOpacity = 1,radius = 5,  group = "gro")
+          
+          ### Cinema
+          leafletProxy("map2", data = art[which(art$type == 'movie'),]) %>%
+            addCircleMarkers(~lon,~lat,color = "#A1D6E2", stroke = FALSE, fillOpacity = 0.5,radius = 5,  group = "cin")
+          leafletProxy("map2", data = art[which(art$type == 'art'),]) %>%
+            addCircleMarkers(~lon,~lat,color = "#1995AD", stroke = FALSE, fillOpacity = 0.5,radius = 5,  group = "the")
+          
+          ### Crime
+          leafletProxy("map2", data = crime[which(crime$Desc == "ROBBERY"),]) %>%
+            addCircleMarkers(~Longitude,~Latitude,color = "#113743", stroke = FALSE, fillOpacity = 0.5,radius = 2,  group = "rob")
+          leafletProxy("map2", data = crime[which(crime$Desc == "PETIT LARCENY"),]) %>%
+            addCircleMarkers(~Longitude,~Latitude,color = "#2C4A52", stroke = FALSE, fillOpacity = 0.5,radius = 2,  group = "pl")
+          leafletProxy("map2",data = crime[which(crime$Desc == "HARRASSMENT 2"),]) %>%
+            addCircleMarkers(~Longitude,~Latitude,color = "#537072", stroke = FALSE, fillOpacity = 0.5,radius = 2,  group = "ha2")
+          leafletProxy("map2", data = crime[which(crime$Desc == "GRAND LARCENY"),]) %>%
+            addCircleMarkers(~Longitude,~Latitude,color = "#8E9B97", stroke = FALSE, fillOpacity = 0.5,radius = 2,  group = "gl")
+          leafletProxy("map2", data = crime[which(crime$Desc == "DANGEROUS DRUGS"),]) %>%
+            addCircleMarkers(~Longitude,~Latitude,color = "#E4E3DB", stroke = FALSE, fillOpacity = 0.5,radius = 2,  group = "dd")
+          leafletProxy("map2", data = crime[which(crime$Desc == "ASSAULT 3 & RELATED OFFENSES"),]) %>%
+            addCircleMarkers(~Longitude,~Latitude,color = "#C5BEBA", stroke = FALSE, fillOpacity = 0.5,radius = 2,  group = "aro")
+          leafletProxy("map2", data = crime[which(crime$Desc == "Others"),]) %>%
+            addCircleMarkers(~Longitude,~Latitude,color = "#D6C6B9", stroke = FALSE, fillOpacity = 0.5,radius = 2,  group = "coth")
+          
+          m
+        })  
         
         ##########################################################################
-        ## Panel 4: recommand map#################################################
+        ## Panel 3: recommand map#################################################
         ########################################################################## 
         
         output$map3 <- renderLeaflet({
@@ -47,7 +99,7 @@ shinyServer(function(input, output,session) {
                 addLegend(pal = pal, values = ~value, opacity = 1)
  
   
-        ## Panel 3: click on any area, popup text about this zipcode area's information
+        ## Panel *: click on any area, popup text about this zipcode area's information
         observeEvent(input$map_shape_click, {
                 click <- input$map_shape_click
                 zip_sel<-as.character(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)
@@ -76,7 +128,7 @@ shinyServer(function(input, output,session) {
                 output$crime_text<-renderText({crime_rank})
         })
 
-        ## Panel 4: Colorful map or not
+        ## Panel **: Colorful map or not
         observeEvent(input$click_colorful_map_or_not,{
                 if(input$click_colorful_map_or_not){
                         leafletProxy("map")%>%
@@ -87,7 +139,7 @@ shinyServer(function(input, output,session) {
                                 addProviderTiles(providers$Stamen.Toner, options = providerTileOptions(noWrap = TRUE))
                 }
         })
-        ## Panel 5: Return to big view
+        ## Panel ***: Return to big view
         observeEvent(input$click_reset_buttom,{
                 if(input$click_reset_buttom){
                         leafletProxy("map")%>%
@@ -143,7 +195,9 @@ shinyServer(function(input, output,session) {
 
         
         
-        
+        ##########################################################################
+        # Panel 4: recommand2 ####################################################
+        ########################################################################## 
         
         #########recommadation2
         # observe({
