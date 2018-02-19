@@ -44,21 +44,31 @@ shinyUI(
                                     div(class="outer",
                                         tags$style(type = "text/css", ".outer {position: fixed; top: 41px; left: 0; right: 0; bottom: 0; overflow: hidden; padding: 0}"),
                                         sidebarLayout(
-                                                sidebarPanel(
-                                                        div(id="facilities",
-                                                            checkboxInput("check_rest",label="Restaurant"),
-                                                            checkboxInput("check_tran",label="Transportation"),
-                                                            checkboxInput("check_cb",label="CLubs/Bars"),
-                                                            checkboxInput("check_ct",label="Cinema/Threate"),
-                                                            checkboxInput("check_m",label="Market")
-                                                            )
-                                                ),
-                                                mainPanel(
-                                                        leafletOutput("map2", width = "100%", height = "700px")
-                                                        )
-                                                )
+                                          sidebarPanel(
+                                            div(id="facilities",
+                                                checkboxInput("check_rest",label="Restaurant", value = T),
+                                                checkboxInput("check_tran",label="Transportation", value = T),
+                                                checkboxInput("check_cb",label="CLubs/Bars", value = T),
+                                                checkboxInput("check_ct",label="Cinema/Theatre", value = T),
+                                                checkboxInput("check_m",label="Market", value = T),
+                                                checkboxInput("check_cr",label="Crime", value = T)
+                                                #checkboxInput("clear", label = "CLEAR ALL")
+                                            ),
+                                            div(id = "action",
+                                                actionButton("all_types", "Select ALL"),
+                                                actionButton("no_types", "Clear ALL")
+                                                
+                                            )
+                                            
+                                          ),
+                                          mainPanel(
+                                            leafletOutput("map2", width = "100%", height = "700px")
+                                          )
                                         )
-                                        ),
+                                    )
+                                        
+                                    
+                           ),
                            
                            tabPanel("Recommendation",
                                     div(class="outer",
@@ -68,24 +78,23 @@ shinyUI(
                                                       fixed = TRUE, draggable = FALSE,
                                                       top = 110, left = 5, height = "auto",width = "300",
                                                       h4("Choose What You Want"),
-                                                      div(checkboxGroupInput("check_ty","Apt Type:",
+                                                      div(checkboxGroupInput("check1_ty","Apt Type:",
                                                                              choiceNames=list("Studio","1B","2B", "3B","4B"),
                                                                              choiceValues=list("tys","ty1","ty2","ty3","ty4"),inline= TRUE),
-                                                          sliderInput("apt_price", "Price Per Room:",
-                                                                        min = 0, max = 1000, value = 500),
-                                                          checkboxGroupInput("check_re","Restaurant:",
+                                                          sliderInput("check1_pr", "Price Per Room:", min = 0, max = 1000, value = 500),
+                                                          checkboxGroupInput("check1_re","Restaurant:",
                                                                              choiceNames=list("Chinese","American","Italian", "Japanese","Pizza", "Other"),
                                                                              choiceValues=list("rec","rea","rei","rej","rep","reo"),inline= TRUE),
-                                                          checkboxGroupInput("check_tr","Transportation:",
+                                                          checkboxGroupInput("check1_tr","Transportation:",
                                                                              choiceNames=list("It's everything","Emmm","Who Cares"),
                                                                              choiceValues=list("tr1","tr2","tr3"),inline= TRUE),
-                                                          checkboxGroupInput("check_cb","Club/Bar:",
+                                                          checkboxGroupInput("check1_cb","Club/Bar:",
                                                                              choiceNames=list("Let's party!","Emmm","Who Cares"),
                                                                              choiceValues=list("cb1","cb2","cb3"),inline= TRUE),
-                                                          checkboxGroupInput("check_ct","Cinema/Theater:",
+                                                          checkboxGroupInput("check1_ct","Cinema/Theater:",
                                                                              choiceNames=list("1","2","3"),
                                                                              choiceValues=list("ct1","ct2","ct3"),inline= TRUE),
-                                                          checkboxGroupInput("check_ma","Market:",
+                                                          checkboxGroupInput("check1_ma","Market:",
                                                                              choiceNames=list("1","2","3"),
                                                                              choiceValues=list("ma1","ma2","ma3"),inline= TRUE)
                                                       )
@@ -96,11 +105,28 @@ shinyUI(
                            tabPanel("Recommendation2",
                                     fluidRow(
                                       column(3,
-                                             selectInput("apt_type", "Apartment Type:",list("Studio","1B","2B", "3B","4B"), multiple=TRUE)),
-                                      column(4,
-                                             sliderInput("apt_price", "Price Per Room:",min = 0, max = 1000, value = 500))
-                                            # conditionalPanel("input.type",
-                                    )
+                                             h6("Choose What You Like"),
+                                             div(id = "action",
+                                                 actionButton("no_rec2", "Reset"))),
+                                      column(3,
+                                             sliderInput("check2_pr", "Price Per Room:",min = 850, max = 5400, value = 5400)),
+                                      column(3,
+                                             selectInput("check2_ty", "Apartment Type:",list("Studio","1B","2B", "3B","4B"), multiple=TRUE)),
+                                      column(3,
+                                             selectInput("check2_re", "Resturant Type:", list("American", "Chinese", "Italian", "Japanese", "Pizza", "Others"), multiple=TRUE))),
+                                     
+                                    fluidRow(
+                                      column(3,
+                                             selectInput("check2_tr", "Transportation:", list("Who Cares","Emmm","It's everything"))),
+                                      column(3,
+                                             selectInput("check2_cb", "Club/Bar:", list("Who Cares","Emmm","Let's party!"))),
+                                      column(3,
+                                             selectInput("check2_ct", "Cinema/Theater:",list("1","2","3"))),
+                                      column(3,
+                                             selectInput("check2_ma","Market:",list("1","2","3")))),
+                                     
+                                    hr(),
+                                    DT::dataTableOutput("selectzip")
                                     ),
                            
                            tabPanel("Contact"
