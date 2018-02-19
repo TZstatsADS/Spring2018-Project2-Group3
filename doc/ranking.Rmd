@@ -164,9 +164,15 @@ rank_all <- full_join(art, bus, by = "zipcode", suffix = c(".art", ".bus")) %>%
   full_join(., res.Pizza, by = "zipcode", suffix = c(".Japenses", ".Pizza")) %>%
   full_join(., res.Others, by = "zipcode") %>%
   rowwise() %>%
-  mutate(rank.amenities = round(mean(c(ranking.market, ranking.art, ranking.movie, ranking.bar, ranking.all), na.rm = TRUE))) 
+  mutate(ranking.amenities = round(mean(c(ranking.market, ranking.art, ranking.movie, ranking.bar, ranking.all), na.rm = TRUE))) %>%
+  mutate(ranking.theatre = round(mean(c(ranking.movie, ranking.art), na.rm = TRUE)))
 colnames(rank_all)[38:39] <- c("count.Others", "ranking.Others")
 
 write.csv(rank_all, file = "../data/rank_all.csv")
+```
+
+# Add rental price
+```{r}
+
 ```
 
