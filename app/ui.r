@@ -111,9 +111,9 @@ shinyUI(
                                       column(3,
                                              sliderInput("check2_pr", "Price Per Room:",min = 850, max = 5400, value = 5400)),
                                       column(3,
-                                             selectInput("check2_ty", "Apartment Type:",list("Studio","1B","2B", "3B","4B"), multiple=TRUE)),
+                                             selectInput("check2_ty", "Apartment Type:",c("Types I Like"="",list("Studio","1B","2B", "3B","4B")), multiple=TRUE)),
                                       column(3,
-                                             selectInput("check2_re", "Resturant Type:", list("American", "Chinese", "Italian", "Japanese", "Pizza", "Others"), multiple=TRUE))),
+                                             selectInput("check2_re", "Resturant Type:", c("Food I Like"="",list("American", "Chinese", "Italian", "Japanese", "Pizza", "Others")), multiple=TRUE))),
                                      
                                     fluidRow(
                                       column(3,

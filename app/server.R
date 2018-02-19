@@ -11,7 +11,7 @@ restaurant <- read.csv("../data/res.fil1.csv",as.is = T)
 crime <- read.csv("../data/crime_data.csv",as.is = T)
 market <- read.csv("../data/market_dxy.csv",as.is = T)
 art <- read.csv("../data/theatre_dxy.csv",as.is = T)
-rank_data <- read.csv("../data/rank_data.csv",as.is = T)
+rank_all <- read.csv("../data/rank_all.csv",as.is = T)
 
 
 shinyServer(function(input, output,session) {
@@ -445,13 +445,36 @@ shinyServer(function(input, output,session) {
         ##Clear
         observeEvent(input$no_rec2, {
           updateSliderInput(session, "check2_pr",value = 5400)
-          updateSelectInput(session, "check2_ty",selected = NULL)
-          updateSelectInput(session, "check2_re",selected = NULL)
-          updateSelectInput(session, "check2_tr",selected = NULL)
-          updateSelectInput(session, "check2_cb",selected = NULL)
-          updateSelectInput(session, "check2_ct",selected = NULL)
-          updateSelectInput(session, "check2_ma",selected = NULL)
+          updateSelectInput(session, "check2_ty",selected="")
+          updateSelectInput(session, "check2_re",selected="")
+          updateSelectInput(session, "check2_tr",selected = "Who Cares")
+          updateSelectInput(session, "check2_cb",selected = "Who Cares")
+          updateSelectInput(session, "check2_ct",selected = "1")
+          updateSelectInput(session, "check2_ma",selected = "1")
         })
+        
+        # 
+        # observe(
+        #   trans.fil <- if(input$check2_tr == "It's everything"){1:16}
+        #   else if(input$check2_tr == "Emmm"){1:32}
+        #   else {c(1:46, NA)}
+        # )
+        # observe(
+        #   club.fil <- if(input$check2_cb == "Let's party!"){1:16}
+        #   else if(input$check2_cb == "Emmm"){1:32}
+        #   else {c(1:46, NA)}
+        # )
+        # observe(
+        #   club.fil <- if(input$check2_ct == "3"){1:16}
+        #   else if(input$check2_cb == "2"){1:32}
+        #   else {c(1:46, NA)}
+        # )
+        # observe(
+        #   market.fil <- if(input$check2_ma == "3"){1:16}
+        #   else if(input$check2_ma == "2"){1:32}
+        #   else (input$check2_ma){c(1:46, NA)}
+        # )
+        # 
         
         # observe({
         #   price2 <- if (is.null(input$check2_pr)) character(0) else {
@@ -468,43 +491,7 @@ shinyServer(function(input, output,session) {
         # 
         # 
         # 
-        # 
-        # 
-        # observe({
-        #   prices <- if (is.null(input$check2_ty)) character(0) else {
-        #     filter(rank_all, Typy %in% input$check2_ty) %>%
-        #       `$`('per_price') %>%
-        #       unique() %>%
-        #       sort()
-        #   }
-        #   stillSelected <- isolate(input$prices[input$check2_price <= prices])
-        #   updateSelectInput(session, "cities", choices = cities,
-        #                     selected = stillSelected)
-        # })
-        # 
-        #   recommand2 <- if(is.null(input$check2_ty)) character(0) else{
-        #     filter(rank_all, type %in% input$check2_ty)},
-        #   
-        #   min2 <- recreative({
-        #     min(recommand2$per_price)
-        #   }),
-        #   
-        #   max2 <- recreative({
-        #     max(recommand2$per_price)
-        #   })
-        #   
-        #   recommand2 <- if(is.null(input$check2_pr)) character(0) else{
-        #     filter(recommand2,  )
-        #   }
-        #   input$check2_pr
-        #   
-        #   
-        #   
-        #   market.fil <- if(is.null(input$check2_)){c(1:46)}
-        #   else if(input$market == "very convinient"){c(1:19)}
-        #   else if(input$market == "moderate"){c(16:35)}
-        #   else{c(24:46)}
-        #   
+        
         #   1-19 14-32 28-46
         #   
         #   areas <- rank_all%>%
