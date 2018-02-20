@@ -13,7 +13,7 @@ shinyUI(
                                         tags$style(type = "text/css", ".outer {position: fixed; top: 41px; left: 0; right: 0; bottom: 0; overflow: hidden; padding: 0}"),
                                         leafletOutput("map", width = "120%", height = "120%"),
                                         absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
-                                                      top = 100, left = 10, height = "auto",width = 237,
+                                                      top = 100, left = 10, height = "auto",width = 243,
                                                       h2("All about Map",align="center"),
                                                       hr(),
                                                       h3("Click a Place on the Heatmap",align="center"),
