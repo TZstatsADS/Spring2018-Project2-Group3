@@ -322,15 +322,15 @@ shinyServer(function(input, output,session) {
         observeEvent(input$check_rest1, {
           if("Chinese" %in% input$check_rest1) leafletProxy("map2") %>% showGroup("chin")
           else{leafletProxy("map2") %>% hideGroup("chin")}
-          if("a" %in% input$check_rest1) leafletProxy("map2") %>% showGroup("amer")
+          if("American" %in% input$check_rest1) leafletProxy("map2") %>% showGroup("amer")
           else{leafletProxy("map2") %>% hideGroup("amer")}
-          if("i" %in% input$check_rest1) leafletProxy("map2") %>% showGroup("ita")
+          if("Italian" %in% input$check_rest1) leafletProxy("map2") %>% showGroup("ita")
           else{leafletProxy("map2") %>% hideGroup("ita")}
-          if("j" %in% input$check_rest1) leafletProxy("map2") %>% showGroup("jap")
+          if("Japanese" %in% input$check_rest1) leafletProxy("map2") %>% showGroup("jap")
           else{leafletProxy("map2") %>% hideGroup("jap")}
-          if("p" %in% input$check_rest1) leafletProxy("map2") %>% showGroup("piz")
+          if("Pizza" %in% input$check_rest1) leafletProxy("map2") %>% showGroup("piz")
           else{leafletProxy("map2") %>% hideGroup("piz")}
-          if("o" %in% input$check_rest1) leafletProxy("map2") %>% showGroup("oth")
+          if("Others" %in% input$check_rest1) leafletProxy("map2") %>% showGroup("oth")
           else{leafletProxy("map2") %>% hideGroup("oth")}
         }, ignoreNULL = FALSE)
         

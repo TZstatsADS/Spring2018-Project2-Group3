@@ -43,7 +43,7 @@ shinyUI(
                                         sidebarLayout(
                                           sidebarPanel(
                                             div(id="facilities",
-                                                selectInput("check_rest1","Resturant Type:", c("Type I care"="",list("American", "Chinese", "Italian", "Japanese", "Pizza", "Others")),multiple=TRUE,
+                                                selectInput("check_rest1","Restaurant Type:", c("Type I care"="",list("American", "Chinese", "Italian", "Japanese", "Pizza", "Others")),multiple=TRUE,
                                                             selected = list("American", "Chinese", "Italian", "Japanese", "Pizza", "Others")),
                                                 selectInput("check_tran1", "Bus/Subway:", list("Bus","Subway"),multiple=TRUE,
                                                            selected =  list("Bus","Subway")),
@@ -56,15 +56,7 @@ shinyUI(
                                                             selected =  list("ROBBERY", "PETIT LARCENY", "HARRASSMENT 2", "GRAND LARCENY", "DANGEROUS DRUGS",
                                                                               "ASSAULT 3 & RELATED OFFENSES","Others")),
                                                 checkboxInput("check_cb1", c("Club/Bar"), value = T)
-                                                
-                                                # 
-                                                # checkboxInput("check_rest",label="Restaurant", value = T),
-                                                # checkboxInput("check_tran",label="Transportation", value = T),
-                                                # checkboxInput("check_cb",label="Clubs/Bars", value = T),
-                                                # checkboxInput("check_ct",label="Cinema/Theatre", value = T),
-                                                # checkboxInput("check_m",label="Market", value = T),
-                                                # checkboxInput("check_cr",label="Crime", value = T)
-                                                #checkboxInput("clear", label = "CLEAR ALL")
+                                               
                                             ),
                                             div(id = "action",
                                                 actionButton("all_types", "Select ALL"),
