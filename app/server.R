@@ -49,7 +49,7 @@ shinyServer(function(input, output,session) {
         
         ## Panel *: click on any area, popup text about this zipcode area's information#########
         observeEvent(input$map_shape_click, {
-          #if(!input$click_multi) leafletProxy('map') %>%clearGroup("click")
+          if(input$click_multi == FALSE) leafletProxy('map') %>%clearGroup("click")
           click <- input$map_shape_click
           leafletProxy('map')%>%
             addCircleMarkers(click$lng, click$lat, group="click", color = "black")
@@ -78,19 +78,6 @@ shinyServer(function(input, output,session) {
           output$amenities_text<-renderText({amenities_rank})
           output$crime_text<-renderText({crime_rank})
         })
-        
-        # ## Panel *: Colorful map or not###################################
-        # observeEvent(input$click_colorful_map_or_not,{
-        #   if(input$click_colorful_map_or_not){
-        #     leafletProxy("map")%>%
-        #       addTiles()
-        #   }
-        #   else{
-        #     leafletProxy("map")%>%
-        #       addProviderTiles(providers$Stamen.TonerLite, options = providerTileOptions(noWrap = TRUE))
-        #   }
-        # })
-        
         
         ## Panel *: Return to big view##################################
         observeEvent(input$click_reset_buttom,{
@@ -166,232 +153,225 @@ shinyServer(function(input, output,session) {
           
           m
         })
-        observeEvent(input$check_rest,{
-          if(input$check_rest){
-            #leafletProxy("map2") %>% showGroup(c("ita", "chin", "amer", "jap", "piz", "oth"))
-            insertUI(
-              selector = "#facilities",
-              where = "afterEnd",
-              ui=absolutePanel(id = "rest_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
-                               top = 345, left = 5, height = 170 ,width = 95,
-                               checkboxGroupInput("rest_details",label="Details",
-                                                  choices=c("American"="a",
-                                                            "Italian"="i",
-                                                            "Chinese"="c",
-                                                            'Japanese' = 'j',
-                                                            'Pizza' = 'p',
-                                                            "Others" = "o")#,
-                                                  # selected = c("American"="a",
-                                                  #              "Italian"="i",
-                                                  #              "Chinese"="c",
-                                                  #              'Japaness' = 'j',
-                                                  #              'Pizza' = 'p',
-                                                  #              "Others" = "o")
-                               )
-              )
-            )
-            
-          }
-          else{
-            removeUI(
-              selector = "#rest_ui"
-            )
-            leafletProxy("map2") %>% hideGroup(c("ita", "chin", "amer", "jap", "piz", "oth"))
-          }
-        })
-        observeEvent(input$check_tran,{
-          if(input$check_tran){
-            #leafletProxy("map2") %>% showGroup(c("subway", "bus"))
-            insertUI(
-              selector = "#facilities",
-              where = "afterEnd",
-              ui=absolutePanel(id = "tran_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
-                               top = 345, left = 110, height = 75,width = 95,
-                               checkboxGroupInput("tran_details",label="Details",
-                                                  choices=c("Subway"="sub",
-                                                            "Bus"="bs")
-                                                  # selected = c("Subway"="sub",
-                                                  #              "Bus"="bs")
-                               )
-              )
-            )
-            
-          }
-          else{
-            removeUI(
-              selector = "#tran_ui"
-            )
-            leafletProxy("map2") %>% hideGroup(c("subway", "bus"))
-          }
-        })
-        observeEvent(input$check_m,{
-          if(input$check_m){
-            #leafletProxy("map2") %>% showGroup(c("pha", "gro"))
-            insertUI(
-              selector = "#facilities",
-              where = "afterEnd",
-              ui=absolutePanel(id = "market_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
-                               top = 425, left = 110, height = ,width = 95,
-                               checkboxGroupInput("market_details",label="Details",
-                                                  choices=c("Pharmacy"="pha",
-                                                            "Grocery"="gro")
-                                                  # selected = c("Pharmacy"="pha",
-                                                  #              "Grocery"="gro")
-                               )
-              )
-            )
-            
-          }
-          else{
-            removeUI(
-              selector = "#market_ui"
-            )
-            leafletProxy("map2") %>% hideGroup(c("pha", "gro"))
-          }
-        })
-        observeEvent(input$check_ct,{
-          if(input$check_ct){
-            #leafletProxy("map2") %>% showGroup(c("cin", "the"))
-            insertUI(
-              selector = "#facilities",
-              where = "afterEnd",
-              ui=absolutePanel(id = "ct_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
-                               top = 520, left = 110 , height = ,width = 95,
-                               checkboxGroupInput("ct_details",label="Details",
-                                                  choices=c("Cinema"="cin",
-                                                            "Theatry"="the")
-                                                  # selected = c("Cinema"="cin",
-                                                  #              "Theatry"="the")
-                               )
-              )
-            )
-            
-          }
-          else{
-            leafletProxy("map2") %>% hideGroup(c("cin", "the"))
-            removeUI(
-              selector = "#ct_ui"
-            )
-            
-          }
-        })
-        observeEvent(input$check_cr,{
-          if(input$check_cr){
-            #leafletProxy("map2") %>% showGroup(c("rob", "pl", "ha2", "gl", "dd", "aro", "coth"))
-            insertUI(
-              selector = "#facilities",
-              where = "afterEnd",
-              ui=absolutePanel(id = "cr_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
-                               top = 345, left = 210, height = ,width = 140,
-                               checkboxGroupInput("cr_details",label="Details",
-                                                  choices=c("ROBBERY" = "rob",
-                                                            "PETIT LARCENY" = "pl", 
-                                                            "HARRASSMENT 2" = "ha", 
-                                                            "GRAND LARCENY" = "gl", 
-                                                            "DANGEROUS DRUGS" = "dd",
-                                                            "ASSAULT 3 & RELATED OFFENSES" = "aro",
-                                                            "Others" = "oth")
-                                                  # selected = c("ROBBERY" = "rob",
-                                                  #              "PETIT LARCENY" = "pl", 
-                                                  #              "HARRASSMENT 2" = "ha", 
-                                                  #              "GRAND LARCENY" = "gl", 
-                                                  #              "DANGEROUS DRUGS" = "dd",
-                                                  #              "ASSAULT 3 & RELATED OFFENSES" = "aro",
-                                                  #              "Others" = "oth")
-                               )
-              )
-            )
-            
-          }
-          else{
-            removeUI(
-              selector = "#cr_ui"
-            )
-            leafletProxy("map2") %>% hideGroup(c("rob", "pl", "ha2", "gl", "dd", "aro", "coth")) 
-          }
-        })
+        
+        # observeEvent(input$check_rest,{
+        #   if(input$check_rest){
+        #     #leafletProxy("map2") %>% showGroup(c("ita", "chin", "amer", "jap", "piz", "oth"))
+        #     insertUI(
+        #       selector = "#facilities",
+        #       where = "afterEnd",
+        #       ui=absolutePanel(id = "rest_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
+        #                        top = 345, left = 5, height = 170 ,width = 95,
+        #                        checkboxGroupInput("rest_details",label="Details",
+        #                                           choices=c("American"="a",
+        #                                                     "Italian"="i",
+        #                                                     "Chinese"="c",
+        #                                                     'Japanese' = 'j',
+        #                                                     'Pizza' = 'p',
+        #                                                     "Others" = "o")#,
+        #                                           # selected = c("American"="a",
+        #                                           #              "Italian"="i",
+        #                                           #              "Chinese"="c",
+        #                                           #              'Japaness' = 'j',
+        #                                           #              'Pizza' = 'p',
+        #                                           #              "Others" = "o")
+        #                        )
+        #       )
+        #     )
+        #     
+        #   }
+        #   else{
+        #     removeUI(
+        #       selector = "#rest_ui"
+        #     )
+        #     leafletProxy("map2") %>% hideGroup(c("ita", "chin", "amer", "jap", "piz", "oth"))
+        #   }
+        # })
+        # observeEvent(input$check_tran,{
+        #   if(input$check_tran){
+        #     #leafletProxy("map2") %>% showGroup(c("subway", "bus"))
+        #     insertUI(
+        #       selector = "#facilities",
+        #       where = "afterEnd",
+        #       ui=absolutePanel(id = "tran_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
+        #                        top = 345, left = 110, height = 75,width = 95,
+        #                        checkboxGroupInput("tran_details",label="Details",
+        #                                           choices=c("Subway"="sub",
+        #                                                     "Bus"="bs")
+        #                                           # selected = c("Subway"="sub",
+        #                                           #              "Bus"="bs")
+        #                        )
+        #       )
+        #     )
+        #     
+        #   }
+        #   else{
+        #     removeUI(
+        #       selector = "#tran_ui"
+        #     )
+        #     leafletProxy("map2") %>% hideGroup(c("subway", "bus"))
+        #   }
+        # })
+        # observeEvent(input$check_m,{
+        #   if(input$check_m){
+        #     #leafletProxy("map2") %>% showGroup(c("pha", "gro"))
+        #     insertUI(
+        #       selector = "#facilities",
+        #       where = "afterEnd",
+        #       ui=absolutePanel(id = "market_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
+        #                        top = 425, left = 110, height = ,width = 95,
+        #                        checkboxGroupInput("market_details",label="Details",
+        #                                           choices=c("Pharmacy"="pha",
+        #                                                     "Grocery"="gro")
+        #                                           # selected = c("Pharmacy"="pha",
+        #                                           #              "Grocery"="gro")
+        #                        )
+        #       )
+        #     )
+        #     
+        #   }
+        #   else{
+        #     removeUI(
+        #       selector = "#market_ui"
+        #     )
+        #     leafletProxy("map2") %>% hideGroup(c("pha", "gro"))
+        #   }
+        # })
+        # observeEvent(input$check_ct,{
+        #   if(input$check_ct){
+        #     #leafletProxy("map2") %>% showGroup(c("cin", "the"))
+        #     insertUI(
+        #       selector = "#facilities",
+        #       where = "afterEnd",
+        #       ui=absolutePanel(id = "ct_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
+        #                        top = 520, left = 110 , height = ,width = 95,
+        #                        checkboxGroupInput("ct_details",label="Details",
+        #                                           choices=c("Cinema"="cin",
+        #                                                     "Theatry"="the")
+        #                                           # selected = c("Cinema"="cin",
+        #                                           #              "Theatry"="the")
+        #                        )
+        #       )
+        #     )
+        #     
+        #   }
+        #   else{
+        #     leafletProxy("map2") %>% hideGroup(c("cin", "the"))
+        #     removeUI(
+        #       selector = "#ct_ui"
+        #     )
+        #     
+        #   }
+        # })
+        # observeEvent(input$check_cr,{
+        #   if(input$check_cr){
+        #     #leafletProxy("map2") %>% showGroup(c("rob", "pl", "ha2", "gl", "dd", "aro", "coth"))
+        #     insertUI(
+        #       selector = "#facilities",
+        #       where = "afterEnd",
+        #       ui=absolutePanel(id = "cr_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
+        #                        top = 345, left = 210, height = ,width = 140,
+        #                        checkboxGroupInput("cr_details",label="Details",
+        #                                           choices=c("ROBBERY" = "rob",
+        #                                                     "PETIT LARCENY" = "pl", 
+        #                                                     "HARRASSMENT 2" = "ha", 
+        #                                                     "GRAND LARCENY" = "gl", 
+        #                                                     "DANGEROUS DRUGS" = "dd",
+        #                                                     "ASSAULT 3 & RELATED OFFENSES" = "aro",
+        #                                                     "Others" = "oth")
+        #                                           # selected = c("ROBBERY" = "rob",
+        #                                           #              "PETIT LARCENY" = "pl", 
+        #                                           #              "HARRASSMENT 2" = "ha", 
+        #                                           #              "GRAND LARCENY" = "gl", 
+        #                                           #              "DANGEROUS DRUGS" = "dd",
+        #                                           #              "ASSAULT 3 & RELATED OFFENSES" = "aro",
+        #                                           #              "Others" = "oth")
+        #                        )
+        #       )
+        #     )
+        #     
+        #   }
+        #   else{
+        #     removeUI(
+        #       selector = "#cr_ui"
+        #     )
+        #     leafletProxy("map2") %>% hideGroup(c("rob", "pl", "ha2", "gl", "dd", "aro", "coth")) 
+        #   }
+        # })
         
         
         observeEvent(input$all_types, {
-          updateCheckboxInput(session, "check_rest", value = T)
-          updateCheckboxInput(session, "check_tran", value = T)
-          updateCheckboxInput(session, "check_cb", value = T)
-          updateCheckboxInput(session, "check_ct", value = T)
-          updateCheckboxInput(session, "check_m", value = T)
-          updateCheckboxInput(session, "check_cr", value = T)
-          updateCheckboxGroupInput(session, "rest_details", selected = c("American"="a", "Italian"="i", "Chinese"="c",
-                                                                          'Japaness' = 'j', 'Pizza' = 'p',"Others" = "o"))
-          
-          updateCheckboxGroupInput(session, "tran_details", selected = c("bs", "sub"))
-          updateCheckboxGroupInput(session, "market_details", selected = c("pha", "gro"))
-          updateCheckboxGroupInput(session, "ct_details", selected = c("cin", "the"))
-          updateCheckboxGroupInput(session, "cr_details", selected = c("rob", "pl", "ha", "gl", "dd", "aro", "oth"))
-        
-          
-          ## updateCheckboxGroupInput(session, "tran_details", selected = c("bs", "sub"))
+          updateSelectInput(session, "check_rest1", selected = list("American", "Chinese", "Italian", "Japanese", "Pizza", "Others"))
+          updateSelectInput(session, "check_tran1", selected =  list("Bus","Subway"))
+          updateCheckboxInput(session, "check_cb1", value = T)
+          updateSelectInput(session, "check_ct1", selected =  list("Cinema","Theatre"))
+          updateSelectInput(session, "check_m1", selected =  list("Pharmacy","Grocery"))
+          updateSelectInput(session, "check_cr1", selected =  list("ROBBERY", "PETIT LARCENY", "HARRASSMENT 2", "GRAND LARCENY", "DANGEROUS DRUGS",
+                                                                     "ASSAULT 3 & RELATED OFFENSES","Others"))
         })
+        
         observeEvent(input$no_types, {
-          updateCheckboxInput(session, "check_rest", value = F)
-          updateCheckboxInput(session, "check_tran", value = F)
-          updateCheckboxInput(session, "check_cb", value = F)
-          updateCheckboxInput(session, "check_ct", value = F)
-          updateCheckboxInput(session, "check_m", value = F)
-          updateCheckboxInput(session, "check_cr", value = F)
+          updateSelectInput(session, "check_rest1", selected =  "")
+          updateSelectInput(session, "check_tran1", selected =  "")
+          updateCheckboxInput(session, "check_cb1", value = F)
+          updateSelectInput(session, "check_ct1", selected =  "")
+          updateSelectInput(session, "check_m1", selected =  "")
+          updateSelectInput(session, "check_cr1", selected =  "")
         })
         ### food
-        observeEvent(input$rest_details, {
-          if("c" %in% input$rest_details) leafletProxy("map2") %>% showGroup("chin")
+        observeEvent(input$check_rest1, {
+          if("Chinese" %in% input$check_rest1) leafletProxy("map2") %>% showGroup("chin")
           else{leafletProxy("map2") %>% hideGroup("chin")}
-          if("a" %in% input$rest_details) leafletProxy("map2") %>% showGroup("amer")
+          if("a" %in% input$check_rest1) leafletProxy("map2") %>% showGroup("amer")
           else{leafletProxy("map2") %>% hideGroup("amer")}
-          if("i" %in% input$rest_details) leafletProxy("map2") %>% showGroup("ita")
+          if("i" %in% input$check_rest1) leafletProxy("map2") %>% showGroup("ita")
           else{leafletProxy("map2") %>% hideGroup("ita")}
-          if("j" %in% input$rest_details) leafletProxy("map2") %>% showGroup("jap")
+          if("j" %in% input$check_rest1) leafletProxy("map2") %>% showGroup("jap")
           else{leafletProxy("map2") %>% hideGroup("jap")}
-          if("p" %in% input$rest_details) leafletProxy("map2") %>% showGroup("piz")
+          if("p" %in% input$check_rest1) leafletProxy("map2") %>% showGroup("piz")
           else{leafletProxy("map2") %>% hideGroup("piz")}
-          if("o" %in% input$rest_details) leafletProxy("map2") %>% showGroup("oth")
+          if("o" %in% input$check_rest1) leafletProxy("map2") %>% showGroup("oth")
           else{leafletProxy("map2") %>% hideGroup("oth")}
         }, ignoreNULL = FALSE)
         
         
         ### market
-        observeEvent(input$market_details, {
-          if("pha" %in% input$market_details) leafletProxy("map2") %>% showGroup("pha")
+        observeEvent(input$check_m1, {
+          if("Pharmacy" %in% input$check_m1) leafletProxy("map2") %>% showGroup("pha")
           else{leafletProxy("map2") %>% hideGroup("pha")}
-          if("gro" %in% input$market_details) leafletProxy("map2") %>% showGroup("gro")
+          if("Grocery" %in% input$check_m1) leafletProxy("map2") %>% showGroup("gro")
           else{leafletProxy("map2") %>% hideGroup("gro")}
         }, ignoreNULL = FALSE)
         
         ####ct
-        observeEvent(input$ct_details, {
-          if("cin" %in% input$ct_details) leafletProxy("map2") %>% showGroup("cin")
+        observeEvent(input$check_ct1, {
+          if("Cinema" %in% input$check_ct1) leafletProxy("map2") %>% showGroup("cin")
           else{leafletProxy("map2") %>% hideGroup("cin")}
-          if("the" %in% input$ct_details) leafletProxy("map2") %>% showGroup("the")
+          if("Theatre" %in% input$check_ct1) leafletProxy("map2") %>% showGroup("the")
           else{leafletProxy("map2") %>% hideGroup("the")}
         }, ignoreNULL = FALSE)
         ###cr
-        observeEvent(input$cr_details, {
-          if("rob" %in% input$cr_details) leafletProxy("map2") %>% showGroup("rob")
+        observeEvent(input$check_cr1, {
+          if("ROBBERY" %in% input$check_cr1) leafletProxy("map2") %>% showGroup("rob")
           else{leafletProxy("map2") %>% hideGroup("rob")}
-          if("pl" %in% input$cr_details) leafletProxy("map2") %>% showGroup("pl")
+          if("PETIT LARCENY" %in% input$check_cr1) leafletProxy("map2") %>% showGroup("pl")
           else{leafletProxy("map2") %>% hideGroup("pl")}
-          if("ha" %in% input$cr_details) leafletProxy("map2") %>% showGroup("ha2")
+          if("HARRASSMENT 2" %in% input$check_cr1) leafletProxy("map2") %>% showGroup("ha2")
           else{leafletProxy("map2") %>% hideGroup("ha2")}
-          if("gl" %in% input$cr_details) leafletProxy("map2") %>% showGroup("gl")
+          if("GRAND LARCENY" %in% input$check_cr1) leafletProxy("map2") %>% showGroup("gl")
           else{leafletProxy("map2") %>% hideGroup("gl")}
-          if("dd" %in% input$cr_details) leafletProxy("map2") %>% showGroup("dd")
+          if("DANGEROUS DRUGS" %in% input$check_cr1) leafletProxy("map2") %>% showGroup("dd")
           else{leafletProxy("map2") %>% hideGroup("dd")}
-          if("aro" %in% input$cr_details) leafletProxy("map2") %>% showGroup("aro")
+          if("ASSAULT 3 & RELATED OFFENSES" %in% input$check_cr1) leafletProxy("map2") %>% showGroup("aro")
           else{leafletProxy("map2") %>% hideGroup("aro")}
-          if("oth" %in% input$cr_details) leafletProxy("map2") %>% showGroup("coth")
+          if("Others" %in% input$check_cr1) leafletProxy("map2") %>% showGroup("coth")
           else{leafletProxy("map2") %>% hideGroup("coth")}
         }, ignoreNULL = FALSE)
         #### trans
-        observeEvent(input$tran_details, {
-          if("bs" %in% input$tran_details) leafletProxy("map2") %>% showGroup("bus")
+        observeEvent(input$check_tran1, {
+          if("Bus" %in% input$check_tran1) leafletProxy("map2") %>% showGroup("bus")
           else{leafletProxy("map2") %>% hideGroup("bus")}
-          if("sub" %in% input$tran_details) leafletProxy("map2") %>% showGroup("subway")
+          if("Subway" %in% input$check_tran1) leafletProxy("map2") %>% showGroup("subway")
           else{leafletProxy("map2") %>% hideGroup("subway")}
         }, ignoreNULL = FALSE)
         
@@ -430,112 +410,14 @@ shinyServer(function(input, output,session) {
         
         
         ##Table
-
-        
         output$recom <- renderDataTable(show, options = list("sScrollX" = "100%", "bLengthChange" = FALSE))
 
         
-        
-        observeEvent(input$no_rec2, {
-          updateSliderInput(session, "check2_pr",value = 5400)
-          updateSelectInput(session, "check2_ty",selected="")
-          updateSelectInput(session, "check2_re",selected="")
-          updateSelectInput(session, "check2_tr",selected = "Who Cares")
-          updateSelectInput(session, "check2_cb",selected = "Who Cares")
-          updateSelectInput(session, "check2_ct",selected = "1")
-          updateSelectInput(session, "check2_ma",selected = "1")
-        })
-        
-        # 
-        # reactive(
-        #   cond.apt.0 <- if("Studio" %in% input$check2_ty){paste0("Studio <= ", input$check2_pr)
-        #   } else{"Studio <= 5400"})
-        # reactive(
-        #   cond.apt.1 <- if("1B" %in% input$check2_ty){paste0("X1B <= ", input$check2_pr)
-        #   } else{"X1B <= 5400"})
-        # reactive(
-        #   cond.apt.2 <- if("2B" %in% input$check2_ty) {paste0("X2B <= ", input$check2_pr)
-        #   } else{"X2B <= 5400"})
-        # reactive(
-        #   cond.apt.3 <- if("3B" %in% input$check2_ty) {paste0("X3B <= ", input$check2_pr)
-        #   } else{"X3B <= 5400"})
-        # reactive(
-        #   cond.apt.4 <- if("4B" %in% input$check2_ty) {paste0("X4B <= ", input$check2_pr)
-        #   } else{"X4B <= 5400"})
-        # 
-        # 
-        # reactive(
-        #   cond.ame <- if("American" %in% input$check2_re){"ranking.American <= 23"
-        #   } else {"ranking.American <= 46"})
-        # reactive(
-        #   cond.chi <- if("Chinese" %in% input$check2_re) {"ranking.Chinese <= 23"
-        #   } else {"ranking.Chinese <= 46"})
-        # reactive(
-        #   cond.ita <- if("Italian" %in% input$check2_re) {"ranking.Italian <= 23"
-        #   } else {"ranking.Italian <= 46"})
-        # reactive(
-        #   cond.jap <- if("Japanese" %in% input$check2_re) {"ranking.Japanese <= 23"
-        #   } else {"ranking.Japanese <= 46"})
-        # reactive(
-        #   cond.piz <- if("Pizza" %in% input$check2_re) {"ranking.Pizza <= 23"
-        #   } else {"ranking.Pizza <= 46"})
-        # reactive(
-        #   cond.oth <- if("Others" %in% input$check2_re) {"ranking.Others <= 23"
-        #   } else {"ranking.Others <= 46"})
-        # 
-        # 
-        # reactive(
-        #   trans.fil <- if(input$check2_tr == "It's everything"){
-        #     1:16
-        #   } else if(input$check2_tr == "Emmm"){
-        #     1:32
-        #   } else {
-        #     c(1:46, NA)
-        #   }
-        # )
-        # 
-        # reactive(
-        #   club.fil <- if(input$check2_cb == "Let's party!"){1:16
-        #   } else if(input$check2_cb == "Emmm"){
-        #     1:32
-        #   } else {
-        #     c(1:46, NA)
-        #   }
-        # )
-        # 
-        # reactive(
-        #   theatre.fil <- if(input$check2_ct == "3"){1:16
-        #   } else if(input$check2_ct == "2"){
-        #     1:32
-        #   } else {
-        #     c(1:46, NA)
-        #   }
-        # )
-        # 
-        # reactive(
-        #   market.fil <- if(input$check2_ma == "3"){
-        #     1:16
-        #   } else if(input$check2_ma == "2"){
-        #     1:32
-        #   } else {
-        #     c(1:46, NA)
-        #   }
-        # )
-        # 
-        # reactive(
-        #   areas <- rank_all %>%
-        #     filter(eval(parse(cond.apt.0)), eval(parse(cond.apt.1)), eval(parse(cond.apt.2)),
-        #            eval(parse(cond.apt.3)), eval(parse(cond.apt.4)),
-        #            eval(parse(cond.ame)), eval(parse(cond.chi)), eval(parse(cond.ita)),
-        #            eval(parse(cond.jap)), eval(parse(cond.piz)), eval(parse(cond.oth)),
-        #            ranking.trans %in% trans.fil, ranking.bars %in% club.fil,
-        #            ranking.theatre %in% theatre.fil, ranking.market %in% market.fil
-        #     ) %>%
-        #     select(zipcode)
-        # )
-        # 
-        # 
- 
+       #  
+       # observeEvent(output$recom$Zipcode,{
+       #   leafletProxy("map3",data=subdat$zipcode%in% zipcode)%>%
+       #     addPolygons(stroke = T, weight=1, color = "#66A5AD")
+       # })
 
 })
 
