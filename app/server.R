@@ -1,18 +1,28 @@
 library(ggmap)
 library(ggplot2)
 library(dplyr)
+library(DT)
 
-load("../output/price.RData")
-load("../output/avg_price_zip.RData")
-load("../output/subdat.RData")
-bus <- read.csv("../data/bus_stop.csv",as.is = T)
-subway <- read.csv("../data/subwayinfo.csv", as.is = T)
-restaurant <- read.csv("../data/res.fil1.csv",as.is = T)
-crime <- read.csv("../data/crime_data.csv",as.is = T)
-market <- read.csv("../data/market_dxy.csv",as.is = T)
-art <- read.csv("../data/theatre_dxy.csv",as.is = T)
-rank_all <- read.csv("../data/rank_all.csv",as.is = T)
+load("./data/price.RData")
+load("./data/avg_price_zip.RData")
+load("./data/subdat.RData")
+bus <- read.csv("./data/bus_stop.csv",as.is = T)
+subway <- read.csv("./data/subwayinfo.csv", as.is = T)
+restaurant <- read.csv("./data/res.fil1.csv",as.is = T)
+crime <- read.csv("./data/crime_data.csv",as.is = T)
+market <- read.csv("./data/market_dxy.csv",as.is = T)
+art <- read.csv("./data/theatre_dxy.csv",as.is = T)
+rank_all <- read.csv("./data/rank_all.csv",as.is = T)
 
+show <- rank_all %>% 
+  select("Zipcode" = "zipcode",
+         "Studio","1B" = "X1B","2B" = "X2B", "3B" = "X3B","4B" = "X4B",
+         "Resturant" = "count.all",
+         "Transportation" = "count.trans",
+         "Club/Bar" = "count.bar",
+         "Theatre" = "count.theatre",
+         "Market" = "count.market",
+         "Crime Rank" = "ranking.crime")
 
 shinyServer(function(input, output,session) {
 
@@ -89,54 +99,6 @@ shinyServer(function(input, output,session) {
               clearPopups()
           }
         })
-        observeEvent(input$check_rest,{
-          if(input$check_rest){
-            insertUI(
-              selector = "#facilities",
-              where = "afterEnd",
-              ui=absolutePanel(id = "rest_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
-                               #top = 80, left = 10, height = "auto",width = 250,
-                               checkboxGroupInput("rest_details",label="Details",
-                                                  choices=c("Chinese"="c",
-                                                            "Italian"="i",
-                                                            "Dessert"="d",
-                                                            "American"="a",
-                                                            "Korean"="k")
-                               )
-              )
-            )
-            
-          }
-          else{
-            removeUI(
-              selector = "#rest_ui"
-            )
-          }
-        })
-        observeEvent(input$check_tran,{
-          if(input$check_tran){
-            insertUI(
-              selector = "#facilities",
-              where = "afterEnd",
-              ui=absolutePanel(id = "tran_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
-                               #top = 80, left = 10, height = "auto",width = 250,
-                               checkboxGroupInput("tran_details",label="Details",
-                                                  choices=c("Subway"="sub",
-                                                            "Bus"="bs")
-                               )
-              )
-            )
-            
-          }
-          else{
-            removeUI(
-              selector = "#tran_ui"
-            )
-          }
-        })
-        
-        
-        
         
         
         #################################################################
@@ -419,7 +381,7 @@ shinyServer(function(input, output,session) {
         observeEvent(input$tran_details, {
           if("bs" %in% input$tran_details) leafletProxy("map2") %>% showGroup("bus")
           else{leafletProxy("map2") %>% hideGroup("bus")}
-          if("sub" %in% input$ct_details) leafletProxy("map2") %>% showGroup("subway")
+          if("sub" %in% input$tran_details) leafletProxy("map2") %>% showGroup("subway")
           else{leafletProxy("map2") %>% hideGroup("subway")}
         }, ignoreNULL = FALSE)
         
@@ -433,15 +395,10 @@ shinyServer(function(input, output,session) {
         
         output$map3 <- renderLeaflet({
           leaflet()%>%
-            setView(lng = -74.015, lat = 40.75042, zoom = 13)%>%
+            setView(lng = -73.98097, lat = 40.7562, zoom = 12)%>%
             addProviderTiles("Stamen.TonerLite")
         })
-        
-       
-        ##########################################################################
-        # Panel 4: recommand2 ####################################################
-        ########################################################################## 
-        
+ 
         ##Clear
         observeEvent(input$no_rec2, {
           updateSliderInput(session, "check2_pr",value = 5400)
@@ -453,29 +410,14 @@ shinyServer(function(input, output,session) {
           updateSelectInput(session, "check2_ma",selected = "1")
         })
         
-        # 
-        # observe(
-        #   trans.fil <- if(input$check2_tr == "It's everything"){1:16}
-        #   else if(input$check2_tr == "Emmm"){1:32}
-        #   else {c(1:46, NA)}
-        # )
-        # observe(
-        #   club.fil <- if(input$check2_cb == "Let's party!"){1:16}
-        #   else if(input$check2_cb == "Emmm"){1:32}
-        #   else {c(1:46, NA)}
-        # )
-        # observe(
-        #   club.fil <- if(input$check2_ct == "3"){1:16}
-        #   else if(input$check2_cb == "2"){1:32}
-        #   else {c(1:46, NA)}
-        # )
-        # observe(
-        #   market.fil <- if(input$check2_ma == "3"){1:16}
-        #   else if(input$check2_ma == "2"){1:32}
-        #   else (input$check2_ma){c(1:46, NA)}
-        # )
-        # 
+        ##Table
+
         
+        output$recom <- renderDataTable(show[,1:5])
+    
+        
+
+
         # observe({
         #   price2 <- if (is.null(input$check2_pr)) character(0) else {
         #     filter(recommand2, apt_ty %in% input$check2_ty) %>%
@@ -487,10 +429,10 @@ shinyServer(function(input, output,session) {
         #   max2 <- max(price2)
         #   min2 <- min(price2)
         # })
-        # 
-        # 
-        # 
-        # 
+        #
+        #
+        #
+        #
         
         #   1-19 14-32 28-46
         #   
