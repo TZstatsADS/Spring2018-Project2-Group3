@@ -5,10 +5,10 @@ library(plotly)
 library(DT)
 shinyUI(
         fluidPage(
-                navbarPage("Where to rent", theme = "black.css",
+                navbarPage("Where to rent", 
                            #tabPanel("Introduction"),
                            #navbarMenu(title="Begin",
-                                      tabPanel("Summary",
+                              tabPanel("Summary",
                                     div(class="outer",
                                         tags$style(type = "text/css", ".outer {position: fixed; top: 41px; left: 0; right: 0; bottom: 0; overflow: hidden; padding: 0}"),
                                         leafletOutput("map", width = "100%", height = "100%"),
@@ -58,17 +58,17 @@ shinyUI(
                                             div(id = "action",
                                                 actionButton("all_types", "Select ALL"),
                                                 actionButton("no_types", "Clear ALL")
-                                                
+
                                             )
-                                            
+
                                           ),
                                           mainPanel(
                                             leafletOutput("map2", width = "100%", height = "700px")
                                           )
                                         )
                                     )
-                                        
-                                    
+
+
                            ),
                            
                            tabPanel("Recommendation",fluidPage(
@@ -92,13 +92,17 @@ shinyUI(
                                        selectInput("check2_ct", "Cinema/Theater:",list("1","2","3"))),
                                 column(3,
                                        selectInput("check2_ma","Market:",list("1","2","3")))),
-                                   hr(),
+                                   #hr(),
                               
                               fluidRow(
-                                #column(6,dataTableOutput("recom", width = "auto", height = "400")),
-                                column(6,leafletOutput("map3", width = "auto", height = 400))
-                                    
-                                    ))),
+                                column(6,
+                                       leafletOutput("map3", width = "auto", height = 490),
+                                       fluidRow(column(1,actionButton("click_back_buttom",label="Click here back to original view")))
+                                       ),
+                                column(6,
+                                       dataTableOutput("recom")
+                              )))
+                              ),
                            
                            tabPanel("Contact"
                            

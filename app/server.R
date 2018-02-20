@@ -13,16 +13,10 @@ crime <- read.csv("../data/crime_data.csv",as.is = T)
 market <- read.csv("../data/market_dxy.csv",as.is = T)
 art <- read.csv("../data/theatre_dxy.csv",as.is = T)
 rank_all <- read.csv("../data/rank_all.csv",as.is = T)
+show <- read.csv("../output/show.csv",as.is = T)
+show <- show[,-1]
 
-show <- rank_all %>% 
-  select("Zipcode" = "zipcode",
-         "Studio","1B" = "X1B","2B" = "X2B", "3B" = "X3B","4B" = "X4B",
-         "Resturant" = "count.all",
-         "Transportation" = "count.trans",
-         "Club/Bar" = "count.bar",
-         "Theatre" = "count.theatre",
-         "Market" = "count.market",
-         "Crime Rank" = "ranking.crime")
+
 
 shinyServer(function(input, output,session) {
 
@@ -167,7 +161,7 @@ shinyServer(function(input, output,session) {
         })
         observeEvent(input$check_rest,{
           if(input$check_rest){
-            leafletProxy("map2") %>% showGroup(c("ita", "chin", "amer", "jap", "piz", "oth"))
+            #leafletProxy("map2") %>% showGroup(c("ita", "chin", "amer", "jap", "piz", "oth"))
             insertUI(
               selector = "#facilities",
               where = "afterEnd",
@@ -179,13 +173,13 @@ shinyServer(function(input, output,session) {
                                                             "Chinese"="c",
                                                             'Japanese' = 'j',
                                                             'Pizza' = 'p',
-                                                            "Others" = "o"),
-                                                  selected = c("American"="a",
-                                                               "Italian"="i",
-                                                               "Chinese"="c",
-                                                               'Japaness' = 'j',
-                                                               'Pizza' = 'p',
-                                                               "Others" = "o")
+                                                            "Others" = "o")#,
+                                                  # selected = c("American"="a",
+                                                  #              "Italian"="i",
+                                                  #              "Chinese"="c",
+                                                  #              'Japaness' = 'j',
+                                                  #              'Pizza' = 'p',
+                                                  #              "Others" = "o")
                                )
               )
             )
@@ -390,15 +384,23 @@ shinyServer(function(input, output,session) {
         
         
         ##########################################################################
-        ## Panel 3: recommand map#################################################
+        ## Panel 3: recommand ####################################################
         ########################################################################## 
         
+        ##map
         output$map3 <- renderLeaflet({
           leaflet()%>%
             setView(lng = -73.98097, lat = 40.7562, zoom = 12)%>%
             addProviderTiles("Stamen.TonerLite")
         })
  
+        observeEvent(input$click_back_buttom,{
+          if(input$click_back_buttom){
+            leafletProxy("map3")%>%
+              setView(lng = -73.98097, lat = 40.7562, zoom = 12)
+          }
+        })
+        
         ##Clear
         observeEvent(input$no_rec2, {
           updateSliderInput(session, "check2_pr",value = 5400)
@@ -410,125 +412,113 @@ shinyServer(function(input, output,session) {
           updateSelectInput(session, "check2_ma",selected = "1")
         })
         
+        
         ##Table
 
         
-        output$recom <- renderDataTable(show)
+        output$recom <- renderDataTable(show, options = list("sScrollX" = "100%", "bLengthChange" = FALSE))
 
-        #
-        # observe(
-        #   trans.fil <- if(input$check2_tr == "It's everything"){1:16}
-        #   else if(input$check2_tr == "Emmm"){1:32}
-        #   else {c(1:46, NA)}
-        # )
-        # observe(
-        #   club.fil <- if(input$check2_cb == "Let's party!"){1:16}
-        #   else if(input$check2_cb == "Emmm"){1:32}
-        #   else {c(1:46, NA)}
-        # )
-        # observe(
-        #   club.fil <- if(input$check2_ct == "3"){1:16}
-        #   else if(input$check2_cb == "2"){1:32}
-        #   else {c(1:46, NA)}
-        # )
-        # observe(
-        #   market.fil <- if(input$check2_ma == "3"){1:16}
-        #   else if(input$check2_ma == "2"){1:32}
-        #   else (input$check2_ma){c(1:46, NA)}
-        # )
-        #
-
-        # observe({
-        #   price2 <- if (is.null(input$check2_pr)) character(0) else {
-        #     filter(recommand2, apt_ty %in% input$check2_ty) %>%
-        #       '$'('price')%>%
-        #       unique() %>%
-        #       sort()
-        #   }
-        #     recommand2[per_price <= input$check2_pr,]$per_price
-        #   max2 <- max(price2)
-        #   min2 <- min(price2)
-        # })
-        #
-        #
-        #
-        #
-        
-        #   1-19 14-32 28-46
-        #   
-        #   areas <- rank_all%>%
-        #     filter(market %in% market.fil, bars %in% bars.fil, .....(several conditions)) %>%
-        #     select(zipcode)
-        #   ),
-        # 
-        
-        # observe({
-        #   per_price <- if (is.null(input$apt_type)) character(0) else {
-        #     filter(cleantable, rank_all %in% input$apt_type) %>%
-        #       `$`('Price') %>%
-        #       unique() %>%
-        #       sort()
-        #   }
-        #   stillSelected <- isolate(input$apt_price[input$apt_price %in% per_price])
-        #   updateSelectInput(session, "cities", choices = cities,
-        #                     selected = stillSelected)
-        # })
-        # 
-        # observe({
-        #   zipcodes <- if (is.null(input$states)) character(0) else {
-        #     cleantable %>%
-        #       filter(State %in% input$states,
-        #              is.null(input$cities) | City %in% input$cities) %>%
-        #       `$`('Zipcode') %>%
-        #       unique() %>%
-        #       sort()
-        #   }
-        #   stillSelected <- isolate(input$zipcodes[input$zipcodes %in% zipcodes])
-        #   updateSelectInput(session, "zipcodes", choices = zipcodes,
-        #                     selected = stillSelected)
-        # })
-        # 
-        
-        # 
-        # observe({
-        #   if (is.null(input$goto))
-        #     return()
-        #   isolate({
-        #     map <- leafletProxy("map")
-        #     map %>% clearPopups()
-        #     dist <- 0.5
-        #     zip <- input$goto$zip
-        #     lat <- input$goto$lat
-        #     lng <- input$goto$lng
-        #     showZipcodePopup(zip, lat, lng)
-        #     map %>% fitBounds(lng - dist, lat - dist, lng + dist, lat + dist)
-        #   })
-        # })
-        # 
         
         
+        observeEvent(input$no_rec2, {
+          updateSliderInput(session, "check2_pr",value = 5400)
+          updateSelectInput(session, "check2_ty",selected="")
+          updateSelectInput(session, "check2_re",selected="")
+          updateSelectInput(session, "check2_tr",selected = "Who Cares")
+          updateSelectInput(session, "check2_cb",selected = "Who Cares")
+          updateSelectInput(session, "check2_ct",selected = "1")
+          updateSelectInput(session, "check2_ma",selected = "1")
+        })
         
         
+        reactive(
+          cond.apt.0 <- if("Studio" %in% input$check2_ty){paste0("Studio <= ", input$check2_pr)
+          } else{"Studio <= 5400"})
+        reactive(
+          cond.apt.1 <- if("1B" %in% input$check2_ty){paste0("X1B <= ", input$check2_pr)
+          } else{"X1B <= 5400"})
+        reactive(
+          cond.apt.2 <- if("2B" %in% input$check2_ty) {paste0("X2B <= ", input$check2_pr)
+          } else{"X2B <= 5400"})
+        reactive(
+          cond.apt.3 <- if("3B" %in% input$check2_ty) {paste0("X3B <= ", input$check2_pr)
+          } else{"X3B <= 5400"})
+        reactive(
+          cond.apt.4 <- if("4B" %in% input$check2_ty) {paste0("X4B <= ", input$check2_pr)
+          } else{"X4B <= 5400"})
         
-        # output$selectzip <- DT::renderDataTable({
-        #   df <- rank_all %>%
-        #     filter(
-        #       is.null(input$check2_ty) | Type %in% input$check2_ty,
-        #       price <= input$check2_price,
-        #       is.null(input$states) | State %in% input$states,
-        #       is.null(input$cities) | City %in% input$cities,
-        #       is.null(input$zipcodes) | Zipcode %in% input$zipcodes
-        #     ) %>%
-        #     mutate(Action = paste('<a class="go-map" href="" data-lat="', Lat, '" data-long="', Long, '" data-zip="', Zipcode, '"><i class="fa fa-crosshairs"></i></a>', sep=""))
-        #   action <- DT::dataTableAjax(session, df)
-        #   
-        #   DT::datatable(df, options = list(ajax = list(url = action)), escape = FALSE)
-        # })
-        # 
-        # 
-        # 
-        # 
         
+        reactive(
+          cond.ame <- if("American" %in% input$check2_re){"ranking.American <= 23"
+          } else {"ranking.American <= 46"})
+        reactive(
+          cond.chi <- if("Chinese" %in% input$check2_re) {"ranking.Chinese <= 23"
+          } else {"ranking.Chinese <= 46"})
+        reactive(
+          cond.ita <- if("Italian" %in% input$check2_re) {"ranking.Italian <= 23"
+          } else {"ranking.Italian <= 46"})
+        reactive(
+          cond.jap <- if("Japanese" %in% input$check2_re) {"ranking.Japanese <= 23"
+          } else {"ranking.Japanese <= 46"})
+        reactive(
+          cond.piz <- if("Pizza" %in% input$check2_re) {"ranking.Pizza <= 23"
+          } else {"ranking.Pizza <= 46"})
+        reactive(
+          cond.oth <- if("Others" %in% input$check2_re) {"ranking.Others <= 23"
+          } else {"ranking.Others <= 46"})
+        
+        
+        reactive(
+          trans.fil <- if(input$check2_tr == "It's everything"){
+            1:16
+          } else if(input$check2_tr == "Emmm"){
+            1:32
+          } else {
+            c(1:46, NA)
+          }
+        )
+        
+        reactive(
+          club.fil <- if(input$check2_cb == "Let's party!"){1:16
+          } else if(input$check2_cb == "Emmm"){
+            1:32
+          } else {
+            c(1:46, NA)
+          }
+        )
+        
+        reactive(
+          theatre.fil <- if(input$check2_ct == "3"){1:16
+          } else if(input$check2_ct == "2"){
+            1:32
+          } else {
+            c(1:46, NA)
+          }
+        )
+        
+        reactive(
+          market.fil <- if(input$check2_ma == "3"){
+            1:16
+          } else if(input$check2_ma == "2"){
+            1:32
+          } else {
+            c(1:46, NA)
+          }
+        )
+        
+        reactive(
+          areas <- rank_all %>%
+            filter(eval(parse(cond.apt.0)), eval(parse(cond.apt.1)), eval(parse(cond.apt.2)),
+                   eval(parse(cond.apt.3)), eval(parse(cond.apt.4)),
+                   eval(parse(cond.ame)), eval(parse(cond.chi)), eval(parse(cond.ita)),
+                   eval(parse(cond.jap)), eval(parse(cond.piz)), eval(parse(cond.oth)),
+                   ranking.trans %in% trans.fil, ranking.bars %in% club.fil,
+                   ranking.theatre %in% theatre.fil, ranking.market %in% market.fil
+            ) %>%
+            select(zipcode)
+        )
+        
+       
  
 
 })
