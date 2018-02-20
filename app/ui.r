@@ -95,7 +95,7 @@ shinyUI(
                                    hr(),
                               
                               fluidRow(
-                                #column(6,dataTableOutput("recom", width = "auto", height = "400")),
+                                column(6,dataTableOutput("recom", width = "auto", height = "400")),
                                 column(6,leafletOutput("map3", width = "auto", height = 400))
                                     
                                     ))),
