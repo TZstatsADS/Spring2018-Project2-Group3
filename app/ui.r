@@ -94,6 +94,7 @@ shinyUI(
                                        selectInput("check2_ma","Market:",list("1","2","3")))),
                                    
                               hr(),
+                              actionButton("click_jump_next","View Compare"),
                               
                               fluidRow(
                                 column(6,
@@ -104,6 +105,10 @@ shinyUI(
                                        dataTableOutput("recom")
                               )))
                               ),
+                           tabPanel("Compare",fluidPage(
+                             plotOutput("com_plot")
+                           )
+                           ),
                            
                            tabPanel("Contact",fluidPage(
                              fluidRow(textOutput("cwtm"),tags$img(height = 120, src = "icon/1.png"),align="center"),
