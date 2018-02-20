@@ -1,97 +1,93 @@
- observeEvent(input$no_rec2, {
-          updateSliderInput(session, "check2_pr",value = 5400)
-          updateSelectInput(session, "check2_ty",selected="")
-          updateSelectInput(session, "check2_re",selected="")
-          updateSelectInput(session, "check2_tr",selected = "Who Cares")
-          updateSelectInput(session, "check2_cb",selected = "Who Cares")
-          updateSelectInput(session, "check2_ct",selected = "1")
-          updateSelectInput(session, "check2_ma",selected = "1")
-        })
-        
-        
-        reactive(
-          cond.apt.0 <- if("Studio" %in% input$check2_ty){paste0("Studio <= ", input$check2_pr)
-            } else{"Studio <= 5400"})
-        reactive(
-          cond.apt.1 <- if("1B" %in% input$check2_ty){paste0("X1B <= ", input$check2_pr)
-            } else{"X1B <= 5400"})
-        reactive(
-          cond.apt.2 <- if("2B" %in% input$check2_ty) {paste0("X2B <= ", input$check2_pr)
-            } else{"X2B <= 5400"})
-        reactive(
-          cond.apt.3 <- if("3B" %in% input$check2_ty) {paste0("X3B <= ", input$check2_pr)
-            } else{"X3B <= 5400"})
-        reactive(
-          cond.apt.4 <- if("4B" %in% input$check2_ty) {paste0("X4B <= ", input$check2_pr)
-            } else{"X4B <= 5400"})
-       
-        
-        reactive(
-          cond.ame <- if("American" %in% input$check2_re){"ranking.American <= 23"
-          } else {"ranking.American <= 46"})
-        reactive(
-          cond.chi <- if("Chinese" %in% input$check2_re) {"ranking.Chinese <= 23"
-          } else {"ranking.Chinese <= 46"})
-        reactive(
-          cond.ita <- if("Italian" %in% input$check2_re) {"ranking.Italian <= 23"
-          } else {"ranking.Italian <= 46"})
-        reactive(
-          cond.jap <- if("Japanese" %in% input$check2_re) {"ranking.Japanese <= 23"
-          } else {"ranking.Japanese <= 46"})
-        reactive(
-          cond.piz <- if("Pizza" %in% input$check2_re) {"ranking.Pizza <= 23"
-          } else {"ranking.Pizza <= 46"})
-        reactive(
-          cond.oth <- if("Others" %in% input$check2_re) {"ranking.Others <= 23"
-          } else {"ranking.Others <= 46"})
-      
-        
-        reactive(
-          trans.fil <- if(input$check2_tr == "It's everything"){
-            1:16
-          } else if(input$check2_tr == "Emmm"){
-            1:32
-          } else {
-                c(1:46, NA)
-            }
-        )
-
-        reactive(
-          club.fil <- if(input$check2_cb == "Let's party!"){1:16
-          } else if(input$check2_cb == "Emmm"){
-            1:32
-          } else {
-                c(1:46, NA)
-            }
-        )
-
-        reactive(
-          theatre.fil <- if(input$check2_ct == "3"){1:16
-          } else if(input$check2_ct == "2"){
-            1:32
-          } else {
-                c(1:46, NA)
-            }
-        )
-
-        reactive(
-          market.fil <- if(input$check2_ma == "3"){
-            1:16
-          } else if(input$check2_ma == "2"){
-            1:32
-          } else {
-                c(1:46, NA)
-            }
-        )
-
-        reactive(
-          areas <- rank_all %>%
-            filter(eval(parse(cond.apt.0)), eval(parse(cond.apt.1)), eval(parse(cond.apt.2)),
-                   eval(parse(cond.apt.3)), eval(parse(cond.apt.4)),
-                   eval(parse(cond.ame)), eval(parse(cond.chi)), eval(parse(cond.ita)),
-                   eval(parse(cond.jap)), eval(parse(cond.piz)), eval(parse(cond.oth)),
-                   ranking.trans %in% trans.fil, ranking.bars %in% club.fil,
-                   ranking.theatre %in% theatre.fil, ranking.market %in% market.fil
-                   ) %>%
-            select(zipcode)
-        )
+areas  <- reactive({
+    cond.apt.0 <- if(is.null(input$check2_ty)){ paste0("Studio <= ", input$check2_pr, " |is.na(Studio) == TRUE")
+    } else if("Studio" %in% input$check2_ty){paste0("Studio <= ", input$check2_pr)
+    } else{"Studio <= 5400 |is.na(Studio) == TRUE"}
+    
+    cond.apt.1 <- if(is.null(input$check2_ty)){ paste0("X1B <= ", input$check2_pr, " |is.na(X1B) == TRUE")
+    } else if("1B" %in% input$check2_ty){paste0("X1B <= ", input$check2_pr)
+    } else{"X1B <= 5400 |is.na(X1B) == TRUE"}
+    
+    cond.apt.2 <- if(is.null(input$check2_ty)){paste0("X2B <= ", input$check2_pr, " |is.na(X2B) == TRUE")
+    } else if("2B" %in% input$check2_ty) {paste0("X2B <= ", input$check2_pr)
+    } else{"X2B <= 5400 |is.na(X2B) == TRUE"}
+    
+    cond.apt.3 <- if(is.null(input$check2_ty)){paste0("X3B <= ", input$check2_pr, " |is.na(X3B) == TRUE")
+    } else if("3B" %in% input$check2_ty) {paste0("X3B <= ", input$check2_pr)
+    } else{"X3B <= 5400 |is.na(X3B) == TRUE"}
+    
+    cond.apt.4 <-  if(is.null(input$check2_ty)){paste0("X4B <= ", input$check2_pr, " |is.na(X4B) == TRUE")
+    } else if("4B" %in% input$check2_ty) {paste0("X4B <= ", input$check2_pr)
+    } else{"X4B <= 5400 |is.na(X4B) == TRUE"}
+    
+    cond.ame <- if(is.null(input$check2_re)){"ranking.American <= 46 |is.na(ranking.American) == TRUE"
+    } else if("American" %in% input$check2_re){"ranking.American <= 23"
+    } else {"ranking.American <= 46 |is.na(ranking.American) == TRUE"}
+    
+    cond.chi <- if(is.null(input$check2_re)){"ranking.Chinese <= 46 |is.na(ranking.Chinese) == TRUE"
+    } else if("Chinese" %in% input$check2_re) {"ranking.Chinese <= 23"
+    } else {"ranking.Chinese <= 46 |is.na(ranking.Chinese) == TRUE"}
+    
+    cond.ita <-  if(is.null(input$check2_re)){"ranking.Italian <= 46 |is.na(ranking.Italian) == TRUE"
+    } else if("Italian" %in% input$check2_re) {"ranking.Italian <= 23"
+    } else {"ranking.Italian <= 46 |is.na(ranking.Italian) == TRUE"}
+    
+    cond.jap <- if(is.null(input$check2_re)){"ranking.Japenses <= 46 |is.na(ranking.Japenses) == TRUE"
+    } else if("Japanese" %in% input$check2_re) {"ranking.Japenses <= 23"
+    } else {"ranking.Japenses <= 46 |is.na(ranking.Japenses) == TRUE"}
+    
+    cond.piz <- if(is.null(input$check2_re)){"ranking.Pizza <= 46 |is.na(ranking.Pizza) == TRUE"
+    } else if("Pizza" %in% input$check2_re) {"ranking.Pizza <= 23"
+    } else {"ranking.Pizza <= 46 |is.na(ranking.Pizza) == TRUE"}
+    
+    cond.oth <- if(is.null(input$check2_re)){"ranking.Others <= 46 |is.na(ranking.Others) == TRUE"
+    } else if("Others" %in% input$check2_re) {"ranking.Others <= 23"
+    } else {"ranking.Others <= 46 |is.na(ranking.Others) == TRUE"}
+    
+    trans.fil <- if(input$check2_tr == "It's everything"){
+      1:16
+    } else if(input$check2_tr == "Emmm"){
+      1:32
+    } else {
+      c(1:46, NA)
+    }
+    
+    club.fil <- if(input$check2_cb == "Let's party!"){1:16
+    } else if(input$check2_cb == "Emmm"){
+      1:32
+    } else {
+      c(1:46, NA)
+    }
+    
+    theatre.fil<- if(input$check2_ct == "3"){1:16
+    } else if(input$check2_ct == "2"){
+      1:32
+    } else {
+      c(1:46, NA)
+    }
+    
+    market.fil <- if(input$check2_ma == "3"){
+      1:16
+    } else if(input$check2_ma == "2"){
+      1:32
+    } else {
+      c(1:46, NA)
+    }
+    
+    areas <- (rank_all %>%
+                filter(eval(parse(text = cond.apt.0)), eval(parse(text = cond.apt.1)), eval(parse(text = cond.apt.2)),
+                       eval(parse(text = cond.apt.3)), eval(parse(text = cond.apt.4)),
+                       eval(parse(text = cond.ame)), eval(parse(text = cond.chi)), eval(parse(text = cond.ita)),
+                       eval(parse(text = cond.jap)), eval(parse(text = cond.piz)), eval(parse(text = cond.oth)),
+                       ranking.trans %in% trans.fil, ranking.bar %in% club.fil,
+                       ranking.theatre %in% theatre.fil, ranking.market %in% market.fil
+                ) %>%
+                select(zipcode))[,1]
+    return(areas)
+  })
+  
+  
+  output$recom <- renderDataTable(show %>%
+                                    filter(
+                                      Zipcode %in% areas()
+                                    ),
+                                  options = list("sScrollX" = "100%", "bLengthChange" = FALSE))
