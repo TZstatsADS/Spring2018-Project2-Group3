@@ -92,7 +92,8 @@ shinyUI(
                                        selectInput("check2_ct", "Cinema/Theater:",list("1","2","3"))),
                                 column(3,
                                        selectInput("check2_ma","Market:",list("1","2","3")))),
-                                   #hr(),
+                                   
+                              hr(),
                               
                               fluidRow(
                                 column(6,

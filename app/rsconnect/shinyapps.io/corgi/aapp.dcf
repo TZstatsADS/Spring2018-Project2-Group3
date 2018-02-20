@@ -1,0 +1,12 @@
+name: aapp
+title: aapp
+username:
+account: corgi
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 285366
+bundleId: 1230834
+url: https://corgi.shinyapps.io/aapp/
+when: 1519087420.67103
+asMultiple: FALSE
+asStatic: FALSE
