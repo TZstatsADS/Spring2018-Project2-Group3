@@ -33,8 +33,7 @@ shinyUI(
                                                       checkboxInput("click_multi", "Show Your Trace", value = F),
                                                       actionButton("click_reset_buttom",label="Click here back to original view")
 
-                                        )
-                                    )
+                                        ))
                                     ),
                                     
                            tabPanel("Dot Details",
@@ -66,8 +65,7 @@ shinyUI(
                                             ),
                                           mainPanel(
                                             leafletOutput("map2", width = "100%", height = "700px")
-                                          )
-                                        )
+                                          ))
                                     )
                           ),
                            
@@ -115,3 +113,11 @@ shinyUI(
                 )
         
 )
+
+
+
+
+
+
+
+
