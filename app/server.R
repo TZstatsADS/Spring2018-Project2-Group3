@@ -1,12 +1,10 @@
-
-# observeEvent(output$recom$Zipcode,{
-#   leafletProxy("map3",data=subdat$zipcode%in% zipcode)%>%
-#     addPolygons(stroke = T, weight=1, color = "#66A5AD")
-# })
 library(ggmap)
 library(ggplot2)
 library(dplyr)
 library(DT)
+library(gapminder)
+library(animation)
+theme_set(theme_bw())
 
 load("../output/price.RData")
 load("../output/avg_price_zip.RData")
@@ -104,17 +102,17 @@ shinyServer(function(input, output,session){
          setView(lng = -73.96407, lat = 40.80754, zoom = 16)%>%
          addProviderTiles("Stamen.TonerLite")
        leafletProxy("map2", data = restaurant[which(restaurant$CUISINE.DESCRIPTION == 'Chinese'),]) %>%
-         addCircleMarkers(~lon,~lat,color = "#D24136", popup = ~DBA, stroke = FALSE, fillOpacity = 0.5,radius = 5, group  = "chin")
+         addCircleMarkers(~lon,~lat,color = "#FFEC5C", popup = ~DBA, stroke = FALSE, fillOpacity = 0.5,radius = 5, group  = "chin")
        leafletProxy("map2", data = restaurant[which(restaurant$CUISINE.DESCRIPTION == 'American'),]) %>%
-         addCircleMarkers(~lon,~lat,color = "#EFB509", popup = ~DBA,stroke = FALSE, fillOpacity = 0.5,radius = 5, group = "amer")
+         addCircleMarkers(~lon,~lat,color = "#C8000A", popup = ~DBA,stroke = FALSE, fillOpacity = 0.5,radius = 5, group = "amer")
        leafletProxy("map2", data = restaurant[which(restaurant$CUISINE.DESCRIPTION == 'Italian'),]) %>%
-         addCircleMarkers(~lon,~lat,color = "#F0810F", popup = ~DBA,stroke = FALSE, fillOpacity = 0.5,radius = 5,  group = "ita")
+         addCircleMarkers(~lon,~lat,color = "#F9BA32", popup = ~DBA,stroke = FALSE, fillOpacity = 0.5,radius = 5,  group = "ita")
        leafletProxy("map2", data = restaurant[which(restaurant$CUISINE.DESCRIPTION == 'Japanese'),]) %>%
-         addCircleMarkers(~lon,~lat,color = "#E29930", popup = ~DBA,stroke = FALSE, fillOpacity = 0.5,radius = 5,  group = "jap")
+         addCircleMarkers(~lon,~lat,color = "#D35C37", popup = ~DBA,stroke = FALSE, fillOpacity = 0.5,radius = 5,  group = "jap")
        leafletProxy("map2", data = restaurant[which(restaurant$CUISINE.DESCRIPTION == 'Pizza'),]) %>%
-         addCircleMarkers(~lon,~lat,color = "#EB8A3E", popup = ~DBA,stroke = FALSE, fillOpacity = 0.5,radius = 5,  group = "piz")
+         addCircleMarkers(~lon,~lat,color = "#E8A735", popup = ~DBA,stroke = FALSE, fillOpacity = 0.5,radius = 5,  group = "piz")
        leafletProxy("map2", data = restaurant[which(restaurant$CUISINE.DESCRIPTION == 'Others'),]) %>%
-         addCircleMarkers(~lon,~lat,popup = ~DBA, color = "#EAB364", stroke = FALSE, fillOpacity = 0.5,radius = 5,  group = "oth")
+         addCircleMarkers(~lon,~lat,popup = ~DBA, color = "#E2C499", stroke = FALSE, fillOpacity = 0.5,radius = 5,  group = "oth")
     
        ### market
        leafletProxy("map2", data = market[which(market$type == 'Pharmacy'),]) %>%
@@ -278,48 +276,48 @@ shinyServer(function(input, output,session){
   
   ##Recommand
   areas  <- reactive({
-    cond.apt.0 <- if(is.null(input$check2_ty)){"Studio <= 5400 |is.na(Studio) == TRUE"
+    cond.apt.0 <- if(is.null(input$check2_ty)){ paste0("Studio <= ", input$check2_pr, " |is.na(Studio) == TRUE")
     } else if("Studio" %in% input$check2_ty){paste0("Studio <= ", input$check2_pr)
     } else{"Studio <= 5400 |is.na(Studio) == TRUE"}
     
-    cond.apt.1 <- if(is.null(input$check2_ty)){"X1B <= 5400 |is.na(X1B) == TRUE"
+    cond.apt.1 <- if(is.null(input$check2_ty)){ paste0("X1B <= ", input$check2_pr, " |is.na(X1B) == TRUE")
     } else if("1B" %in% input$check2_ty){paste0("X1B <= ", input$check2_pr)
     } else{"X1B <= 5400 |is.na(X1B) == TRUE"}
     
-    cond.apt.2 <- if(is.null(input$check2_ty)){"X2B <= 5400 |is.na(X2B) == TRUE"
+    cond.apt.2 <- if(is.null(input$check2_ty)){paste0("X2B <= ", input$check2_pr, " |is.na(X2B) == TRUE")
     } else if("2B" %in% input$check2_ty) {paste0("X2B <= ", input$check2_pr)
     } else{"X2B <= 5400 |is.na(X2B) == TRUE"}
     
-    cond.apt.3 <- if(is.null(input$check2_ty)){"X3B <= 5400 |is.na(X3B) == TRUE"
+    cond.apt.3 <- if(is.null(input$check2_ty)){paste0("X3B <= ", input$check2_pr, " |is.na(X3B) == TRUE")
     } else if("3B" %in% input$check2_ty) {paste0("X3B <= ", input$check2_pr)
     } else{"X3B <= 5400 |is.na(X3B) == TRUE"}
     
-    cond.apt.4 <-  if(is.null(input$check2_ty)){"X4B <= 5400 |is.na(X4B) == TRUE"
+    cond.apt.4 <-  if(is.null(input$check2_ty)){paste0("X4B <= ", input$check2_pr, " |is.na(X4B) == TRUE")
     } else if("4B" %in% input$check2_ty) {paste0("X4B <= ", input$check2_pr)
     } else{"X4B <= 5400 |is.na(X4B) == TRUE"}
     
     cond.ame <- if(is.null(input$check2_re)){"ranking.American <= 46 |is.na(ranking.American) == TRUE"
-    } else if("American" %in% input$check2_re){"ranking.American <= 15"
+    } else if("American" %in% input$check2_re){"ranking.American <= 23"
     } else {"ranking.American <= 46 |is.na(ranking.American) == TRUE"}
     
     cond.chi <- if(is.null(input$check2_re)){"ranking.Chinese <= 46 |is.na(ranking.Chinese) == TRUE"
-    } else if("Chinese" %in% input$check2_re) {"ranking.Chinese <= 15"
+    } else if("Chinese" %in% input$check2_re) {"ranking.Chinese <= 23"
     } else {"ranking.Chinese <= 46 |is.na(ranking.Chinese) == TRUE"}
     
     cond.ita <-  if(is.null(input$check2_re)){"ranking.Italian <= 46 |is.na(ranking.Italian) == TRUE"
-    } else if("Italian" %in% input$check2_re) {"ranking.Italian <= 15"
+    } else if("Italian" %in% input$check2_re) {"ranking.Italian <= 23"
     } else {"ranking.Italian <= 46 |is.na(ranking.Italian) == TRUE"}
     
     cond.jap <- if(is.null(input$check2_re)){"ranking.Japenses <= 46 |is.na(ranking.Japenses) == TRUE"
-    } else if("Japanese" %in% input$check2_re) {"ranking.Japenses <= 15"
+    } else if("Japanese" %in% input$check2_re) {"ranking.Japenses <= 23"
     } else {"ranking.Japenses <= 46 |is.na(ranking.Japenses) == TRUE"}
     
     cond.piz <- if(is.null(input$check2_re)){"ranking.Pizza <= 46 |is.na(ranking.Pizza) == TRUE"
-    } else if("Pizza" %in% input$check2_re) {"ranking.Pizza <= 15"
+    } else if("Pizza" %in% input$check2_re) {"ranking.Pizza <= 23"
     } else {"ranking.Pizza <= 46 |is.na(ranking.Pizza) == TRUE"}
     
     cond.oth <- if(is.null(input$check2_re)){"ranking.Others <= 46 |is.na(ranking.Others) == TRUE"
-    } else if("Others" %in% input$check2_re) {"ranking.Others <= 15"
+    } else if("Others" %in% input$check2_re) {"ranking.Others <= 23"
     } else {"ranking.Others <= 46 |is.na(ranking.Others) == TRUE"}
     
     trans.fil <- if(input$check2_tr == "It's everything"){
@@ -369,13 +367,36 @@ shinyServer(function(input, output,session){
                                     filter(
                                       Zipcode %in% areas()
                                     ),
-                                  options = list("sScrollX" = "100%", "bLengthChange" = FALSE))
+                                  options = list("sScrollX" = "100%", "bLengthChange" = FALSE)) 
+  ##recommad map
+  
+  # observeEvent(output$recom$Zipcode,
+  #              {
+  #                leafletProxy("map3",data=subdat$zipcode %in% areas())%>%
+  #                  addPolygons(stroke = T, weight=1, color = "#66A5AD")
+  #                })
+  # 
   
      ##########################################################################
      ## Panel 4: contact ####################################################
      ########################################################################## 
   
+
+  ui <- basicPage(
+    plotOutput("plot1")
+  )
   
+  server <- function(input, output) {
+    output$plot1 <- renderPlot({
+      p = ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, color = continent, frame = year)) +
+        geom_point() +
+        scale_x_log10()
+      
+      animate(p)
+      
+    })
+    
+  }
 })
 
 
