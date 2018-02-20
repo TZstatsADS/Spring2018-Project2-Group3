@@ -171,8 +171,16 @@ colnames(rank_all)[38:39] <- c("count.Others", "ranking.Others")
 write.csv(rank_all, file = "../data/rank_all.csv")
 ```
 
-# Add rental price
+# Add lon, lat
 ```{r}
+ranking <- read.csv("../data/rank_all.csv")
+# ranking <- ranking %>%
+#   mutate_geocode(as.character(ranking$zipcode))
+pos <- geocode(as.character(ranking$zipcode))
+ranking <- cbind(ranking, pos)
+
+ranking[which(is.na(ranking[, 58]) == T),4]
+write.csv(ranking, file = "../data/rank_all1.csv")
 
 ```
 
