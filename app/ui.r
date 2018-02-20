@@ -30,7 +30,7 @@ shinyUI(
                                                           h6(textOutput("crime_text"),align="left")
                                                       ,
                                                       hr(),
-                                                      checkboxInput("click_multi", "Show Your Trace", value = T),
+                                                      checkboxInput("click_multi", "Show Your Trace", value = F),
                                                       actionButton("click_reset_buttom",label="Click here back to original view")
 
                                         )
@@ -63,16 +63,13 @@ shinyUI(
                                                 actionButton("no_types", "Clear ALL")
 
                                             )
-
-                                          ),
+                                            ),
                                           mainPanel(
                                             leafletOutput("map2", width = "100%", height = "700px")
                                           )
                                         )
                                     )
-
-
-                           ),
+                          ),
                            
                            tabPanel("Recommendation",fluidPage(
                               fluidRow(
