@@ -25,7 +25,9 @@ shinyServer(function(input, output,session) {
        #################################################################
         output$map <- renderLeaflet({
                 leaflet()%>%
-                        setView(lng = -73.98928, lat = 40.75042, zoom = 13)
+                        setView(lng = -73.98928, lat = 40.75042, zoom = 13)%>%
+            addProviderTiles("Stamen.TonerLite")
+          
         })
         
         ## Panel *: heat map###########################################
@@ -47,7 +49,10 @@ shinyServer(function(input, output,session) {
         
         ## Panel *: click on any area, popup text about this zipcode area's information#########
         observeEvent(input$map_shape_click, {
+          #if(!input$click_multi) leafletProxy('map') %>%clearGroup("click")
           click <- input$map_shape_click
+          leafletProxy('map')%>%
+            addCircleMarkers(click$lng, click$lat, group="click", color = "black")
           zip_sel<-as.character(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)
           zip<-paste("ZIPCODE: ",zip_sel)
           price_avg<-paste("Average Price: $",avg_price_zip.df[avg_price_zip.df$region==zip_sel,"value"],sep="")
@@ -74,17 +79,19 @@ shinyServer(function(input, output,session) {
           output$crime_text<-renderText({crime_rank})
         })
         
-        ## Panel *: Colorful map or not###################################
-        observeEvent(input$click_colorful_map_or_not,{
-          if(input$click_colorful_map_or_not){
-            leafletProxy("map")%>%
-              addTiles()
-          }
-          else{
-            leafletProxy("map")%>%
-              addProviderTiles(providers$Stamen.Toner, options = providerTileOptions(noWrap = TRUE))
-          }
-        })
+        # ## Panel *: Colorful map or not###################################
+        # observeEvent(input$click_colorful_map_or_not,{
+        #   if(input$click_colorful_map_or_not){
+        #     leafletProxy("map")%>%
+        #       addTiles()
+        #   }
+        #   else{
+        #     leafletProxy("map")%>%
+        #       addProviderTiles(providers$Stamen.TonerLite, options = providerTileOptions(noWrap = TRUE))
+        #   }
+        # })
+        
+        
         ## Panel *: Return to big view##################################
         observeEvent(input$click_reset_buttom,{
           if(input$click_reset_buttom){
@@ -118,7 +125,7 @@ shinyServer(function(input, output,session) {
           ### market
           leafletProxy("map2", data = market[which(market$type == 'Pharmacy'),]) %>%
             addCircleMarkers(~lon,~lat,popup = ~name, color = "#5C821A", stroke = FALSE, fillOpacity = 1,radius = 5,  group = "pha")
-          leafletProxy("map2", data = market[which(market$type == 'Geocery'),]) %>%
+          leafletProxy("map2", data = market[which(market$type == 'Grocery'),]) %>%
             addCircleMarkers(~lon,~lat,popup = ~name, color = "#C6D166", stroke = FALSE, fillOpacity = 1,radius = 5,  group = "gro")
           
           ### Cinema
@@ -166,7 +173,7 @@ shinyServer(function(input, output,session) {
               selector = "#facilities",
               where = "afterEnd",
               ui=absolutePanel(id = "rest_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
-                               top = 280, left = 10, height = ,width = 120,
+                               top = 345, left = 5, height = 170 ,width = 95,
                                checkboxGroupInput("rest_details",label="Details",
                                                   choices=c("American"="a",
                                                             "Italian"="i",
@@ -194,17 +201,17 @@ shinyServer(function(input, output,session) {
         })
         observeEvent(input$check_tran,{
           if(input$check_tran){
-            leafletProxy("map2") %>% showGroup(c("subway", "bus"))
+            #leafletProxy("map2") %>% showGroup(c("subway", "bus"))
             insertUI(
               selector = "#facilities",
               where = "afterEnd",
               ui=absolutePanel(id = "tran_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
-                               top = 400, left = 150, height = ,width = 120,
+                               top = 345, left = 110, height = 75,width = 95,
                                checkboxGroupInput("tran_details",label="Details",
                                                   choices=c("Subway"="sub",
-                                                            "Bus"="bs"),
-                                                  selected = c("Subway"="sub",
-                                                               "Bus"="bs")
+                                                            "Bus"="bs")
+                                                  # selected = c("Subway"="sub",
+                                                  #              "Bus"="bs")
                                )
               )
             )
@@ -219,17 +226,17 @@ shinyServer(function(input, output,session) {
         })
         observeEvent(input$check_m,{
           if(input$check_m){
-            leafletProxy("map2") %>% showGroup(c("pha", "gro"))
+            #leafletProxy("map2") %>% showGroup(c("pha", "gro"))
             insertUI(
               selector = "#facilities",
               where = "afterEnd",
               ui=absolutePanel(id = "market_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
-                               top = , left = 10, height = ,width = 120,
+                               top = 425, left = 110, height = ,width = 95,
                                checkboxGroupInput("market_details",label="Details",
                                                   choices=c("Pharmacy"="pha",
-                                                            "Grocery"="gro"),
-                                                  selected = c("Pharmacy"="pha",
-                                                               "Grocery"="gro")
+                                                            "Grocery"="gro")
+                                                  # selected = c("Pharmacy"="pha",
+                                                  #              "Grocery"="gro")
                                )
               )
             )
@@ -244,17 +251,17 @@ shinyServer(function(input, output,session) {
         })
         observeEvent(input$check_ct,{
           if(input$check_ct){
-            leafletProxy("map2") %>% showGroup(c("cin", "the"))
+            #leafletProxy("map2") %>% showGroup(c("cin", "the"))
             insertUI(
               selector = "#facilities",
               where = "afterEnd",
               ui=absolutePanel(id = "ct_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
-                               top = , left = 10, height = ,width = 120,
+                               top = 520, left = 110 , height = ,width = 95,
                                checkboxGroupInput("ct_details",label="Details",
                                                   choices=c("Cinema"="cin",
-                                                            "Theatry"="the"),
-                                                  selected = c("Cinema"="cin",
-                                                               "Theatry"="the")
+                                                            "Theatry"="the")
+                                                  # selected = c("Cinema"="cin",
+                                                  #              "Theatry"="the")
                                )
               )
             )
@@ -270,12 +277,12 @@ shinyServer(function(input, output,session) {
         })
         observeEvent(input$check_cr,{
           if(input$check_cr){
-            leafletProxy("map2") %>% showGroup(c("rob", "pl", "ha2", "gl", "dd", "aro", "coth"))
+            #leafletProxy("map2") %>% showGroup(c("rob", "pl", "ha2", "gl", "dd", "aro", "coth"))
             insertUI(
               selector = "#facilities",
               where = "afterEnd",
               ui=absolutePanel(id = "cr_ui", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
-                               top = , left = 10, height = ,width = 120,
+                               top = 345, left = 210, height = ,width = 140,
                                checkboxGroupInput("cr_details",label="Details",
                                                   choices=c("ROBBERY" = "rob",
                                                             "PETIT LARCENY" = "pl", 
@@ -283,14 +290,14 @@ shinyServer(function(input, output,session) {
                                                             "GRAND LARCENY" = "gl", 
                                                             "DANGEROUS DRUGS" = "dd",
                                                             "ASSAULT 3 & RELATED OFFENSES" = "aro",
-                                                            "Others" = "oth"),
-                                                  selected = c("ROBBERY" = "rob",
-                                                               "PETIT LARCENY" = "pl", 
-                                                               "HARRASSMENT 2" = "ha", 
-                                                               "GRAND LARCENY" = "gl", 
-                                                               "DANGEROUS DRUGS" = "dd",
-                                                               "ASSAULT 3 & RELATED OFFENSES" = "aro",
-                                                               "Others" = "oth")
+                                                            "Others" = "oth")
+                                                  # selected = c("ROBBERY" = "rob",
+                                                  #              "PETIT LARCENY" = "pl", 
+                                                  #              "HARRASSMENT 2" = "ha", 
+                                                  #              "GRAND LARCENY" = "gl", 
+                                                  #              "DANGEROUS DRUGS" = "dd",
+                                                  #              "ASSAULT 3 & RELATED OFFENSES" = "aro",
+                                                  #              "Others" = "oth")
                                )
               )
             )
@@ -312,7 +319,16 @@ shinyServer(function(input, output,session) {
           updateCheckboxInput(session, "check_ct", value = T)
           updateCheckboxInput(session, "check_m", value = T)
           updateCheckboxInput(session, "check_cr", value = T)
+          updateCheckboxGroupInput(session, "rest_details", selected = c("American"="a", "Italian"="i", "Chinese"="c",
+                                                                          'Japaness' = 'j', 'Pizza' = 'p',"Others" = "o"))
           
+          updateCheckboxGroupInput(session, "tran_details", selected = c("bs", "sub"))
+          updateCheckboxGroupInput(session, "market_details", selected = c("pha", "gro"))
+          updateCheckboxGroupInput(session, "ct_details", selected = c("cin", "the"))
+          updateCheckboxGroupInput(session, "cr_details", selected = c("rob", "pl", "ha", "gl", "dd", "aro", "oth"))
+        
+          
+          ## updateCheckboxGroupInput(session, "tran_details", selected = c("bs", "sub"))
         })
         observeEvent(input$no_types, {
           updateCheckboxInput(session, "check_rest", value = F)

@@ -15,14 +15,9 @@ shinyUI(
                                         absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
                                                       top = 110, left = 10, height = "auto",width = 250,
                                                       h3("All about Maps",align="center"),
-                                                      checkboxInput("click_colorful_map_or_not", "Detail Map",value=FALSE),
                                                       hr(),
-                                                      div(style="text-align:left;
-                                                          box-shadow: 10px 30px 30px  #888888;
-                                                          width:200px;
-                                                          height:270px;
-                                                          position:relative;
-                                                          font-style: italic",
+                                                      h4("Click a Place",align="left"),
+                                                      hr(),
                                                           h6(textOutput("zip_text"),align="left"),
                                                           h6(textOutput("avgprice_text"),align="left"),
                                                           h6(textOutput("avgstudio_text"),align="left"),
@@ -33,8 +28,9 @@ shinyUI(
                                                           h6(textOutput("transportation_text"),align="left"),
                                                           h6(textOutput("amenities_text"),align="left"),
                                                           h6(textOutput("crime_text"),align="left")
-                                                      ),
+                                                      ,
                                                       hr(),
+                                                      #radioButtons("click_multi", "Show Your Trace", ),
                                                       actionButton("click_reset_buttom",label="Click here back to original view")
 
                                         )
@@ -47,12 +43,25 @@ shinyUI(
                                         sidebarLayout(
                                           sidebarPanel(
                                             div(id="facilities",
-                                                checkboxInput("check_rest",label="Restaurant", value = T),
-                                                checkboxInput("check_tran",label="Transportation", value = T),
-                                                checkboxInput("check_cb",label="Clubs/Bars", value = T),
-                                                checkboxInput("check_ct",label="Cinema/Theatre", value = T),
-                                                checkboxInput("check_m",label="Market", value = T),
-                                                checkboxInput("check_cr",label="Crime", value = T)
+                                                selectInput("check_rest1","Resturant Type:", c("Type I care"="",list("American", "Chinese", "Italian", "Japanese", "Pizza", "Others")),multiple=TRUE,selected = list("American", "Chinese", "Italian", "Japanese", "Pizza", "Others")),
+                                                selectInput("check_tran1", "Transportation Type:", list("Bus","Subway"),multiple=TRUE,
+                                                           selected =  list("Bus","Subway")),
+                                                selectInput("check_ct1", "Cinema/Theatre:", list("Cinema","Theatre"),multiple=TRUE,
+                                                            selected =  list("Cinema","Theatre")),
+                                                selectInput("check_m1", "Market:", list("Pharmacy","Grocery"),multiple=TRUE,
+                                                            selected =  list("Pharmacy","Grocery")),
+                                                selectInput("check_cr1", "Crime:", list("ROBBERY", "PETIT LARCENY", "HARRASSMENT 2", "GRAND LARCENY", "DANGEROUS DRUGS",
+                                                                                         "ASSAULT 3 & RELATED OFFENSES","Others"),multiple=TRUE,
+                                                            selected =  list("ROBBERY", "PETIT LARCENY", "HARRASSMENT 2", "GRAND LARCENY", "DANGEROUS DRUGS",
+                                                                              "ASSAULT 3 & RELATED OFFENSES","Others")),
+                                                checkboxInput("check_cb1", c("Club/Bar"), value = T)
+                                                # 
+                                                # checkboxInput("check_rest",label="Restaurant", value = T),
+                                                # checkboxInput("check_tran",label="Transportation", value = T),
+                                                # checkboxInput("check_cb",label="Clubs/Bars", value = T),
+                                                # checkboxInput("check_ct",label="Cinema/Theatre", value = T),
+                                                # checkboxInput("check_m",label="Market", value = T),
+                                                # checkboxInput("check_cr",label="Crime", value = T)
                                                 #checkboxInput("clear", label = "CLEAR ALL")
                                             ),
                                             div(id = "action",
