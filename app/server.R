@@ -366,19 +366,22 @@ shinyServer(function(input, output,session){
                                     ),
                                   options = list("sScrollX" = "100%", "bLengthChange" = FALSE)) 
   ##recommad map
-   # 
-   # observeEvent(areas,
-   #              {
-   #                leafletProxy("map3",data=subdat$zipcode %in% areas())%>%
-   #                  addPolygons(stroke = T, weight=1, color = "#66A5AD")
-   #                })
-
-   # observeEvent(output$recom$Zipcode,
-   #   {
-   #     leafletProxy("map3",data=subdat$zipcode %in% areas)%>%
-   #                 addPolygons(stroke = T, weight=1, color = "#66A5AD")
-   #              })
-   # 
+  observe({
+    if(length(areas())!=0){
+      leafletProxy("map3")%>%clearGroup(group="new_added")%>% 
+        addPolygons(data=subset(subdat, subdat$ZIPCODE%in% areas()),
+                    weight = 2,
+                    color = "#34675C",
+                    fillColor = "#B3C100",
+                    fillOpacity=0.7,
+                    group="new_added")
+    }
+    
+    else{
+      leafletProxy("map3")%>%clearGroup(group="new_added")
+    }
+  })
+  
   
      ##########################################################################
      ## Panel 4: contact ####################################################

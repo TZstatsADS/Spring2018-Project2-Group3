@@ -13,8 +13,8 @@ shinyUI(
                                         tags$style(type = "text/css", ".outer {position: fixed; top: 41px; left: 0; right: 0; bottom: 0; overflow: hidden; padding: 0}"),
                                         leafletOutput("map", width = "120%", height = "120%"),
                                         absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
-                                                      top = 100, left = 10, height = "auto",width = 242,
-                                                      h2("All about Maps",align="center"),
+                                                      top = 100, left = 10, height = "auto",width = 237,
+                                                      h2("All about Map",align="center"),
                                                       hr(),
                                                       h3("Click a Place on the Heatmap",align="center"),
                                                       hr(),
@@ -83,7 +83,7 @@ shinyUI(
                                      
                               fluidRow(
                                 column(3,
-                                       h4(strong("Choose What You Like"), color ="#4CB5F5"),
+                                       h1("Choose What You Like"),
                                        div(id = "action",actionButton("no_rec2", "Reset"))),
                                 column(3,
                                        selectInput("check2_cb", "Club/Bar:", list("Who Cares","Emmm","Let's party!"))),
