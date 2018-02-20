@@ -104,11 +104,17 @@ shinyUI(
                               )))
                               ),
                            
-                           tabPanel("Contact"
+                           tabPanel("Contact",fluidPage(
+                             fluidRow(
+                                      tags$img(height = 300, src = "icon/1.png"),
+                                      tags$img(src = "icon/3.png"),
+                                      tags$img(src = "icon/4.png"),
+                                      tags$img(src = "icon/5.png"),
+                                      tags$img(src = "icon/6.png")))
+                           )
+                                  
+                          
                            
-                                    
-                                    
-                                    )
                            )
                 )
         

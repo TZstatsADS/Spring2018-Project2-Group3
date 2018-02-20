@@ -366,34 +366,27 @@ shinyServer(function(input, output,session){
                                     ),
                                   options = list("sScrollX" = "100%", "bLengthChange" = FALSE)) 
   ##recommad map
+   # 
+   # observeEvent(output$recom$Zipcode,
+   #              {
+   #                leafletProxy("map3",data=subdat$zipcode %in% areas())%>%
+   #                  addPolygons(stroke = T, weight=1, color = "#66A5AD")
+   #                })
   
-  # observeEvent(output$recom$Zipcode,
-  #              {
-  #                leafletProxy("map3",data=subdat$zipcode %in% areas())%>%
-  #                  addPolygons(stroke = T, weight=1, color = "#66A5AD")
-  #                })
-  # 
+   # observeEvent(output$recom$Zipcode,
+   #   {
+   #     leafletProxy("map3",data=subdat$zipcode %in% areas)%>%
+   #                 addPolygons(stroke = T, weight=1, color = "#66A5AD")
+   #              })
+   # 
   
      ##########################################################################
      ## Panel 4: contact ####################################################
      ########################################################################## 
   
-
-  ui <- basicPage(
-    plotOutput("plot1")
-  )
-  
-  server <- function(input, output) {
-    output$plot1 <- renderPlot({
-      p = ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, color = continent, frame = year)) +
-        geom_point() +
-        scale_x_log10()
-      
-      animate(p)
-      
-    })
+ 
     
-  }
+    
 })
 
 
