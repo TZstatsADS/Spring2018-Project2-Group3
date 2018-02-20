@@ -367,12 +367,12 @@ shinyServer(function(input, output,session){
                                   options = list("sScrollX" = "100%", "bLengthChange" = FALSE)) 
   ##recommad map
    # 
-   # observeEvent(output$recom$Zipcode,
+   # observeEvent(areas,
    #              {
    #                leafletProxy("map3",data=subdat$zipcode %in% areas())%>%
    #                  addPolygons(stroke = T, weight=1, color = "#66A5AD")
    #                })
-  
+
    # observeEvent(output$recom$Zipcode,
    #   {
    #     leafletProxy("map3",data=subdat$zipcode %in% areas)%>%

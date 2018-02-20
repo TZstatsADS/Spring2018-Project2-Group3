@@ -1,0 +1,32 @@
+@import url("//fonts.googleapis.com/css?family=Lobster|Cabin:400,700");
+
+h2 {
+  font-family: 'Lobster', cursive;
+  font-size: 2.1em;
+  font-weight: 650;
+  line-height: 1.1;
+  color: #C60000;
+}
+
+h3{
+  font-family: 'Nanum Pen Script', cursive;
+  line-height: 1;
+  font-size: 1.5em;
+  color: #D72C16;
+}
+
+h4{
+  margin-left: 15px;
+  line-height: 0.9
+  font-size: 1em;
+  color: #20232A;
+}
+
+h5{
+  line-height: 0.9;
+  font-size: 1.1em;
+  color: #ACBEBE;
+}
+
+
+

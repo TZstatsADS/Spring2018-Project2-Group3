@@ -4,34 +4,34 @@ library(data.table)
 library(plotly)
 library(DT)
 shinyUI(
-        fluidPage(
-                navbarPage("Where to rent", 
+        fluidPage(includeCSS("style.css"),
+                navbarPage("Where to rent in Manhattan",
                            #tabPanel("Introduction"),
                            #navbarMenu(title="Begin",
-                              tabPanel("Summary",
+                              tabPanel("All about map",
                                     div(class="outer",
                                         tags$style(type = "text/css", ".outer {position: fixed; top: 41px; left: 0; right: 0; bottom: 0; overflow: hidden; padding: 0}"),
-                                        leafletOutput("map", width = "100%", height = "100%"),
+                                        leafletOutput("map", width = "120%", height = "120%"),
                                         absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE, draggable = FALSE,
-                                                      top = 110, left = 10, height = "auto",width = 250,
-                                                      h3("All about Maps",align="center"),
+                                                      top = 100, left = 10, height = "auto",width = 242,
+                                                      h2("All about Maps",align="center"),
                                                       hr(),
-                                                      h4("Click a Place",align="left"),
+                                                      h3("Click a Place on the Heatmap",align="center"),
                                                       hr(),
-                                                          h6(textOutput("zip_text"),align="left"),
-                                                          h6(textOutput("avgprice_text"),align="left"),
-                                                          h6(textOutput("avgstudio_text"),align="left"),
-                                                          h6(textOutput("avg1b_text"),align="left"),
-                                                          h6(textOutput("avg2b_text"),align="left"),
-                                                          h6(textOutput("avg3b_text"),align="left"),
-                                                          h6(textOutput("avg4b_text"),align="left"),
-                                                          h6(textOutput("transportation_text"),align="left"),
-                                                          h6(textOutput("amenities_text"),align="left"),
-                                                          h6(textOutput("crime_text"),align="left")
+                                                          h4(textOutput("zip_text"),align="left"),
+                                                          h4(textOutput("avgprice_text"),align="left"),
+                                                          h4(textOutput("avgstudio_text"),align="left"),
+                                                          h4(textOutput("avg1b_text"),align="left"),
+                                                          h4(textOutput("avg2b_text"),align="left"),
+                                                          h4(textOutput("avg3b_text"),align="left"),
+                                                          h4(textOutput("avg4b_text"),align="left"),
+                                                          h4(textOutput("transportation_text"),align="left"),
+                                                          h4(textOutput("amenities_text"),align="left"),
+                                                          h4(textOutput("crime_text"),align="left")
                                                       ,
                                                       hr(),
-                                                      checkboxInput("click_multi", "Show Your Trace", value = F),
-                                                      actionButton("click_reset_buttom",label="Click here back to original view")
+                                                      checkboxInput("click_multi", h5("Show Your Trace"), value = F),
+                                                      actionButton("click_reset_buttom",label=(h5("Click here back to original view")))
 
                                         ))
                                     ),
@@ -64,7 +64,7 @@ shinyUI(
                                             )
                                             ),
                                           mainPanel(
-                                            leafletOutput("map2", width = "100%", height = "700px")
+                                            leafletOutput("map2", width = "120%", height = "700px")
                                           ))
                                     )
                           ),
@@ -83,7 +83,7 @@ shinyUI(
                                      
                               fluidRow(
                                 column(3,
-                                       h4("Choose What You Like"),
+                                       h4(strong("Choose What You Like"), color ="#4CB5F5"),
                                        div(id = "action",actionButton("no_rec2", "Reset"))),
                                 column(3,
                                        selectInput("check2_cb", "Club/Bar:", list("Who Cares","Emmm","Let's party!"))),
@@ -105,15 +105,12 @@ shinyUI(
                               ),
                            
                            tabPanel("Contact",fluidPage(
-                             fluidRow(
-                                      tags$img(height = 300, src = "icon/1.png"),
-                                      tags$img(src = "icon/3.png"),
-                                      tags$img(src = "icon/4.png"),
-                                      tags$img(src = "icon/5.png"),
-                                      tags$img(src = "icon/6.png")))
+                             fluidRow(tags$img(height = 120, src = "icon/1.png"),align="center"),
+                             fluidRow(tags$img(height = 120,src = "icon/2.png"),align="center"),
+                             fluidRow(tags$img(height = 120,src = "icon/5.png"),align="center"),
+                             fluidRow(tags$img(height = 120,src = "icon/3.png"),align="center"),
+                             fluidRow(tags$img(height = 120,src = "icon/4.png"),align="center"))
                            )
-                                  
-                          
                            
                            )
                 )
