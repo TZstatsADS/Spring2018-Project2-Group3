@@ -269,10 +269,7 @@ shinyServer(function(input, output,session){
     updateSelectInput(session, "check2_ma",selected = "1")
   })
   
-  
-  ##Table
-  output$recom <- renderDataTable(show, options = list("sScrollX" = "100%", "bLengthChange" = FALSE))
-  
+
   
   ##Recommand
   areas  <- reactive({
