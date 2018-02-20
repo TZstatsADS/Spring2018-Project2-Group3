@@ -107,10 +107,10 @@ shinyUI(
                            
                            tabPanel("Contact",fluidPage(
                              fluidRow(textOutput("cwtm"),tags$img(height = 120, src = "icon/1.png"),align="center"),
-                             fluidRow(textOutput("yxrm"),tags$img(height = 120,src = "icon/2.png"),align="center"),
-                             fluidRow(textOutput("tym"),tags$img(height = 120,src = "icon/5.png"),align="center"),
-                             fluidRow(textOutput("jhym"),tags$img(height = 120,src = "icon/3.png"),align="center"),
-                             fluidRow(textOutput("dxnm"),tags$img(height = 120,src = "icon/4.png"),align="center"))
+                             fluidRow(textOutput("yxrm"),tags$img(height = 120, src = "icon/2.png"),align="center"),
+                             fluidRow(textOutput("tym"),tags$img(height = 120, src = "icon/5.png"),align="center"),
+                             fluidRow(textOutput("jhym"),tags$img(height = 120, src = "icon/3.png"),align="center"),
+                             fluidRow(textOutput("dxnm"),tags$img(height = 120, src = "icon/4.png"),align="center"))
                            )
                            
                            )

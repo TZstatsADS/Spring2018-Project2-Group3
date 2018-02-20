@@ -54,6 +54,14 @@ div.third {
     filter: alpha(opacity=60); /* For IE8 and earlier */
 }
 
+@media screen and (max-width: 1000px) and (min-width: 700px) {
+    ul li a:before {
+        content: "Email: ";
+        font-style: italic;
+        color: #666666;
+    }
+}
+
 @media screen and (min-width: 1001px) {
     ul li a:after {
         content: " (" attr(data-email) ")";
