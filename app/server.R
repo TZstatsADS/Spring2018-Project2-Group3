@@ -55,8 +55,9 @@ shinyServer(function(input, output,session){
        if(input$click_multi == FALSE) leafletProxy('map') %>%clearGroup("click")
        click <- input$map_shape_click
        leafletProxy('map')%>%
-         addMarkers(click$lng, click$lat, group="click", icon=list(iconUrl='icon/leaves.png',iconSize=c(25,25)))
+         addMarkers(click$lng, click$lat, group="click", icon=list(iconUrl='icon/leaves.png',iconSize=c(28,28)))
     
+       ##info
        zip_sel<-as.character(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)
        zip<-paste("ZIPCODE: ",zip_sel)
        price_avg<-paste("Average Price: $",avg_price_zip.df[avg_price_zip.df$region==zip_sel,"value"],sep="")

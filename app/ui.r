@@ -30,7 +30,8 @@ shinyUI(
                                                           h4(textOutput("crime_text"),align="left")
                                                       ,
                                                       hr(),
-                                                      checkboxInput("click_multi", h5("Show Your Trace"), value = F),
+                  
+                                                      checkboxInput("click_multi",label=(h5("Show Your Trace")), value = F),
                                                       actionButton("click_reset_buttom",label=(h5("Click here back to original view")))
 
                                         ))
@@ -105,11 +106,11 @@ shinyUI(
                               ),
                            
                            tabPanel("Contact",fluidPage(
-                             fluidRow(tags$img(height = 120, src = "icon/1.png"),align="center"),
-                             fluidRow(tags$img(height = 120,src = "icon/2.png"),align="center"),
-                             fluidRow(tags$img(height = 120,src = "icon/5.png"),align="center"),
-                             fluidRow(tags$img(height = 120,src = "icon/3.png"),align="center"),
-                             fluidRow(tags$img(height = 120,src = "icon/4.png"),align="center"))
+                             fluidRow(textOutput("cwtm"),tags$img(height = 120, src = "icon/1.png"),align="center"),
+                             fluidRow(textOutput("yxrm"),tags$img(height = 120,src = "icon/2.png"),align="center"),
+                             fluidRow(textOutput("tym"),tags$img(height = 120,src = "icon/5.png"),align="center"),
+                             fluidRow(textOutput("jhym"),tags$img(height = 120,src = "icon/3.png"),align="center"),
+                             fluidRow(textOutput("dxnm"),tags$img(height = 120,src = "icon/4.png"),align="center"))
                            )
                            
                            )
