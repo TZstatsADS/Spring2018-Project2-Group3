@@ -28,7 +28,18 @@ On "Compare" page, stacked bar plots are displayed.
 
 
 
-+ **Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed to design this app, collect and clean data. Xueying Ding developed "Compare" server and assisted others in details.
++ **Contribution statement**: ([default](doc/a_note_on_contributions.md)) 
++  Data acquisition and cleaning: everyone
++  Summarised and combined acquitted data into one csv file (rank_all.csv): Wanting Cui
++  UI Design: Xiuruo Yan
++  Server- Heat Map: Hanying Ji (mostly), Yu Tong, Xiuruo Yan
++  Server- Dot Position: Yu Tong (mostly), Xiuruo Yan
++  Server- Recommendation: Wanting Cui (mostly), Xiuruo Yan, Yu Tong
++  Server- Compare: Xueying Ding (mostly), Wanting Cui
++  Server- Contact: Xiuruo Yan 
++  Debug help: Yu Tong
+
+All team members approve our work presented in this GitHub repository including this contributions statement.
 
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
