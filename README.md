@@ -18,7 +18,7 @@ On “Dot Details” page, users can view all dot details and select kinds of am
 On “Recommendation” page, tables will list data in those regions recommended by the app basing on users' selection while small map will show these regions. When they click “compare” button, they can view stacked bar plot on next page and learn difference in regions and components.
 
 
-![screenshot](doc/screenshot.jpg)
+![screenshot](doc/screenshot.png)
 
 
 + **Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
