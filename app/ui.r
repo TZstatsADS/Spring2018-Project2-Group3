@@ -64,7 +64,7 @@ shinyUI(
                                                
                                             )),
                                           mainPanel(
-                                            leafletOutput("map2", width = "120%", height = "auto")
+                                            leafletOutput("map2", width = "120%", height = "700px")
                                           ))
                                     )
                           ),
