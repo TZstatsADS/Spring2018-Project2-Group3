@@ -2,32 +2,27 @@
 
 ### [Project Description](doc/project2_desc.md)
 
-![screenshot](doc/screenshot2.png)
+![screenshot](doc/screenshot.jpg)
 
-In this second project of GR5243 Applied Data Science, we develop an *Exploratory Data Analysis and Visualization* shiny app on a topic of your choice using U.S. government open data released on the [data.gov](https://data.gov/) website. See [Project 2 Description](doc/project2_desc.md) for more details.  
 
-The **learning goals** for this project is:
 
-- business intelligence for data science
-- data cleaning
-- data visualization
-- systems development/design life cycle
-- shiny app/shiny server
-
-*The above general statement about project 2 can be removed once you are finished with your project. It is optional.
-
-## Project Title Lorem ipsum dolor sit amet
+## Project Title： Rent Smart
 Term: Spring 2018
 
-+ Team #
-+ **Projec title**: + Team members
-	+ team member 1
-	+ team member 2
-	+ team member 3
-	+ team member 4
-	+ team member 5
++ Team #3
++ **Projec title**: Rent Smart
+	+ Wanting Cui
+	+ Xueying Ding
+	+ Hanying Ji
+	+ Yu Tong
+	+ Xiuruo Yan
 
-+ **Project summary**: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
++ **Project summary**: 
+This app provides a platform for New Yorkers to search house rental information based on their own preferences. We take price, house types, all kinds of amenities and safety into consideration.
+On “All about map” page, users will get a first impression on rental prices in Manhattan, the redder the more expensive. Move mouse and click regions they are interested in, they will get basic information about it. We also give users option to keep track of their choices. 
+On “Dot Details” page, users can view all dot details and select kinds of amenities according to their preferences to roughly inspect what's the distribution of the things they consider most. 
+On “Recommendation” page, tables will list data in those regions recommended by the app basing on users' selection while small map will show these regions. When they click “compare” button, they can view stacked bar plot on next page and learn difference in regions and components.
+
 
 + **Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
 
