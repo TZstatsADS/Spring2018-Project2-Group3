@@ -18,6 +18,10 @@ art <- read.csv("../data/theatre_dxy.csv",as.is = T)
 rank_all <- read.csv("../data/rank_all.csv",as.is = T)
 show <- read.csv("../output/show.csv",as.is = T)
 show <- show[,-1]
+bar1 <- read.csv("../data/Bars.csv", as.is = T)
+bar2 <- read.csv("../data/Clubs.csv", as.is = T)
+bar3 <- read.csv("../data/Wine.csv", as.is = T)
+bar <- rbind(bar1, bar2, bar3)
 
 
 
@@ -151,10 +155,9 @@ shinyServer(function(input, output,session){
     
     
        ###  bar
-       # leafletProxy("map2", data = bar) %>%
-       #  addMarkers(~LONGITUDE,~LATITUDE,popup=~LOCATION,group="bar",options=marker_opt,icon=list(iconUrl='icon/bar.png',iconSize=c(15,15)))
-    
-    
+       marker_opt <- markerOptions(opacity=1,riseOnHover=T)
+       leafletProxy("map2", data = bar) %>%
+         addMarkers(~Longitude,~Latitude,popup = ~Doing.Business.As..DBA.,group="bar",options=marker_opt,icon=list(iconUrl='icon/bar.png',iconSize=c(15,15)))
     
     
        m
@@ -238,7 +241,10 @@ shinyServer(function(input, output,session){
   }, ignoreNULL = FALSE)
   
   ### bar
-  # observeEvent(input$check_cb)
+   observeEvent(input$check_cb1, {
+     if(input$check_cb1) leafletProxy("map2") %>% showGroup("bar")
+     else{leafletProxy("map2") %>% hideGroup("bar")}
+   })
   
   
      ##########################################################################
@@ -387,7 +393,7 @@ shinyServer(function(input, output,session){
      ##########################################################################
      ## Panel 4: contact ####################################################
      ########################################################################## 
-  
+     
  
     
     

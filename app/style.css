@@ -38,6 +38,12 @@ h5{
   color: #ACBEBE;
 }
 
+h6{
+  line-height: 1;
+  font-size: 1.2em;
+  color: #20232A;
+}
+
 
 div.first {
     opacity: 0.1;
@@ -54,6 +60,7 @@ div.third {
     filter: alpha(opacity=60); /* For IE8 and earlier */
 }
 
+/*
 @media screen and (max-width: 1000px) and (min-width: 700px) {
     ul li a:before {
         content: "Email: ";
@@ -70,3 +77,4 @@ div.third {
         color: #666666;
     }
 }
+*/

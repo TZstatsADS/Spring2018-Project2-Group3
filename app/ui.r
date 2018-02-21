@@ -106,13 +106,33 @@ shinyUI(
                               ),
                            
                            tabPanel("Contact",fluidPage(
-                             fluidRow(textOutput("cwtm"),tags$img(height = 120, src = "icon/1.png"),align="center"),
-                             fluidRow(textOutput("yxrm"),tags$img(height = 120, src = "icon/2.png"),align="center"),
-                             fluidRow(textOutput("tym"),tags$img(height = 120, src = "icon/5.png"),align="center"),
-                             fluidRow(textOutput("jhym"),tags$img(height = 120, src = "icon/3.png"),align="center"),
-                             fluidRow(textOutput("dxnm"),tags$img(height = 120, src = "icon/4.png"),align="center"))
+                             sidebarLayout(
+                               sidebarPanel(
+                                            h2("Contact Information"),
+                                            hr(),
+                                            h6("We are all Columbia University students at Department of Statistics.
+                                               If you are interested in our project, you can contact us."),
+                                            hr(),
+                                            h6("Wanting Cui : "),
+                                            h6("wc2619@columbia.edu"),
+                                            h6("Xueying Ding: "),
+                                            h6("xd2196@columbia.edu"),
+                                            h6("Hanying Ji  : "),
+                                            h6("hj2473@columbia.edu"),
+                                            h6("Yu      Tong : "),
+                                            h6("yt2594@columbia.edu"),
+                                            h6("Xiuruo  Yan  : "),
+                                            h6("xy2358@columbia.edu")
+                               ),
+                               mainPanel(
+                                 fluidRow(textOutput("cwtm"),tags$img(height = 120, src = "icon/1.png"),align="center"),
+                                 fluidRow(textOutput("yxrm"),tags$img(height = 120, src = "icon/2.png"),align="center"),
+                                 fluidRow(textOutput("tym"),tags$img(height = 120, src = "icon/5.png"),align="center"),
+                                 fluidRow(textOutput("jhym"),tags$img(height = 120, src = "icon/3.png"),align="center"),
+                                 fluidRow(textOutput("dxnm"),tags$img(height = 120, src = "icon/4.png"),align="center"))
                            )
-                           
+                           )
+                           )
                            )
                 )
         
