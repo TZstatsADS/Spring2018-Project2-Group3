@@ -3,21 +3,21 @@ library(ggplot2)
 library(dplyr)
 library(DT)
 
-load("../output/price.RData")
-load("../output/avg_price_zip.RData")
-load("../output/subdat.RData")
-bus <- read.csv("../data/bus_stop.csv",as.is = T)
-subway <- read.csv("../data/subwayinfo.csv", as.is = T)
-restaurant <- read.csv("../data/res.fil1.csv",as.is = T)
-crime <- read.csv("../data/crime_data.csv",as.is = T)
-market <- read.csv("../data/market_dxy.csv",as.is = T)
-art <- read.csv("../data/theatre_dxy.csv",as.is = T)
-rank_all <- read.csv("../data/rank_all.csv",as.is = T)
-show <- read.csv("../output/show.csv",as.is = T)
+load("./output/price.RData")
+load("./output/avg_price_zip.RData")
+load("./output/subdat.RData")
+bus <- read.csv("./data/bus_stop.csv",as.is = T)
+subway <- read.csv("./data/subwayinfo.csv", as.is = T)
+restaurant <- read.csv("./data/res.fil1.csv",as.is = T)
+crime <- read.csv("./data/crime_data.csv",as.is = T)
+market <- read.csv("./data/market_dxy.csv",as.is = T)
+art <- read.csv("./data/theatre_dxy.csv",as.is = T)
+rank_all <- read.csv("./data/rank_all.csv",as.is = T)
+show <- read.csv("./output/show.csv",as.is = T)
 show <- show[,-1]
-bar1 <- read.csv("../data/Bars.csv", as.is = T)
-bar2 <- read.csv("../data/Clubs.csv", as.is = T)
-bar3 <- read.csv("../data/Wine.csv", as.is = T)
+bar1 <- read.csv("./data/Bars.csv", as.is = T)
+bar2 <- read.csv("./data/Clubs.csv", as.is = T)
+bar3 <- read.csv("./data/Wine.csv", as.is = T)
 bar <- rbind(bar1, bar2, bar3)
 
 
@@ -148,13 +148,13 @@ shinyServer(function(input, output,session){
        marker_opt <- markerOptions(opacity=0.8,riseOnHover=T)
        leafletProxy("map2", data = bus) %>%
          addMarkers(~LONGITUDE,~LATITUDE,popup=~LOCATION,group="bus",options=marker_opt,icon=list(iconUrl='icon/bus.png',iconSize=c(15,15)))
-       leafletProxy("map2", data = subway) %>%
+       leafletProxy("map2", data = subway[subway$zipcode%in%bus$zipcode, ]) %>%
          addMarkers(~Station.Longitude,~Station.Latitude,popup=~Station.Name,group="subway",options=marker_opt,icon=list(iconUrl='icon/subway.png',iconSize=c(15,15)))
     
     
        ###  bar
        marker_opt <- markerOptions(opacity=1,riseOnHover=T)
-       leafletProxy("map2", data = bar) %>%
+       leafletProxy("map2", data = bar[bar$Zip %in% bus$zipcode,]) %>%
          addMarkers(~Longitude,~Latitude,popup = ~Doing.Business.As..DBA.,group="bar",options=marker_opt,icon=list(iconUrl='icon/bar.png',iconSize=c(15,15)))
     
     
@@ -162,6 +162,7 @@ shinyServer(function(input, output,session){
      })
 
   
+     ##select all
      observeEvent(input$all_types, {
        updateSelectInput(session, "check_rest1", selected = list("American", "Chinese", "Italian", "Japanese", "Pizza", "Others"))
        updateSelectInput(session, "check_tran1", selected =  list("Bus","Subway"))
@@ -171,7 +172,8 @@ shinyServer(function(input, output,session){
        updateSelectInput(session, "check_cr1", selected =  list("ROBBERY", "PETIT LARCENY", "HARRASSMENT 2", "GRAND LARCENY", "DANGEROUS DRUGS",
                                                                 "ASSAULT 3 & RELATED OFFENSES","Others"))
      })
-  
+     
+     ##clear all
      observeEvent(input$no_types, {
        updateSelectInput(session, "check_rest1", selected =  "")
        updateSelectInput(session, "check_tran1", selected =  "")
@@ -181,6 +183,16 @@ shinyServer(function(input, output,session){
        updateSelectInput(session, "check_cr1", selected =  "")
      })
   
+     ##reset all
+     observeEvent(input$click_reset_dot,{
+       if(input$click_reset_dot){
+         leafletProxy("map2")%>%
+           setView(lng = -73.96407, lat = 40.80754, zoom = 16)
+       }
+     })
+
+     
+     
   ### food
   observeEvent(input$check_rest1, {
     if("Chinese" %in% input$check_rest1) leafletProxy("map2") %>% showGroup("chin")
@@ -268,13 +280,13 @@ shinyServer(function(input, output,session){
     updateSliderInput(session, "check2_pr",value = 5400)
     updateSelectInput(session, "check2_ty",selected="")
     updateSelectInput(session, "check2_re",selected="")
-    updateSelectInput(session, "check2_tr",selected = "Who Cares")
-    updateSelectInput(session, "check2_cb",selected = "Who Cares")
-    updateSelectInput(session, "check2_ct",selected = "1")
-    updateSelectInput(session, "check2_ma",selected = "1")
+    updateSelectInput(session, "check2_tr",selected = "Who Cares.")
+    updateSelectInput(session, "check2_cb",selected = "I'm allergic.")
+    updateSelectInput(session, "check2_ct",selected = "Netflix for life.")
+    updateSelectInput(session, "check2_ma",selected = "Just Amazon.")
   })
   
-
+  
   
   ##Recommand
   areas  <- reactive({
@@ -322,31 +334,31 @@ shinyServer(function(input, output,session){
     } else if("Others" %in% input$check2_re) {"ranking.Others <= 23"
     } else {"ranking.Others <= 46 |is.na(ranking.Others) == TRUE"}
     
-    trans.fil <- if(input$check2_tr == "It's everything"){
+    trans.fil <- if(input$check2_tr == "It's everything."){
       1:16
-    } else if(input$check2_tr == "Emmm"){
+    } else if(input$check2_tr == "Emmm."){
       1:32
     } else {
       c(1:46, NA)
     }
     
     club.fil <- if(input$check2_cb == "Let's party!"){1:16
-    } else if(input$check2_cb == "Emmm"){
+    } else if(input$check2_cb == "Drink one or two."){
       1:32
     } else {
       c(1:46, NA)
     }
     
-    theatre.fil<- if(input$check2_ct == "3"){1:16
-    } else if(input$check2_ct == "2"){
+    theatre.fil<- if(input$check2_ct == "Theatre goers."){1:16
+    } else if(input$check2_ct == "It depends."){
       1:32
     } else {
       c(1:46, NA)
     }
     
-    market.fil <- if(input$check2_ma == "3"){
+    market.fil <- if(input$check2_ma == "Love it!"){
       1:16
-    } else if(input$check2_ma == "2"){
+    } else if(input$check2_ma == "It depends."){
       1:32
     } else {
       c(1:46, NA)

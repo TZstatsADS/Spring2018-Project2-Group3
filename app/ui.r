@@ -5,7 +5,7 @@ library(plotly)
 library(DT)
 shinyUI(
         fluidPage(includeCSS("style.css"),
-                navbarPage("Where to rent in Manhattan",id = "inTabset",
+                navbarPage(p(class="h","Rent Smart"),id = "inTabset",
                            #tabPanel("Introduction"),
                            #navbarMenu(title="Begin",
                               tabPanel("All about map",
@@ -33,8 +33,7 @@ shinyUI(
                   
                                                       checkboxInput("click_multi",label=(h5("Show Your Trace")), value = F),
                                                       actionButton("click_reset_buttom",label=(h5("Click here back to original view")))
-
-                                        ))
+                                                       ))
                                     ),
                                     
                            tabPanel("Dot Details",
@@ -59,8 +58,10 @@ shinyUI(
                                                
                                             ),
                                             div(id = "action",
-                                                actionButton("all_types", "Select ALL"),
-                                                actionButton("no_types", "Clear ALL")
+                                                actionButton("all_types", label=(h5("Select ALL"))),
+                                                actionButton("no_types", label=(h5("Clear ALL"))),
+                                                actionButton("click_reset_dot",label=(h5("Click here back to original view")))
+                                               
                                             )),
                                           mainPanel(
                                             leafletOutput("map2", width = "120%", height = "700px")
@@ -78,7 +79,7 @@ shinyUI(
                                column(3,
                                       selectInput("check2_re", "Restaurant Type:", c("Food I Like"="",list("American", "Chinese", "Italian", "Japanese", "Pizza", "Others")), multiple=TRUE)),
                                column(3,
-                                      selectInput("check2_tr", "Transportation:", list("Who Cares","Emmm","It's everything")))),
+                                      selectInput("check2_tr", "Transportation:", list("Who Cares.","Emmm.","It's everything.")))),
                                              
                               fluidRow(
                                 column(3,
@@ -90,11 +91,11 @@ shinyUI(
                                                 div(actionButton("click_jump_next","View Compare"))
                                        ))),
                                 column(3,
-                                       selectInput("check2_cb", "Club/Bar:", list("Who Cares","Emmm","Let's party!"))),
+                                       selectInput("check2_cb", "Club/Bar:", list("I'm allergic.","Drink one or two.","Let's party!"))),
                                 column(3,
-                                       selectInput("check2_ct", "Cinema/Theater:",list("1","2","3"))),
+                                       selectInput("check2_ct", "Cinema/Theater:",list("Netflix for life.","It depends.","Theatre goers."))),
                                 column(3,
-                                       selectInput("check2_ma","Market:",list("1","2","3")))),
+                                       selectInput("check2_ma","Market:",list("Just Amazon.","It depends.","Love it!")))),
                                    
                               hr(),
                               
