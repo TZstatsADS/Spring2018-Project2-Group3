@@ -12,6 +12,9 @@ Term: Spring 2018
 	+ Xiuruo Yan
 
 + **Project summary**: 
+
+![screenshot](doc/screenshot.png)
+
 This app provides a platform for New Yorkers to search house rental information based on their own preferences. We take price, house types, all kinds of amenities and safety into consideration.
 
 On “All about map” page, users will get a first impression on rental prices in Manhattan, the redder the more expensive. Move mouse and click regions they are interested in, they will get basic information about it. We also give users option to keep track of their choices. 
@@ -22,9 +25,6 @@ On “Recommendation” page, tables will list data in those regions recommended
 
 On "Compare" page, stacked bar plots are displayed.
 
-
-
-![screenshot](doc/screenshot.png)
 
 
 + **Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
