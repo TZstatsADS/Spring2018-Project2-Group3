@@ -30,7 +30,7 @@ On "Compare" page, stacked bar plots are displayed.
 
 + **Contribution statement**: ([default](doc/a_note_on_contributions.md)) 
 +  Data acquisition and cleaning: everyone
-+  Summarised and combined acquitted data into one csv file (rank_all.csv): Wanting Cui
++  Summarised and combined acquitted data into one csv file (rank_all.csv): Wanting Cui (mostly), Xueying Ding
 +  UI Design: Xiuruo Yan
 +  Server- Heat Map: Hanying Ji (mostly), Yu Tong, Xiuruo Yan
 +  Server- Dot Position: Yu Tong (mostly), Xiuruo Yan
