@@ -5,7 +5,7 @@ library(plotly)
 library(DT)
 shinyUI(
         fluidPage(includeCSS("style.css"),
-                navbarPage("Where to rent in Manhattan",
+                navbarPage("Where to rent in Manhattan",id = "inTabset",
                            #tabPanel("Introduction"),
                            #navbarMenu(title="Begin",
                               tabPanel("All about map",
@@ -89,7 +89,7 @@ shinyUI(
                                          column(2,
                                                 div(id = "action",actionButton("no_rec2", "Reset"))),
                                          column(1,offset = 2,
-                                                div(id = "action",actionButton("click_jump_next","View Compare"))
+                                                div(actionButton("click_jump_next","View Compare"))
                                        ))),
                                 column(3,
                                        selectInput("check2_cb", "Club/Bar:", list("Who Cares","Emmm","Let's party!"))),

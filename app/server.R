@@ -390,11 +390,11 @@ shinyServer(function(input, output,session){
      ##########################################################################
      ## Panel 4: compare ######################################################
      ########################################################################## 
-     # observeEvent(input$click_jump_next,{
-     #   if(input$click_jump_next){
-     #     
-     #   }
-     # })
+     observeEvent(input$click_jump_next,{
+       if(input$click_jump_next){
+         updateTabsetPanel(session, "inTabset",selected = "Compare")
+       }
+     })
 
     
     
