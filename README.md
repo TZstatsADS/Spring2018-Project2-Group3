@@ -22,13 +22,14 @@ On “All about map” page, users will get a first impression on rental prices 
 
 On “Dot Details” page, users can view all dot details and select kinds of amenities according to their preferences to roughly inspect what's the distribution of the things they consider most. 
 
-On “Recommendation” page, tables will list data in those regions recommended by the app basing on users' selection while small map will show these regions. When they click “compare” button, they can view stacked bar plot on next page and learn difference in regions and components.
+On “Recommendation” page, tables will list data in those regions recommended by the app basing on users' selection while small map will show these regions. When they click “View Compare” button, they can view stacked bar plot on next page and learn difference in regions and components.
 
 On "Compare" page, stacked bar plots are displayed.
 
 
 
-+ **Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
++ **Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed to design this app, collect and clean data. Xueying Ding developed "Compare" server and assisted others in details.
+
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 
