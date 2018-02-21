@@ -114,7 +114,7 @@ shinyUI(
 
                            tabPanel("Compare",fluidPage(
                              fluidRow(column(6,
-                                             p(class = "cr","Crime"),align= "center"
+                                             p(class = "cr","Crime Dec.2017"),align= "center"
                                              ),
                                       column(6,
                                              p(class = "re","Restaurant"),align= "center")
