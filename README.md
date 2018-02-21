@@ -5,7 +5,7 @@ Term: Spring 2018
 
 
 + Team #3
-+ **Projec title**: [Rent Smart](https://corgi.shinyapps.io/aapp/)
++ **Projec title**: [Rent Smart](https://corgi.shinyapps.io/rent_smart/)
 	+ Wanting Cui
 	+ Xueying Ding
 	+ Hanying Ji
