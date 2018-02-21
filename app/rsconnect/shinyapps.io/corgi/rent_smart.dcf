@@ -1,0 +1,12 @@
+name: rent_smart
+title: rent smart
+username:
+account: corgi
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 286010
+bundleId: 1233684
+url: https://corgi.shinyapps.io/rent_smart/
+when: 1519233402.7731
+asMultiple: FALSE
+asStatic: FALSE
