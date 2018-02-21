@@ -85,7 +85,12 @@ shinyUI(
                               fluidRow(
                                 column(3,
                                        h1("Choose What You Like"),
-                                       div(id = "action",actionButton("no_rec2", "Reset"))),
+                                       fluidRow(
+                                         column(2,
+                                                div(id = "action",actionButton("no_rec2", "Reset"))),
+                                         column(1,offset = 2,
+                                                div(id = "action",actionButton("click_jump_next","View Compare"))
+                                       ))),
                                 column(3,
                                        selectInput("check2_cb", "Club/Bar:", list("Who Cares","Emmm","Let's party!"))),
                                 column(3,
@@ -94,7 +99,8 @@ shinyUI(
                                        selectInput("check2_ma","Market:",list("1","2","3")))),
                                    
                               hr(),
-                              actionButton("click_jump_next","View Compare"),
+                              
+                              
                               
                               fluidRow(
                                 column(6,
@@ -105,6 +111,9 @@ shinyUI(
                                        dataTableOutput("recom")
                               )))
                               ),
+                          
+                          
+                          
                            tabPanel("Compare",fluidPage(
                              plotOutput("com_plot")
                            )
