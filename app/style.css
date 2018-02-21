@@ -44,6 +44,43 @@ h6{
   color: #20232A;
 }
 
+p.re{
+  font-family: 'Lobster', cursive;
+  font-size: 1.8em;
+  color: #EFB509;
+}
+
+p.cr{
+  font-family: 'Lobster', cursive;
+  font-size: 1.8em;
+  color: #113743;
+}
+
+p.ma{
+  font-family: 'Lobster', cursive;
+  font-size: 1.8em;
+  color: #5C821A;
+}
+
+p.ct{
+  font-family: 'Lobster', cursive;
+  font-size: 1.8em;
+  color: #A1D6E2;
+}
+
+p.ba{
+  font-family: 'Lobster', cursive;
+  font-size: 1.8em;
+  color: #F18D9E;
+}
+
+p.tr{
+  font-family: 'Lobster', cursive;
+  font-size: 1.8em;
+  color: #CE5A57;
+}
+
+
 
 div.first {
     opacity: 0.1;

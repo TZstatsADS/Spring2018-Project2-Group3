@@ -61,14 +61,13 @@ shinyUI(
                                             div(id = "action",
                                                 actionButton("all_types", "Select ALL"),
                                                 actionButton("no_types", "Clear ALL")
-
-                                            )
-                                            ),
+                                            )),
                                           mainPanel(
                                             leafletOutput("map2", width = "120%", height = "700px")
                                           ))
                                     )
                           ),
+                          
                            
                            tabPanel("Recommendation",fluidPage(
                               fluidRow(
@@ -81,7 +80,6 @@ shinyUI(
                                column(3,
                                       selectInput("check2_tr", "Transportation:", list("Who Cares","Emmm","It's everything")))),
                                              
-                                     
                               fluidRow(
                                 column(3,
                                        h1("Choose What You Like"),
@@ -112,10 +110,49 @@ shinyUI(
                               )))
                               ),
                           
-                          
-                          
+
                            tabPanel("Compare",fluidPage(
-                             plotOutput("com_plot")
+                             fluidRow(column(6,
+                                             p(class = "cr","Crime"),align= "center"
+                                             ),
+                                      column(6,
+                                             p(class = "re","Restaurant"),align= "center")
+                                      ),
+                             fluidRow(column(6,
+                                          plotOutput(outputId = "pic_cr")
+                                        ),
+                                      column(6,
+                                             plotOutput(outputId = "pic_re")
+                                             )),
+                             
+                             
+                             fluidRow(column(6,
+                                             p(class = "tr","Transportation"),align= "center"
+                             ),
+                             column(6,
+                                    p(class = "ba","Bar"),align= "center")
+                             ),
+                             fluidRow(
+                                      column(6,
+                                             plotOutput(outputId = "pic_tr")
+                                      ),
+                                      column(6,
+                                             plotOutput(outputId = "pic_ba")               
+                                             )),
+                             
+                             
+                             fluidRow(column(6,
+                                             p(class = "ct","Cinema/Theatre"),align= "center"
+                             ),
+                             column(6,
+                                    p(class = "ma","Market"),align= "center")
+                             ),
+                             fluidRow(column(6,
+                                             plotOutput(outputId = "pic_th")
+                                      ),
+                                      column(6,
+                                             plotOutput(outputId = "pic_ma")
+                                      ))
                            )
                            ),
                            
@@ -139,23 +176,16 @@ shinyUI(
                                             h6("xy2358@columbia.edu")
                                ),
                                mainPanel(
-                                 fluidRow(textOutput("cwtm"),tags$img(height = 120, src = "icon/1.png"),align="center"),
-                                 fluidRow(textOutput("yxrm"),tags$img(height = 120, src = "icon/2.png"),align="center"),
-                                 fluidRow(textOutput("tym"),tags$img(height = 120, src = "icon/5.png"),align="center"),
-                                 fluidRow(textOutput("jhym"),tags$img(height = 120, src = "icon/3.png"),align="center"),
-                                 fluidRow(textOutput("dxnm"),tags$img(height = 120, src = "icon/4.png"),align="center"))
-                           )
-                           )
-                           )
-                           )
+                                 fluidRow(tags$img(height = 120, src = "icon/1.png"),align="center"),
+                                 fluidRow(tags$img(height = 120, src = "icon/2.png"),align="center"),
+                                 fluidRow(tags$img(height = 120, src = "icon/5.png"),align="center"),
+                                 fluidRow(tags$img(height = 120, src = "icon/3.png"),align="center"),
+                                 fluidRow(tags$img(height = 120, src = "icon/4.png"),align="center")
+                                 )
+                           )))
+                
                 )
-        
+        )
 )
-
-
-
-
-
-
 
 

@@ -56,7 +56,7 @@ shinyServer(function(input, output,session){
        if(input$click_multi == FALSE) leafletProxy('map') %>%clearGroup("click")
        click <- input$map_shape_click
        leafletProxy('map')%>%
-         addMarkers(click$lng, click$lat, group="click", icon=list(iconUrl='icon/leaves.png',iconSize=c(28,28)))
+         addMarkers(click$lng, click$lat, group="click", icon=list(iconUrl='icon/leaves.png',iconSize=c(30,30)))
     
        ##info
        zip_sel<-as.character(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)
@@ -143,7 +143,8 @@ shinyServer(function(input, output,session){
          addCircleMarkers(~Longitude,~Latitude,color = "#C5BEBA", stroke = FALSE, fillOpacity = 0.5,radius = 2,  group = "aro")
        leafletProxy("map2", data = crime[which(crime$Desc == "Others"),]) %>%
          addCircleMarkers(~Longitude,~Latitude,color = "#D6C6B9", stroke = FALSE, fillOpacity = 0.5,radius = 2,  group = "coth")
-       ### Bus Subway
+       
+       ## Bus Subway
        marker_opt <- markerOptions(opacity=0.8,riseOnHover=T)
        leafletProxy("map2", data = bus) %>%
          addMarkers(~LONGITUDE,~LATITUDE,popup=~LOCATION,group="bus",options=marker_opt,icon=list(iconUrl='icon/bus.png',iconSize=c(15,15)))
@@ -396,6 +397,94 @@ shinyServer(function(input, output,session){
        }
      })
 
+  
+    ##Plot restaurant
+    output$pic_re <- renderPlot({
+      x <- rank_all%>%
+        filter(zipcode %in% areas()) %>%
+        select("zipcode","count.Chinese","count.American",
+               "count.Italian","count.Japenses","count.Pizza","count.Others")
+      x <- melt(x,id.vars = "zipcode")
+      ggplot(x, aes(x = as.factor(zipcode), y=value, fill=variable)) +
+        geom_bar(stat="identity") +
+        scale_fill_manual(values=c("#D24136","#EFB509","#F0810F","#E29930","#EB8A3E","#EAB364"),labels = c("Chinese","American","Italian","Japenses","Pizza","Others"),name="Restaurant") +
+        xlab("\nZipcode") +
+        ylab("Count\n") +
+        theme_bw()+
+        theme(axis.text.x = element_text(angle = 60, hjust = 1))
+    })
+  
+    ##Plot market
+    output$pic_ma <- renderPlot({
+      x <- rank_all%>%
+        filter(zipcode %in% areas()) %>%
+        select("zipcode","count.pharmacy","count.grocery")
+      x <- melt(x,id.vars = "zipcode")
+      ggplot(x, aes(x = as.factor(zipcode), y=value, fill=variable)) +
+        geom_bar(stat="identity") +
+        scale_fill_manual(values=c("#5C821A","#C6D166"),labels = c("Pharmacy","Geocery"),name="Market") +
+        xlab("\nZipcode") +
+        ylab("Count\n") +
+        theme_bw()+
+        theme(axis.text.x = element_text(angle = 60, hjust = 1))
+    })
+    
+    ##Plot theatre
+    output$pic_th <- renderPlot({
+      x <- rank_all%>%
+        filter(zipcode %in% areas()) %>%
+        select("zipcode","count.movie","count.art")
+      x <- melt(x,id.vars = "zipcode")
+      ggplot(x, aes(x = as.factor(zipcode), y=value, fill=variable)) +
+        geom_bar(stat="identity") +
+        scale_fill_manual(values=c("#A1D6E2","#1995AD"),labels = c("Cinema","Theatre"),name="Cinema/Theatre") +
+        xlab("\nZipcode") +
+        ylab("Count\n") +
+        theme_bw()+
+        theme(axis.text.x = element_text(angle = 60, hjust = 1))
+    })
+    
+    ##Plot crime
+    output$pic_cr <- renderPlot({
+      x <- rank_all%>%
+        filter(zipcode %in% areas()) %>%
+        select("zipcode","rob.count","pet.count","har.count","gra.count","dan.count","as.count","oth.count")
+      x <- melt(x,id.vars = "zipcode")
+      ggplot(x, aes(x = as.factor(zipcode), y=value, fill=variable)) +
+        geom_bar(stat="identity") +
+        scale_fill_manual(values=c("#113743","#2C4A52","#537072","#8E9B97","#E4E3DB","#C5BEBA","#D6C6B9"),labels = c("ROBBERY","PETIT LARCENY","HARRASSMENT 2","GRAND LARCENY","DANGEROUS DRUGS","ASSAULT","Others"),name="Crime") +
+        xlab("\nZipcode") +
+        ylab("Count\n") +
+        theme_bw()+
+        theme(axis.text.x = element_text(angle = 60, hjust = 1))
+    })
+    
+    ##Plot transportation
+    output$pic_tr <- renderPlot({
+      x <- rank_all%>%
+        filter(zipcode %in% areas()) %>%
+        select("zipcode","count.bus","count.subway")
+      x <- melt(x,id.vars = "zipcode")
+      ggplot(x, aes(x = as.factor(zipcode), y=value, fill=variable)) +
+        geom_bar(stat="identity") +
+        scale_fill_manual(values=c("#CE5A57","#78A5A3"),labels = c("Bus","Subway"),name="Transportation") +
+        xlab("\nZipcode") +
+        ylab("Count\n") +
+        theme_bw()+
+        theme(axis.text.x = element_text(angle = 60, hjust = 1))
+    })
+    
+    ##Plot bar
+    output$pic_ba <- renderPlot({
+      x <- rank_all%>%
+        filter(zipcode %in% areas()) %>%
+        select("zipcode", "count.bar")
+      ggplot(x, aes(x = as.factor(zipcode), y = count.bar)) +
+        geom_bar(stat = "identity",fill = "#F18D9E")+
+        xlab("\nZipcode") +
+        ylab("Count\n")+
+        theme(axis.text.x = element_text(angle = 60, hjust = 1))
+    })
     
     
 })
