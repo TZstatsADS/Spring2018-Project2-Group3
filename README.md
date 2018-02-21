@@ -24,7 +24,7 @@ On "Compare" page, stacked bar plots are displayed.
 
 
 
-![screenshot] (doc/screenshor.png)
+![screenshot] (doc/screenshot.png)
 
 
 + **Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
