@@ -392,7 +392,7 @@ shinyServer(function(input, output,session){
                     fillColor = "#B3C100",
                     fillOpacity=0.7,
                     group="new_added",
-                    noClip = TRUE, popup = ~ZIPCODE)
+                    noClip = TRUE, label = ~ZIPCODE)
     }
     
     else{
