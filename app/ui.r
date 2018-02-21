@@ -31,8 +31,8 @@ shinyUI(
                                                       ,
                                                       hr(),
                   
-                                                      checkboxInput("click_multi",label=(h5("Show Your Trace")), value = F),
-                                                      actionButton("click_reset_buttom",label=(h5("Click here back to original view")))
+                                                      checkboxInput("click_multi","Show Your Trace", value = F),
+                                                      actionButton("click_reset_buttom","Click here back to original view")
                                                        ))
                                     ),
                                     
@@ -58,9 +58,9 @@ shinyUI(
                                                
                                             ),
                                             div(id = "action",
-                                                actionButton("all_types", label=(h5("Select ALL"))),
-                                                actionButton("no_types", label=(h5("Clear ALL"))),
-                                                actionButton("click_reset_dot",label=(h5("Click here back to original view")))
+                                                actionButton("all_types", "Select ALL"),
+                                                actionButton("no_types", "Clear ALL"),
+                                                actionButton("click_reset_dot","Click here back to original view")
                                                
                                             )),
                                           mainPanel(
@@ -167,14 +167,14 @@ shinyUI(
                                             hr(),
                                             h6("Wanting Cui : "),
                                             h6("wc2619@columbia.edu"),
-                                            h6("Xueying Ding: "),
-                                            h6("xd2196@columbia.edu"),
+                                            h6("Xiuruo  Yan  : "),
+                                            h6("xy2358@columbia.edu"),
                                             h6("Hanying Ji  : "),
                                             h6("hj2473@columbia.edu"),
                                             h6("Yu      Tong : "),
                                             h6("yt2594@columbia.edu"),
-                                            h6("Xiuruo  Yan  : "),
-                                            h6("xy2358@columbia.edu")
+                                            h6("Xueying Ding: "),
+                                            h6("xd2196@columbia.edu")
                                ),
                                mainPanel(
                                  fluidRow(tags$img(height = 120, src = "icon/1.png"),align="center"),
