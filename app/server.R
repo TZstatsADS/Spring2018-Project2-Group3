@@ -2,22 +2,23 @@ library(ggmap)
 library(ggplot2)
 library(dplyr)
 library(DT)
-library(gapminder)
-library(animation)
-theme_set(theme_bw())
 
-load("../output/price.RData")
-load("../output/avg_price_zip.RData")
-load("../output/subdat.RData")
-bus <- read.csv("../data/bus_stop.csv",as.is = T)
-subway <- read.csv("../data/subwayinfo.csv", as.is = T)
-restaurant <- read.csv("../data/res.fil1.csv",as.is = T)
-crime <- read.csv("../data/crime_data.csv",as.is = T)
-market <- read.csv("../data/market_dxy.csv",as.is = T)
-art <- read.csv("../data/theatre_dxy.csv",as.is = T)
-rank_all <- read.csv("../data/rank_all.csv",as.is = T)
-show <- read.csv("../output/show.csv",as.is = T)
+load("./output/price.RData")
+load("./output/avg_price_zip.RData")
+load("./output/subdat.RData")
+bus <- read.csv("./data/bus_stop.csv",as.is = T)
+subway <- read.csv("./data/subwayinfo.csv", as.is = T)
+restaurant <- read.csv("./data/res.fil1.csv",as.is = T)
+crime <- read.csv("./data/crime_data.csv",as.is = T)
+market <- read.csv("./data/market_dxy.csv",as.is = T)
+art <- read.csv("./data/theatre_dxy.csv",as.is = T)
+rank_all <- read.csv("./data/rank_all.csv",as.is = T)
+show <- read.csv("./output/show.csv",as.is = T)
 show <- show[,-1]
+bar1 <- read.csv("./data/Bars.csv", as.is = T)
+bar2 <- read.csv("./data/Clubs.csv", as.is = T)
+bar3 <- read.csv("./data/Wine.csv", as.is = T)
+bar <- rbind(bar1, bar2, bar3)
 
 
 
@@ -55,7 +56,7 @@ shinyServer(function(input, output,session){
        if(input$click_multi == FALSE) leafletProxy('map') %>%clearGroup("click")
        click <- input$map_shape_click
        leafletProxy('map')%>%
-         addMarkers(click$lng, click$lat, group="click", icon=list(iconUrl='icon/leaves.png',iconSize=c(28,28)))
+         addMarkers(click$lng, click$lat, group="click", icon=list(iconUrl='icon/leaves.png',iconSize=c(60,60)))
     
        ##info
        zip_sel<-as.character(revgeocode(as.numeric(c(click$lng,click$lat)),output="more")$postal_code)
@@ -142,25 +143,26 @@ shinyServer(function(input, output,session){
          addCircleMarkers(~Longitude,~Latitude,color = "#C5BEBA", stroke = FALSE, fillOpacity = 0.5,radius = 2,  group = "aro")
        leafletProxy("map2", data = crime[which(crime$Desc == "Others"),]) %>%
          addCircleMarkers(~Longitude,~Latitude,color = "#D6C6B9", stroke = FALSE, fillOpacity = 0.5,radius = 2,  group = "coth")
-       ### Bus Subway
+       
+       ## Bus Subway
        marker_opt <- markerOptions(opacity=0.8,riseOnHover=T)
        leafletProxy("map2", data = bus) %>%
          addMarkers(~LONGITUDE,~LATITUDE,popup=~LOCATION,group="bus",options=marker_opt,icon=list(iconUrl='icon/bus.png',iconSize=c(15,15)))
-       leafletProxy("map2", data = subway) %>%
+       leafletProxy("map2", data = subway[subway$zipcode%in%bus$zipcode, ]) %>%
          addMarkers(~Station.Longitude,~Station.Latitude,popup=~Station.Name,group="subway",options=marker_opt,icon=list(iconUrl='icon/subway.png',iconSize=c(15,15)))
     
     
        ###  bar
-       # leafletProxy("map2", data = bar) %>%
-       #  addMarkers(~LONGITUDE,~LATITUDE,popup=~LOCATION,group="bar",options=marker_opt,icon=list(iconUrl='icon/bar.png',iconSize=c(15,15)))
-    
-    
+       marker_opt <- markerOptions(opacity=1,riseOnHover=T)
+       leafletProxy("map2", data = bar[bar$Zip %in% bus$zipcode,]) %>%
+         addMarkers(~Longitude,~Latitude,popup = ~Doing.Business.As..DBA.,group="bar",options=marker_opt,icon=list(iconUrl='icon/bar.png',iconSize=c(15,15)))
     
     
        m
      })
 
   
+     ##select all
      observeEvent(input$all_types, {
        updateSelectInput(session, "check_rest1", selected = list("American", "Chinese", "Italian", "Japanese", "Pizza", "Others"))
        updateSelectInput(session, "check_tran1", selected =  list("Bus","Subway"))
@@ -170,7 +172,8 @@ shinyServer(function(input, output,session){
        updateSelectInput(session, "check_cr1", selected =  list("ROBBERY", "PETIT LARCENY", "HARRASSMENT 2", "GRAND LARCENY", "DANGEROUS DRUGS",
                                                                 "ASSAULT 3 & RELATED OFFENSES","Others"))
      })
-  
+     
+     ##clear all
      observeEvent(input$no_types, {
        updateSelectInput(session, "check_rest1", selected =  "")
        updateSelectInput(session, "check_tran1", selected =  "")
@@ -180,6 +183,16 @@ shinyServer(function(input, output,session){
        updateSelectInput(session, "check_cr1", selected =  "")
      })
   
+     ##reset all
+     observeEvent(input$click_reset_dot,{
+       if(input$click_reset_dot){
+         leafletProxy("map2")%>%
+           setView(lng = -73.96407, lat = 40.80754, zoom = 16)
+       }
+     })
+
+     
+     
   ### food
   observeEvent(input$check_rest1, {
     if("Chinese" %in% input$check_rest1) leafletProxy("map2") %>% showGroup("chin")
@@ -238,7 +251,10 @@ shinyServer(function(input, output,session){
   }, ignoreNULL = FALSE)
   
   ### bar
-  # observeEvent(input$check_cb)
+   observeEvent(input$check_cb1, {
+     if(input$check_cb1) leafletProxy("map2") %>% showGroup("bar")
+     else{leafletProxy("map2") %>% hideGroup("bar")}
+   })
   
   
      ##########################################################################
@@ -264,13 +280,13 @@ shinyServer(function(input, output,session){
     updateSliderInput(session, "check2_pr",value = 5400)
     updateSelectInput(session, "check2_ty",selected="")
     updateSelectInput(session, "check2_re",selected="")
-    updateSelectInput(session, "check2_tr",selected = "Who Cares")
-    updateSelectInput(session, "check2_cb",selected = "Who Cares")
-    updateSelectInput(session, "check2_ct",selected = "1")
-    updateSelectInput(session, "check2_ma",selected = "1")
+    updateSelectInput(session, "check2_tr",selected = "Who Cares.")
+    updateSelectInput(session, "check2_cb",selected = "I'm allergic.")
+    updateSelectInput(session, "check2_ct",selected = "Netflix for life.")
+    updateSelectInput(session, "check2_ma",selected = "Just Amazon.")
   })
   
-
+  
   
   ##Recommand
   areas  <- reactive({
@@ -318,31 +334,31 @@ shinyServer(function(input, output,session){
     } else if("Others" %in% input$check2_re) {"ranking.Others <= 23"
     } else {"ranking.Others <= 46 |is.na(ranking.Others) == TRUE"}
     
-    trans.fil <- if(input$check2_tr == "It's everything"){
+    trans.fil <- if(input$check2_tr == "It's everything."){
       1:16
-    } else if(input$check2_tr == "Emmm"){
+    } else if(input$check2_tr == "Emmm."){
       1:32
     } else {
       c(1:46, NA)
     }
     
     club.fil <- if(input$check2_cb == "Let's party!"){1:16
-    } else if(input$check2_cb == "Emmm"){
+    } else if(input$check2_cb == "Drink one or two."){
       1:32
     } else {
       c(1:46, NA)
     }
     
-    theatre.fil<- if(input$check2_ct == "3"){1:16
-    } else if(input$check2_ct == "2"){
+    theatre.fil<- if(input$check2_ct == "Theatre goers."){1:16
+    } else if(input$check2_ct == "It depends."){
       1:32
     } else {
       c(1:46, NA)
     }
     
-    market.fil <- if(input$check2_ma == "3"){
+    market.fil <- if(input$check2_ma == "Love it!"){
       1:16
-    } else if(input$check2_ma == "2"){
+    } else if(input$check2_ma == "It depends."){
       1:32
     } else {
       c(1:46, NA)
@@ -385,10 +401,102 @@ shinyServer(function(input, output,session){
   
   
      ##########################################################################
-     ## Panel 4: contact ####################################################
+     ## Panel 4: compare ######################################################
      ########################################################################## 
+     observeEvent(input$click_jump_next,{
+       if(input$click_jump_next){
+         updateTabsetPanel(session, "inTabset",selected = "Compare")
+       }
+     })
+
   
- 
+    ##Plot restaurant
+    output$pic_re <- renderPlot({
+      x <- rank_all%>%
+        filter(zipcode %in% areas()) %>%
+        select("zipcode","count.Chinese","count.American",
+               "count.Italian","count.Japenses","count.Pizza","count.Others")
+      x <- melt(x,id.vars = "zipcode")
+      ggplot(x, aes(x = as.factor(zipcode), y=value, fill=variable)) +
+        geom_bar(stat="identity") +
+        scale_fill_manual(values=c("#D24136","#EFB509","#F0810F","#E29930","#EB8A3E","#EAB364"),labels = c("Chinese","American","Italian","Japenses","Pizza","Others"),name="Restaurant") +
+        xlab("\nZipcode") +
+        ylab("Count\n") +
+        theme_bw()+
+        theme(axis.text.x = element_text(angle = 60, hjust = 1))
+    })
+  
+    ##Plot market
+    output$pic_ma <- renderPlot({
+      x <- rank_all%>%
+        filter(zipcode %in% areas()) %>%
+        select("zipcode","count.pharmacy","count.grocery")
+      x <- melt(x,id.vars = "zipcode")
+      ggplot(x, aes(x = as.factor(zipcode), y=value, fill=variable)) +
+        geom_bar(stat="identity") +
+        scale_fill_manual(values=c("#5C821A","#C6D166"),labels = c("Pharmacy","Geocery"),name="Market") +
+        xlab("\nZipcode") +
+        ylab("Count\n") +
+        theme_bw()+
+        theme(axis.text.x = element_text(angle = 60, hjust = 1))
+    })
+    
+    ##Plot theatre
+    output$pic_th <- renderPlot({
+      x <- rank_all%>%
+        filter(zipcode %in% areas()) %>%
+        select("zipcode","count.movie","count.art")
+      x <- melt(x,id.vars = "zipcode")
+      ggplot(x, aes(x = as.factor(zipcode), y=value, fill=variable)) +
+        geom_bar(stat="identity") +
+        scale_fill_manual(values=c("#A1D6E2","#1995AD"),labels = c("Cinema","Theatre"),name="Cinema/Theatre") +
+        xlab("\nZipcode") +
+        ylab("Count\n") +
+        theme_bw()+
+        theme(axis.text.x = element_text(angle = 60, hjust = 1))
+    })
+    
+    ##Plot crime
+    output$pic_cr <- renderPlot({
+      x <- rank_all%>%
+        filter(zipcode %in% areas()) %>%
+        select("zipcode","rob.count","pet.count","har.count","gra.count","dan.count","as.count","oth.count")
+      x <- melt(x,id.vars = "zipcode")
+      ggplot(x, aes(x = as.factor(zipcode), y=value, fill=variable)) +
+        geom_bar(stat="identity") +
+        scale_fill_manual(values=c("#113743","#2C4A52","#537072","#8E9B97","#E4E3DB","#C5BEBA","#D6C6B9"),labels = c("ROBBERY","PETIT LARCENY","HARRASSMENT 2","GRAND LARCENY","DANGEROUS DRUGS","ASSAULT","Others"),name="Crime") +
+        xlab("\nZipcode") +
+        ylab("Count\n") +
+        theme_bw()+
+        theme(axis.text.x = element_text(angle = 60, hjust = 1))
+    })
+    
+    ##Plot transportation
+    output$pic_tr <- renderPlot({
+      x <- rank_all%>%
+        filter(zipcode %in% areas()) %>%
+        select("zipcode","count.bus","count.subway")
+      x <- melt(x,id.vars = "zipcode")
+      ggplot(x, aes(x = as.factor(zipcode), y=value, fill=variable)) +
+        geom_bar(stat="identity") +
+        scale_fill_manual(values=c("#CE5A57","#78A5A3"),labels = c("Bus","Subway"),name="Transportation") +
+        xlab("\nZipcode") +
+        ylab("Count\n") +
+        theme_bw()+
+        theme(axis.text.x = element_text(angle = 60, hjust = 1))
+    })
+    
+    ##Plot bar
+    output$pic_ba <- renderPlot({
+      x <- rank_all%>%
+        filter(zipcode %in% areas()) %>%
+        select("zipcode", "count.bar")
+      ggplot(x, aes(x = as.factor(zipcode), y = count.bar)) +
+        geom_bar(stat = "identity",fill = "#F18D9E")+
+        xlab("\nZipcode") +
+        ylab("Count\n")+
+        theme(axis.text.x = element_text(angle = 60, hjust = 1))
+    })
     
     
 })

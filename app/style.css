@@ -3,6 +3,13 @@ body{
   font-family: 'Mukta Malar', sans-serif;
 }
 
+p.h{
+  font-family: 'Lobster', cursive;
+  font-size: 2.5em;
+  color: #20232A;
+}
+
+
 h1{
   font-family: 'Lobster', cursive;
   font-size: 1.8em;
@@ -38,6 +45,49 @@ h5{
   color: #ACBEBE;
 }
 
+h6{
+  line-height: 1;
+  font-size: 1.2em;
+  color: #20232A;
+}
+
+p.re{
+  font-family: 'Lobster', cursive;
+  font-size: 1.8em;
+  color: #EFB509;
+}
+
+p.cr{
+  font-family: 'Lobster', cursive;
+  font-size: 1.8em;
+  color: #113743;
+}
+
+p.ma{
+  font-family: 'Lobster', cursive;
+  font-size: 1.8em;
+  color: #5C821A;
+}
+
+p.ct{
+  font-family: 'Lobster', cursive;
+  font-size: 1.8em;
+  color: #A1D6E2;
+}
+
+p.ba{
+  font-family: 'Lobster', cursive;
+  font-size: 1.8em;
+  color: #F18D9E;
+}
+
+p.tr{
+  font-family: 'Lobster', cursive;
+  font-size: 1.8em;
+  color: #CE5A57;
+}
+
+
 
 div.first {
     opacity: 0.1;
@@ -54,6 +104,15 @@ div.third {
     filter: alpha(opacity=60); /* For IE8 and earlier */
 }
 
+/*
+@media screen and (max-width: 1000px) and (min-width: 700px) {
+    ul li a:before {
+        content: "Email: ";
+        font-style: italic;
+        color: #666666;
+    }
+}
+
 @media screen and (min-width: 1001px) {
     ul li a:after {
         content: " (" attr(data-email) ")";
@@ -62,3 +121,4 @@ div.third {
         color: #666666;
     }
 }
+*/

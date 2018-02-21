@@ -5,7 +5,7 @@ library(plotly)
 library(DT)
 shinyUI(
         fluidPage(includeCSS("style.css"),
-                navbarPage("Where to rent in Manhattan",
+                navbarPage(p(class="h","Rent Smart"),id = "inTabset",
                            #tabPanel("Introduction"),
                            #navbarMenu(title="Begin",
                               tabPanel("All about map",
@@ -31,10 +31,9 @@ shinyUI(
                                                       ,
                                                       hr(),
                   
-                                                      checkboxInput("click_multi",label=(h5("Show Your Trace")), value = F),
-                                                      actionButton("click_reset_buttom",label=(h5("Click here back to original view")))
-
-                                        ))
+                                                      checkboxInput("click_multi","Show Your Trace", value = F),
+                                                      actionButton("click_reset_buttom","Click here back to original view")
+                                                       ))
                                     ),
                                     
                            tabPanel("Dot Details",
@@ -60,15 +59,16 @@ shinyUI(
                                             ),
                                             div(id = "action",
                                                 actionButton("all_types", "Select ALL"),
-                                                actionButton("no_types", "Clear ALL")
-
-                                            )
-                                            ),
+                                                actionButton("no_types", "Clear ALL"),
+                                                actionButton("click_reset_dot","Click here back to original view")
+                                               
+                                            )),
                                           mainPanel(
                                             leafletOutput("map2", width = "120%", height = "700px")
                                           ))
                                     )
                           ),
+                          
                            
                            tabPanel("Recommendation",fluidPage(
                               fluidRow(
@@ -79,21 +79,27 @@ shinyUI(
                                column(3,
                                       selectInput("check2_re", "Restaurant Type:", c("Food I Like"="",list("American", "Chinese", "Italian", "Japanese", "Pizza", "Others")), multiple=TRUE)),
                                column(3,
-                                      selectInput("check2_tr", "Transportation:", list("Who Cares","Emmm","It's everything")))),
+                                      selectInput("check2_tr", "Transportation:", list("Who Cares.","Emmm.","It's everything.")))),
                                              
-                                     
                               fluidRow(
                                 column(3,
                                        h1("Choose What You Like"),
-                                       div(id = "action",actionButton("no_rec2", "Reset"))),
+                                       fluidRow(
+                                         column(2,
+                                                div(id = "action",actionButton("no_rec2", "Reset"))),
+                                         column(1,offset = 2,
+                                                div(actionButton("click_jump_next","View Compare"))
+                                       ))),
                                 column(3,
-                                       selectInput("check2_cb", "Club/Bar:", list("Who Cares","Emmm","Let's party!"))),
+                                       selectInput("check2_cb", "Club/Bar:", list("I'm allergic.","Drink one or two.","Let's party!"))),
                                 column(3,
-                                       selectInput("check2_ct", "Cinema/Theater:",list("1","2","3"))),
+                                       selectInput("check2_ct", "Cinema/Theater:",list("Netflix for life.","It depends.","Theatre goers."))),
                                 column(3,
-                                       selectInput("check2_ma","Market:",list("1","2","3")))),
+                                       selectInput("check2_ma","Market:",list("Just Amazon.","It depends.","Love it!")))),
                                    
                               hr(),
+                              
+                              
                               
                               fluidRow(
                                 column(6,
@@ -104,24 +110,83 @@ shinyUI(
                                        dataTableOutput("recom")
                               )))
                               ),
+                          
+
+                           tabPanel("Compare",fluidPage(
+                             fluidRow(column(6,
+                                             p(class = "cr","Crime"),align= "center"
+                                             ),
+                                      column(6,
+                                             p(class = "re","Restaurant"),align= "center")
+                                      ),
+                             fluidRow(column(6,
+                                          plotOutput(outputId = "pic_cr")
+                                        ),
+                                      column(6,
+                                             plotOutput(outputId = "pic_re")
+                                             )),
+                             
+                             
+                             fluidRow(column(6,
+                                             p(class = "tr","Transportation"),align= "center"
+                             ),
+                             column(6,
+                                    p(class = "ba","Bar"),align= "center")
+                             ),
+                             fluidRow(
+                                      column(6,
+                                             plotOutput(outputId = "pic_tr")
+                                      ),
+                                      column(6,
+                                             plotOutput(outputId = "pic_ba")               
+                                             )),
+                             
+                             
+                             fluidRow(column(6,
+                                             p(class = "ct","Cinema/Theatre"),align= "center"
+                             ),
+                             column(6,
+                                    p(class = "ma","Market"),align= "center")
+                             ),
+                             fluidRow(column(6,
+                                             plotOutput(outputId = "pic_th")
+                                      ),
+                                      column(6,
+                                             plotOutput(outputId = "pic_ma")
+                                      ))
+                           )
+                           ),
                            
                            tabPanel("Contact",fluidPage(
-                             fluidRow(textOutput("cwtm"),tags$img(height = 120, src = "icon/1.png"),align="center"),
-                             fluidRow(textOutput("yxrm"),tags$img(height = 120,src = "icon/2.png"),align="center"),
-                             fluidRow(textOutput("tym"),tags$img(height = 120,src = "icon/5.png"),align="center"),
-                             fluidRow(textOutput("jhym"),tags$img(height = 120,src = "icon/3.png"),align="center"),
-                             fluidRow(textOutput("dxnm"),tags$img(height = 120,src = "icon/4.png"),align="center"))
-                           )
-                           
-                           )
+                             sidebarLayout(
+                               sidebarPanel(
+                                            h2("Contact Information"),
+                                            hr(),
+                                            h6("We are all Columbia University students at Department of Statistics.
+                                               If you are interested in our project, you can contact us."),
+                                            hr(),
+                                            h6("Wanting Cui : "),
+                                            h6("wc2619@columbia.edu"),
+                                            h6("Xiuruo  Yan  : "),
+                                            h6("xy2358@columbia.edu"),
+                                            h6("Hanying Ji  : "),
+                                            h6("hj2473@columbia.edu"),
+                                            h6("Yu      Tong : "),
+                                            h6("yt2594@columbia.edu"),
+                                            h6("Xueying Ding: "),
+                                            h6("xd2196@columbia.edu")
+                               ),
+                               mainPanel(
+                                 fluidRow(tags$img(height = 120, src = "icon/1.png"),align="center"),
+                                 fluidRow(tags$img(height = 120, src = "icon/2.png"),align="center"),
+                                 fluidRow(tags$img(height = 120, src = "icon/5.png"),align="center"),
+                                 fluidRow(tags$img(height = 120, src = "icon/3.png"),align="center"),
+                                 fluidRow(tags$img(height = 120, src = "icon/4.png"),align="center")
+                                 )
+                           )))
+                
                 )
-        
+        )
 )
-
-
-
-
-
-
 
 
