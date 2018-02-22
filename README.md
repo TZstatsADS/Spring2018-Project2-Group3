@@ -36,7 +36,6 @@ On "Compare" page, stacked bar plots are displayed.
 +  Server- Dot Position: Yu Tong (mostly), Xiuruo Yan
 +  Server- Recommendation: Wanting Cui (mostly), Xiuruo Yan, Yu Tong
 +  Server- Compare: Xueying Ding (mostly), Wanting Cui
-+  Server- Contact: Xiuruo Yan 
 +  Debug help: Yu Tong
 
 All team members approve our work presented in this GitHub repository including this contributions statement.
